@@ -1,0 +1,114 @@
+{
+  "name": "ink-analyzer",
+  "displayName": "ink! Analyzer",
+  "description": "ink! language support for Visual Studio Code",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "ink-analyzer",
+  "homepage": "https://github.com/ink-analyzer",
+  "repository": {
+    "url": "https://github.com/ink-analyzer/ink-analyzer.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/ink-analyzer/ink-analyzer/issues"
+  },
+  "license": "GPL-3.0",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ink!",
+    "smart contract",
+    "substrate",
+    "polkadot",
+    "blockchain"
+  ],
+  "activationEvents": [
+    "onLanguage:rust"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ink-analyzer.restart",
+        "title": "Restart ink! Language Server"
+      },
+      {
+        "command": "ink-analyzer.stop",
+        "title": "Stop ink! Language Server"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "ink! Analyzer",
+      "properties": {
+        "ink-analyzer.server.path": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "scope": "machine-overridable",
+          "default": null,
+          "description": "Path to ink! Language Server (ink-lsp-server) binary/executable (points to bundled binary/executable by default)."
+        },
+        "ink-analyzer.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "enumDescriptions": [
+            "No traces",
+            "Error only",
+            "Full log"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the ink! Language Server (not recommended for regular users)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn build-publish",
+    "build-base": "yarn prebuild && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node16",
+    "build": "yarn build-base --sourcemap",
+    "watch": "yarn build-base --sourcemap --watch",
+    "build-publish": "yarn build-base --minify",
+    "test-compile": "tsc -p ./",
+    "test-watch": "tsc -watch -p ./",
+    "prebuild": "node prebuild.js",
+    "pretest": "yarn prebuild && yarn test-compile && yarn run lint",
+    "lint": "eslint src --ext ts",
+    "fix": "prettier --write . && eslint --ext ts ./src",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.76.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "@vscode/test-electron": "^2.2.3",
+    "chalk": "4",
+    "esbuild": "^0.17.11",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0",
+    "node-fetch": "2",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  }
+}
