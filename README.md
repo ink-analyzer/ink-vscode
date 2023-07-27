@@ -1,4 +1,4 @@
-# ink! Analyzer
+# ink! Analyzer for Visual Studio Code
 
 [ink!](https://use.ink/) language support for Visual Studio Code.
 
