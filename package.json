@@ -77,16 +77,14 @@
   "scripts": {
     "vscode:prepublish": "yarn build-publish",
     "package": "vsce package -o ink-analyzer.vsix",
-    "build-base": "yarn prebuild && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node16",
+    "build-base": "yarn setup && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node16",
     "build": "yarn build-base --sourcemap",
     "watch": "yarn build-base --sourcemap --watch",
     "build-publish": "yarn build-base --minify",
-    "test-compile": "tsc -p ./",
-    "test-watch": "tsc -watch -p ./",
-    "prebuild": "node prebuild.js",
-    "pretest": "yarn prebuild && yarn test-compile && yarn run lint",
+    "setup": "node prebuild.js",
+    "pretest": "yarn build && yarn lint",
     "lint": "eslint src --ext ts",
-    "fix": "prettier --write . && eslint --ext ts ./src",
+    "format": "prettier --write . && eslint --ext ts ./src --fix",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {

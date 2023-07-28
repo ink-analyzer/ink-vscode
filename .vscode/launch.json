@@ -2,15 +2,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run Extension",
+      "name": "Run Extension (alongside Rust Analyzer)",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "args": [
+        "--install-extension rust-lang.rust-analyzer --force",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "preLaunchTask": "${defaultBuildTask}",
+      "internalConsoleOptions": "openOnSessionStart"
     },
     {
-      "name": "Extension Tests",
+      "name": "Run Extension (without Rust Analyzer)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "preLaunchTask": "${defaultBuildTask}",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Run Extension Tests",
       "type": "extensionHost",
       "request": "launch",
       "args": [
@@ -18,7 +34,8 @@
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "${defaultBuildTask}"
+      "preLaunchTask": "Pretest",
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
