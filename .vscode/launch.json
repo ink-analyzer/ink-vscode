@@ -5,10 +5,7 @@
       "name": "Run Extension (alongside Rust Analyzer)",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--install-extension rust-lang.rust-analyzer --force",
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
+      "args": ["--install-extension rust-lang.rust-analyzer --force", "--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "internalConsoleOptions": "openOnSessionStart"
@@ -17,10 +14,7 @@
       "name": "Run Extension (without Rust Analyzer)",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--disable-extensions",
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
+      "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceFolder}"],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "internalConsoleOptions": "openOnSessionStart"

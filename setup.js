@@ -1,16 +1,17 @@
-// A build script that downloads the latest ink! Language Server (ink-lsp-server) binary for the target platform (if none exists yet at /server/ink-lsp-server[.exe]).
+// A build script that downloads the latest ink! Language Server (ink-lsp-server) binary for the target platform (if none exists yet at ./server/ink-lsp-server[.exe]).
 
 const fs = require('node:fs');
+const path = require('node:path');
 const https = require('node:https');
 const fetch = require('node-fetch');
 const zlib = require('node:zlib');
-const stream = require('node:stream');
-const child_process = require('node:child_process');
+const { pipeline } = require('node:stream');
+const { execSync } = require('node:child_process');
 const { promisify } = require('node:util');
 const chalk = require('chalk');
-const AdmZip = require('adm-zip');
+const admZip = require('adm-zip');
 
-const pipeline = promisify(stream.pipeline);
+const pipe = promisify(pipeline);
 const log = console.log;
 
 const BINARY_INSTALL_INSTRUCTIONS =
@@ -26,7 +27,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
   log('🔎 Searching for ink-lsp-server binary ...');
   const target = getBinaryTarget();
 
-  const serverPath = `./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`;
+  const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   let stat = fs.statSync(serverPath, { throwIfNoEntry: false });
   let binaryExists = stat && stat.isFile();
   if (binaryExists && verifyBinary(serverPath)) {
@@ -112,8 +113,8 @@ function getBinaryTarget() {
 }
 
 // Exits with a success message and exit code.
-function exitWithSuccess(path) {
-  log(chalk.green('✅ An executable ink-lsp-server binary is available at:'), path);
+function exitWithSuccess(serverPath) {
+  log(chalk.green('✅ An executable ink-lsp-server binary is available at:'), serverPath);
   process.exit(0);
 }
 
@@ -124,10 +125,10 @@ function exitWithError(message) {
 }
 
 // Verifies that the binary is executable on this platform.
-function verifyBinary(path) {
-  log('⌛ Verifying binary/executable at: ', path);
+function verifyBinary(serverPath) {
+  log('⌛ Verifying binary/executable at: ', serverPath);
   try {
-    const result = child_process.execSync(`${path} -V`, { timeout: 100 });
+    const result = execSync(`${path.resolve(serverPath)} -V`, { timeout: 100 });
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
     return result.toString().includes('ink-lsp-server');
   } catch (e) {
@@ -137,18 +138,18 @@ function verifyBinary(path) {
 }
 
 // Attempts to add executable permissions to the binary.
-function fixBinaryPermissions(path) {
+function fixBinaryPermissions(serverPath) {
   // Assume permissions are always fine on works on Windows.
   if (process.platform === 'win32') {
     return true;
   }
 
-  log('⚒️ Attempting to add executable permissions to the binary at: ', path);
+  log('⚒️ Attempting to add executable permissions to the binary at: ', serverPath);
   // Fix permissions on Linux and macOS (may work for others but these are the primary targets).
   try {
-    child_process.execSync(`chmod +x ${path}`, { timeout: 100 });
+    execSync(`chmod +x ${path.resolve(serverPath)}`, { timeout: 100 });
     // The binary should be able to pass verification after the above command.
-    return verifyBinary(path);
+    return verifyBinary(serverPath);
   } catch (e) {
     log('Failed to fix binary permissions.');
   }
@@ -160,15 +161,15 @@ async function setupBinaryForTarget(target) {
   log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
 
   // Cleans server directory.
-  fs.rmSync('./server', { force: true, recursive: true });
+  fs.rmSync(path.resolve('./server'), { force: true, recursive: true });
   try {
-    fs.mkdirSync('./server');
+    fs.mkdirSync(path.resolve('./server'));
   } catch (e) {}
 
   // Downloads the latest release of ink-lsp-server binary for the target platform.
   let asset = await getLatestBinaryDownloadUrl(target);
-  const archivePath = `./server/${asset.name}`;
-  const serverPath = `./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`;
+  const archivePath = path.resolve(`./server/${asset.name}`);
+  const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   await downloadAsset(asset.browser_download_url, archivePath);
 
   // Unpack and rename assets.
@@ -192,7 +193,13 @@ async function setupBinaryForTarget(target) {
       break;
     }
     case 'application/zip': {
-      if (decompressZipAsset(archivePath, './server', `ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`)) {
+      if (
+        decompressZipAsset(
+          archivePath,
+          path.resolve('./server'),
+          path.resolve(`ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`),
+        )
+      ) {
         if (fixBinaryPermissions(serverPath)) {
           // Deletes the archive.
           fs.rmSync(archivePath);
@@ -308,12 +315,12 @@ function decompressGzipAsset(src, dest) {
   // Handles .gzip files with node:zlib.
   const input = fs.createReadStream(src);
   const output = fs.createWriteStream(dest);
-  return pipeline(input, zlib.createGunzip(), output);
+  return pipe(input, zlib.createGunzip(), output);
 }
 
 function decompressZipAsset(src, destDir, destFilename) {
   // Handles .zip files with adm-zip.
-  const zip = new AdmZip(src);
+  const zip = new admZip(src);
   const zipEntries = zip.getEntries();
   const executable = zipEntries.find((entry) => entry.entryName.endsWith('.exe'));
   if (executable && executable.name) {

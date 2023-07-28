@@ -81,10 +81,10 @@
     "build": "yarn build-base --sourcemap",
     "watch": "yarn build-base --sourcemap --watch",
     "build-publish": "yarn build-base --minify",
-    "setup": "node prebuild.js",
+    "setup": "node setup.js",
     "pretest": "yarn build && yarn lint",
-    "lint": "eslint src --ext ts",
-    "format": "prettier --write . && eslint --ext ts ./src --fix",
+    "lint": "eslint src --ext ts ./src --ext js",
+    "format": "prettier --write . && eslint --ext ts ./src  --ext js --fix",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {

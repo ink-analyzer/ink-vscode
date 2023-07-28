@@ -79,7 +79,7 @@ export default class ExtensionManager {
         );
         await vscode.workspace.fs.stat(bundledServerPath).then(
           () => {
-            serverPath = bundledServerPath.path;
+            serverPath = bundledServerPath.fsPath;
           },
           () => {
             //
