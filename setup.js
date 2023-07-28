@@ -28,8 +28,8 @@ const BINARY_INSTALL_INSTRUCTIONS =
   const target = getBinaryTarget();
 
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
-  let stat = fs.statSync(serverPath, { throwIfNoEntry: false });
-  let binaryExists = stat && stat.isFile();
+  const stat = fs.statSync(serverPath, { throwIfNoEntry: false });
+  const binaryExists = stat && stat.isFile();
   if (binaryExists && verifyBinary(serverPath)) {
     // Exits successfully if a binary exists at the expected location.
     exitWithSuccess(serverPath);
@@ -52,7 +52,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
   }
 
   // Tries to download, decompress and configure the target binary otherwise exits with an error.
-  let newServerPath = await setupBinaryForTarget(target).catch(() => {
+  const newServerPath = await setupBinaryForTarget(target).catch(() => {
     exitWithError(
       chalk.red('Failed to setup a binary for your platform: ') + target + '\n' + BINARY_INSTALL_INSTRUCTIONS,
     );
@@ -167,7 +167,7 @@ async function setupBinaryForTarget(target) {
   } catch (e) {}
 
   // Downloads the latest release of ink-lsp-server binary for the target platform.
-  let asset = await getLatestBinaryDownloadUrl(target);
+  const asset = await getLatestBinaryDownloadUrl(target);
   const archivePath = path.resolve(`./server/${asset.name}`);
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   await downloadAsset(asset.browser_download_url, archivePath);
@@ -197,7 +197,7 @@ async function setupBinaryForTarget(target) {
         decompressZipAsset(
           archivePath,
           path.resolve('./server'),
-          path.resolve(`ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`),
+          `ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`,
         )
       ) {
         if (fixBinaryPermissions(serverPath)) {
