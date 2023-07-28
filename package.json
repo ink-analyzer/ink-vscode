@@ -76,6 +76,7 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn build-publish",
+    "package": "vsce package -o ink-analyzer.vsix",
     "build-base": "yarn prebuild && esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node16",
     "build": "yarn build-base --sourcemap",
     "watch": "yarn build-base --sourcemap --watch",
@@ -96,7 +97,9 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.53.0",
     "@vscode/test-electron": "^2.2.3",
-    "chalk": "4",
+    "@vscode/vsce": "^2.20.0",
+    "adm-zip": "^0.5.10",
+    "chalk": "^4.1.2",
     "esbuild": "^0.17.11",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
@@ -105,8 +108,7 @@
     "mocha": "^10.2.0",
     "node-fetch": "2",
     "prettier": "^2.8.4",
-    "typescript": "^4.9.5",
-    "vsce": "^2.15.0"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "vscode-languageclient": "^8.1.0"

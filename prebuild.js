@@ -8,6 +8,7 @@ const stream = require('node:stream');
 const child_process = require('node:child_process');
 const { promisify } = require('node:util');
 const chalk = require('chalk');
+const AdmZip = require('adm-zip');
 
 const pipeline = promisify(stream.pipeline);
 const log = console.log;
@@ -17,8 +18,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
   '- clone the ink! Analyzer repository\n' +
   '- manually build an ink-lsp-server binary\n' +
   '- copy the binary into the a `./server` directory in the project root\n' +
-  '- make the binary execute\n' +
-  'And then rerun this command to continue.\n\n' +
+  '- make the binary executable\n\n' +
   'Please find further instructions at: ' +
   chalk.blue.underline('https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation');
 
@@ -166,16 +166,15 @@ async function setupBinaryForTarget(target) {
   } catch (e) {}
 
   // Downloads the latest release of ink-lsp-server binary for the target platform.
-  let asset = await getBinaryDownloadUrl(target);
+  let asset = await getLatestBinaryDownloadUrl(target);
   const archivePath = `./server/${asset.name}`;
   const serverPath = `./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`;
   await downloadAsset(asset.browser_download_url, archivePath);
 
   // Unpack and rename assets.
   switch (asset.content_type) {
-    case 'application/gzip':
-    case 'application/zip': {
-      await decompressAsset(archivePath, serverPath).catch(() => {
+    case 'application/gzip': {
+      await decompressGzipAsset(archivePath, serverPath).catch(() => {
         // Exits with an error message alerting the user that we failed to decompress the binary.
         exitWithError(
           chalk.red('Failed to decompress the binary for your platform: ') +
@@ -192,15 +191,34 @@ async function setupBinaryForTarget(target) {
       }
       break;
     }
+    case 'application/zip': {
+      if (decompressZipAsset(archivePath, './server', `ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`)) {
+        if (fixBinaryPermissions(serverPath)) {
+          // Deletes the archive.
+          fs.rmSync(archivePath);
+          // Returns the new server path.
+          return serverPath;
+        }
+      } else {
+        // Exits with an error message alerting the user that we failed to decompress the binary.
+        exitWithError(
+          chalk.red('Failed to decompress the binary for your platform: ') +
+            archivePath +
+            '\n' +
+            BINARY_INSTALL_INSTRUCTIONS,
+        );
+      }
+      break;
+    }
     default: {
-      throw new Error(`Unknown archive type: ${archivePath}`);
+      throw new Error(`Unsupported file type: ${archivePath}`);
     }
   }
   throw new Error('Failed to setup binary');
 }
 
-// Returns (if any) the download URL for this platform/target.
-async function getBinaryDownloadUrl(target) {
+// Returns (if any) the download URL for the latest ink-lsp-server binary for this platform/target.
+async function getLatestBinaryDownloadUrl(target) {
   const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest');
   if (res) {
     const data = await res.json();
@@ -286,10 +304,20 @@ function downloadAsset(url, path) {
 }
 
 // Decompresses an asset to a destination path.
-function decompressAsset(src, dest) {
+function decompressGzipAsset(src, dest) {
+  // Handles .gzip files with node:zlib.
   const input = fs.createReadStream(src);
   const output = fs.createWriteStream(dest);
-  // Unzip can decompress both gzip and deflate (.zip) by auto-detecting the header.
-  // Ref: https://nodejs.org/api/zlib.html#class-zlibunzip
-  return pipeline(input, zlib.createUnzip(), output);
+  return pipeline(input, zlib.createGunzip(), output);
+}
+
+function decompressZipAsset(src, destDir, destFilename) {
+  // Handles .zip files with adm-zip.
+  const zip = new AdmZip(src);
+  const zipEntries = zip.getEntries();
+  const executable = zipEntries.find((entry) => entry.entryName.endsWith('.exe'));
+  if (executable && executable.name) {
+    return zip.extractEntryTo(executable.name, destDir, false, true, false, destFilename);
+  }
+  return false;
 }
