@@ -5,7 +5,12 @@
       "name": "Run Extension (alongside Rust Analyzer)",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--install-extension rust-lang.rust-analyzer --force", "--extensionDevelopmentPath=${workspaceFolder}"],
+      "args": [
+        "${workspaceFolder}/test-fixtures",
+        "${workspaceFolder}/test-fixtures/flipper/lib.rs",
+        "--install-extension rust-lang.rust-analyzer --force",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "internalConsoleOptions": "openOnSessionStart"
@@ -14,7 +19,12 @@
       "name": "Run Extension (without Rust Analyzer)",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--disable-extensions", "--extensionDevelopmentPath=${workspaceFolder}"],
+      "args": [
+        "${workspaceFolder}/test-fixtures",
+        "${workspaceFolder}/test-fixtures/flipper/lib.rs",
+        "--disable-extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
       "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "${defaultBuildTask}",
       "internalConsoleOptions": "openOnSessionStart"
@@ -24,6 +34,8 @@
       "type": "extensionHost",
       "request": "launch",
       "args": [
+        "${workspaceFolder}/test-fixtures",
+        "${workspaceFolder}/test-fixtures/flipper/lib.rs",
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],

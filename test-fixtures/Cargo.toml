@@ -1,0 +1,11 @@
+[workspace]
+
+members = [
+  "custom-environment",
+  "erc20",
+  "flipper",
+  "mother",
+  "multisig",
+  "psp22-extension",
+  "trait-flipper"
+]
