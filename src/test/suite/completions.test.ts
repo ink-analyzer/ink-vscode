@@ -187,7 +187,7 @@ suite('Completions', () => {
           assert.equal(results.items.length, expectedResults.items.length);
           expectedResults.items.forEach((expectedItem, i) => {
             const item = results.items[i];
-            assert.equal(removeWhitespace(item.label as string), expectedItem.label);
+            assert.equal(removeWhitespace(item.label as string), removeWhitespace(expectedItem.label as string));
             assert.equal(item.kind, expectedItem.kind);
           });
         });
