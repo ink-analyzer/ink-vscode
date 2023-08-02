@@ -12,7 +12,7 @@ export type TestCase = {
     startPos: [number, number];
     endPos?: [number, number];
   };
-  results: Array<TestResult>;
+  results: Array<TestResult> | number;
 };
 
 // Describes a modification/edit to perform on the original smart contract code.

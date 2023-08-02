@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 
 import { applyTestEdits, getDocumentUri, openDocument, removeWhitespace, setDocumentContent } from './utils';
-import { TestGroup } from './types';
+import { TestGroup, TestResult } from './types';
 
 // Describes a collection of completions tests to run against
 // optionally modified ink! smart contract code in the `test-fixtures` directory in the project root.
@@ -179,7 +179,10 @@ suite('Completions', () => {
 
           // Verifies expected results.
           const expectedResults = {
-            items: testCase.results.map((item) => ({ label: item.text, kind: vscode.CompletionItemKind.Function })),
+            items: (testCase.results as Array<TestResult>).map((item) => ({
+              label: item.text,
+              kind: vscode.CompletionItemKind.Function,
+            })),
           } as vscode.CompletionList;
           assert.equal(results.items.length, expectedResults.items.length);
           expectedResults.items.forEach((expectedItem, i) => {

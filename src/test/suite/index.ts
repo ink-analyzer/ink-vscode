@@ -8,6 +8,9 @@ export function run(): Promise<void> {
     ui: 'tdd',
     color: true,
     parallel: false,
+    // Increases timeout to 15s.
+    // (diagnostics tests have to block for ~500ms for each test to wait for language server push notifications).
+    timeout: 15000,
   });
 
   const testsRoot = path.resolve(__dirname, '..');
