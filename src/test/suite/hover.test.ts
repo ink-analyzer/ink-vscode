@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 
-import { applyTestEdits, getDocumentUri, openDocument, setDocumentContent } from './utils';
+import { activateExtension, applyTestEdits, getDocumentUri, openDocument, setDocumentContent } from './utils';
 import { TestGroup, TestResult } from './types';
 
 // Describes a collection of hover content tests to run against
@@ -155,6 +155,11 @@ const HOVER_TESTS: Array<TestGroup> = [
 ];
 
 suite('Hover', () => {
+  suiteSetup(async function () {
+    // Activates the extension.
+    await activateExtension();
+  });
+
   // Iterates over all test case groups (see `HOVER_TESTS` doc and inline comments).
   for (const testGroup of HOVER_TESTS) {
     suite(testGroup.source, function () {

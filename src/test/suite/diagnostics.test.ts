@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 
-import { applyTestEdits, getDocumentUri, openDocument, setDocumentContent, sleep } from './utils';
+import { activateExtension, applyTestEdits, getDocumentUri, openDocument, setDocumentContent, sleep } from './utils';
 import { TestGroup } from './types';
 
 // Describes a collection of diagnostics tests to run against
@@ -167,6 +167,11 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
 ];
 
 suite('Diagnostics', () => {
+  suiteSetup(async function () {
+    // Activates the extension.
+    await activateExtension();
+  });
+
   // Iterates over all test case groups (see `DIAGNOSTICS_TESTS` doc and inline comments).
   for (const testGroup of DIAGNOSTICS_TESTS) {
     suite(testGroup.source, function () {

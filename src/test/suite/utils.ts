@@ -1,6 +1,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+
 import { TestEdit } from './types';
+import { EXTENSION_ID } from '../../constants';
+
+// Activates the extension.
+export async function activateExtension() {
+  const ext = vscode.extensions.getExtension(`${EXTENSION_ID}.${EXTENSION_ID}`);
+  return ext?.activate();
+}
 
 // Opens a document and returns a `TextEditor` for manipulating it.
 export async function openDocument(docUri: vscode.Uri) /*: Promise<vscode.TextEditor>*/ {

@@ -1,7 +1,14 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 
-import { applyTestEdits, getDocumentUri, openDocument, removeWhitespace, setDocumentContent } from './utils';
+import {
+  activateExtension,
+  applyTestEdits,
+  getDocumentUri,
+  openDocument,
+  removeWhitespace,
+  setDocumentContent,
+} from './utils';
 import { TestGroup, TestResult } from './types';
 
 // Describes a collection of completions tests to run against
@@ -137,6 +144,11 @@ const COMPLETION_TESTS: Array<TestGroup> = [
 ];
 
 suite('Completions', () => {
+  suiteSetup(async function () {
+    // Activates the extension.
+    await activateExtension();
+  });
+
   // Iterates over all test case groups (see `COMPLETION_TESTS` doc and inline comments).
   for (const testGroup of COMPLETION_TESTS) {
     suite(testGroup.source, function () {

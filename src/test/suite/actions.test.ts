@@ -1,7 +1,15 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 
-import { applyTestEdits, getDocumentUri, openDocument, removeWhitespace, setDocumentContent, toRange } from './utils';
+import {
+  activateExtension,
+  applyTestEdits,
+  getDocumentUri,
+  openDocument,
+  removeWhitespace,
+  setDocumentContent,
+  toRange,
+} from './utils';
 import { TestGroup, TestResult } from './types';
 
 // Describes a collection of actions tests to run against
@@ -87,7 +95,7 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: 'default|payable|selector=$1 <- #[ink(message)]',
+        name: 'default|payable|selector=${1:1} <- #[ink(message)]',
         params: { startPos: [73, 8] },
         results: [
           { text: ', default', startPos: [73, 21], endPos: [73, 21] },
@@ -195,6 +203,11 @@ const ACTION_TESTS: Array<TestGroup> = [
 ];
 
 suite('Code Actions', () => {
+  suiteSetup(async function () {
+    // Activates the extension.
+    await activateExtension();
+  });
+
   // Iterates over all test case groups (see `ACTION_TESTS` doc and inline comments).
   for (const testGroup of ACTION_TESTS) {
     suite(testGroup.source, function () {
