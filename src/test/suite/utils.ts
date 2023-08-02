@@ -2,15 +2,18 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { TestEdit } from './types';
 
+// Opens a document and returns a `TextEditor` for manipulating it.
 export async function openDocument(docUri: vscode.Uri) /*: Promise<vscode.TextEditor>*/ {
   const doc = await vscode.workspace.openTextDocument(docUri);
   return vscode.window.showTextDocument(doc);
 }
 
-export const getDocumentUri = (relativePath: string) => {
+// Returns the Uri for an ink! smart contract in the `test-fixtures` directory, given its relative path.
+export function getDocumentUri(relativePath: string) {
   return vscode.Uri.file(path.resolve(__dirname, '../../../test-fixtures', relativePath));
-};
+}
 
+// Replaces the contents of a document.
 export async function setDocumentContent(editor: vscode.TextEditor, content: string): Promise<boolean> {
   const range = new vscode.Range(
     editor.document.positionAt(0),
@@ -19,6 +22,7 @@ export async function setDocumentContent(editor: vscode.TextEditor, content: str
   return editor.edit((build) => build.replace(range, content));
 }
 
+// Applies a list of `TestEdit`s to a document given its editor.
 export async function applyTestEdits(editor: vscode.TextEditor, edits: Array<TestEdit>) {
   for (const edit of edits) {
     await editor.edit((builder) => {
@@ -38,6 +42,7 @@ export async function applyTestEdits(editor: vscode.TextEditor, edits: Array<Tes
   }
 }
 
+// Removes whitespace from a string (e.g. to simplify text comparisons by ignoring whitespace formatting).
 export function removeWhitespace(text: string) {
   return text
     .split('')
