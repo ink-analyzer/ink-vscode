@@ -82,7 +82,7 @@
     "watch": "yarn build-base --sourcemap --watch",
     "build-publish": "yarn build-base --minify",
     "setup": "node setup.js",
-    "pretest": "yarn build && yarn lint",
+    "pretest": "yarn build && tsc",
     "lint": "eslint src --ext ts ./src --ext js",
     "format": "prettier --write . && eslint --ext ts ./src  --ext js --fix",
     "test": "node ./out/test/runTest.js"
