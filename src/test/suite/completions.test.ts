@@ -105,20 +105,20 @@ const COMPLETION_TESTS: Array<TestGroup> = [
       },
       {
         name: 'extension=|handle_status=',
-        edits: [{ text: '#[ink(', startPos: [16, 4], endPos: [16, 30] }],
+        edits: [{ text: '#[ink()]', startPos: [16, 4], endPos: [16, 30] }],
         params: { startPos: [16, 10] },
         results: [{ text: 'extension=' }, { text: 'handle_status=' }],
       },
       {
         name: 'handle_status=',
-        edits: [{ text: '#[ink(extension = 0x3d26,', startPos: [16, 4], endPos: [16, 30] }],
+        edits: [{ text: '#[ink(extension = 0x3d26,)]', startPos: [16, 4], endPos: [16, 30] }],
         params: { startPos: [16, 29] },
         results: [{ text: 'handle_status=' }],
       },
     ],
   },
   {
-    source: 'non_packed_tuple_struct',
+    source: 'non-packed-tuple-struct',
     testCases: [
       {
         name: 'ink::storage_item',
@@ -164,7 +164,7 @@ suite('Completions', () => {
             await applyTestEdits(editor, testCase.edits);
           }
 
-          // Sets the cursor position.
+          // Sets the position.
           const position = new vscode.Position(
             testCase.params?.startPos[0] as number,
             testCase.params?.startPos[1] as number,

@@ -124,7 +124,7 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
           { text: '', startPos: [39, 8], endPos: [39, 23] },
         ],
         // 1 trait level "missing message(s)", 2 method level "not a message" errors,
-        // however the method level errors are silenced by VS Code since the first one covers their range.
+        // however the 2 method level errors are silenced by VS Code since the trait level one covers their range.
         results: 1,
       },
     ],
@@ -154,7 +154,7 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
     ],
   },
   {
-    source: 'non_packed_tuple_struct',
+    source: 'non-packed-tuple-struct',
     testCases: [
       {
         name: 'well defined storage item',
