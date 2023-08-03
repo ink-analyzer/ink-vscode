@@ -132,7 +132,7 @@ function verifyBinary(serverPath) {
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
     return result.toString().includes('ink-lsp-server');
   } catch (e) {
-    log('Binary verification failed.');
+    log(chalk.red('Error:') + ' Binary verification failed:\n', (e.stderr && e.stderr.toString()) || e);
   }
   return false;
 }
@@ -151,7 +151,7 @@ function fixBinaryPermissions(serverPath) {
     // The binary should be able to pass verification after the above command.
     return verifyBinary(serverPath);
   } catch (e) {
-    log('Failed to fix binary permissions.');
+    log(chalk.red('Error:') + ' Failed to fix binary permissions:\n', (e.stderr && e.stderr.toString()) || e);
   }
   return false;
 }
