@@ -26,5 +26,10 @@ jobs:
       - name: Run lints
         run: yarn lint
 
-      - name: Run tests
+      - name: Run tests (Windows and macOS)
+        if: inputs.os != 'ubuntu-latest'
         run: yarn test
+
+      - name: Run tests (Linux)
+        if: inputs.os == 'ubuntu-latest'
+        run: xvfb-run -a yarn test
