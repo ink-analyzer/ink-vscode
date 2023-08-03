@@ -190,8 +190,12 @@ function fixBinaryPermissions(serverPath) {
 }
 
 // Downloads, decompresses and configures an ink-lsp-server for the target platform.
-async function setupBinaryForTarget(target) {
-  log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
+async function setupBinaryForTarget(target, retryCount = 0) {
+  if (retryCount) {
+    log(`📡 Download retry #${retryCount}: ink-lsp-server binary for ${target} ...`);
+  } else {
+    log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
+  }
 
   // Cleans server directory.
   fs.rmSync(path.resolve('./server'), { force: true, recursive: true });
@@ -203,7 +207,17 @@ async function setupBinaryForTarget(target) {
   const asset = await getLatestBinaryDownloadUrl(target);
   const archivePath = path.resolve(`./server/${asset.name}`);
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
-  await downloadAsset(asset.browser_download_url, archivePath);
+  try {
+    await downloadAsset(asset.browser_download_url, archivePath);
+  } catch (e) {
+    // Retries download binary setup process 10 times before giving up.
+    const numTries = (retryCount || 0) + 1;
+    if (numTries >= 10) {
+      throw e;
+    } else {
+      return setupBinaryForTarget(target, numTries);
+    }
+  }
 
   // Unpack and rename assets.
   switch (asset.content_type) {

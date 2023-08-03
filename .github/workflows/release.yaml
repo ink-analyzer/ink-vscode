@@ -75,13 +75,13 @@ jobs:
           npm_config_arch: ${{ matrix.npm-config-arch }}
           INK_ANALYZER_ARCH: ${{ matrix.npm-config-arch }}
           INK_ANALYZER_SKIP_VERIFY: true
-        run: npx vsce package --yarn -o dist/ink-analyzer-${{ matrix.vsce-target }}.vsix --target ${{ matrix.vsce-target }}
+        run: npx vsce package --yarn -o ink-analyzer-${{ matrix.vsce-target }}.vsix --target ${{ matrix.vsce-target }}
 
       - name: Upload packages
         uses: actions/upload-artifact@v3
         with:
           name: ink-analyzer-${{ matrix.vsce-target }}.vsix
-          path: dist/ink-analyzer-${{ matrix.vsce-target }}.vsix
+          path: ink-analyzer-${{ matrix.vsce-target }}.vsix
 
   release:
     runs-on: ubuntu-latest
