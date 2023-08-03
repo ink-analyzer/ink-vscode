@@ -128,7 +128,7 @@ function exitWithError(message) {
 function verifyBinary(serverPath) {
   log('⌛ Verifying binary/executable at: ', serverPath);
   try {
-    const result = execSync(`${path.resolve(serverPath)} -V`, { timeout: 100 });
+    const result = execSync(`${path.resolve(serverPath)} -V`, { timeout: 10000 });
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
     return result.toString().includes('ink-lsp-server');
   } catch (e) {

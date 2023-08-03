@@ -6,8 +6,12 @@ import { EXTENSION_ID } from '../../constants';
 
 // Activates the extension.
 export async function activateExtension() {
+  // Activate extension.
   const ext = vscode.extensions.getExtension(`${EXTENSION_ID}.${EXTENSION_ID}`);
-  return ext?.activate();
+  await ext?.activate();
+
+  // Wait for language server activation.
+  await sleep(2000);
 }
 
 // Opens a document and returns a `TextEditor` for manipulating it.
