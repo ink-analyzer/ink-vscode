@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "private": true,
   "publisher": "ink-analyzer",
+  "icon": "icon.png",
   "homepage": "https://github.com/ink-analyzer",
   "repository": {
     "url": "https://github.com/ink-analyzer/ink-analyzer.git",
