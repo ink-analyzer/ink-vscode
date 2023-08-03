@@ -277,17 +277,18 @@ async function setupBinaryForTarget(target, retryCount = 0) {
 
 // Returns (if any) the download URL for the latest ink-lsp-server binary for this platform/target.
 async function getLatestBinaryDownloadUrl(target) {
-  const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest');
-  if (res) {
-    try {
+  try {
+    const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest');
+    if (res) {
       const data = await res.json();
       if (data.assets) {
         return data.assets.find((item) => item.name.toLowerCase().includes(target.toLowerCase()));
       }
-    } catch (e) {
-      throw e;
     }
+  } catch (e) {
+    throw e;
   }
+
   throw new Error('Failed to get latest binary download url');
 }
 
