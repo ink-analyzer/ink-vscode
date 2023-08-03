@@ -24,6 +24,17 @@ const BINARY_INSTALL_INSTRUCTIONS =
   chalk.blue.underline('https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation');
 
 (async () => {
+  if (process.env.INK_ANALYZER_SKIP_SETUP) {
+    // Allows skipping of language server setting when publishing pre-packaged extensions.
+    log(
+      chalk.yellow('⚠️ Warning:') +
+        ' Skipping ink-lsp-server binary setup and verification because the ' +
+        chalk.yellow('`INK_ANALYZER_SKIP_SETUP`') +
+        ' environment variable is set.',
+    );
+    process.exit(0);
+  }
+
   log('🔎 Searching for ink-lsp-server binary ...');
   const target = getBinaryTarget();
 
@@ -87,7 +98,19 @@ function getBinaryTarget() {
 
   // Ref: https://nodejs.org/api/process.html#processarch
   let arch;
-  switch (process.arch) {
+  // Allows cross compilation by setting the `INK_ANALYZER_ARCH` environment variable to the target architecture.
+  const processArch = process.env.INK_ANALYZER_ARCH || process.arch;
+  if (process.env.INK_ANALYZER_ARCH) {
+    log(
+      chalk.yellow('⚠️ Warning:') +
+        ' Manually setting the architecture to ' +
+        chalk.yellow(`"${processArch}"`) +
+        ' because the ' +
+        chalk.yellow('`INK_ANALYZER_ARCH`') +
+        ' environment variable is set.',
+    );
+  }
+  switch (processArch) {
     case 'x64': {
       arch = 'x86_64';
       break;
@@ -127,6 +150,16 @@ function exitWithError(message) {
 // Verifies that the binary is executable on this platform.
 function verifyBinary(serverPath) {
   log('⌛ Verifying binary/executable at: ', serverPath);
+  // Skips verification during cross-compilation.
+  if (process.env.INK_ANALYZER_ARCH || process.env.INK_ANALYZER_SKIP_VERIFY) {
+    log(
+      chalk.yellow('⚠️ Warning:') +
+        ' Skipping ink-lsp-server binary verification because the ' +
+        chalk.yellow(process.env.INK_ANALYZER_ARCH ? '`INK_ANALYZER_ARCH`' : '`INK_ANALYZER_SKIP_VERIFY`') +
+        ' environment variable is set.',
+    );
+    return true;
+  }
   try {
     const result = execSync(`${path.resolve(serverPath)} -V`, { timeout: 500 });
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
