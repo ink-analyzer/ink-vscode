@@ -11,7 +11,7 @@ export async function activateExtension() {
   await ext?.activate();
 
   // Wait for language server activation.
-  await sleep(2000);
+  await sleep(500);
 }
 
 // Opens a document and returns a `TextEditor` for manipulating it.
