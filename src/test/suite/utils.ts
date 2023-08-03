@@ -15,7 +15,7 @@ export async function activateExtension() {
 }
 
 // Opens a document and returns a `TextEditor` for manipulating it.
-export async function openDocument(docUri: vscode.Uri) /*: Promise<vscode.TextEditor>*/ {
+export async function openDocument(docUri: vscode.Uri) {
   const doc = await vscode.workspace.openTextDocument(docUri);
   return vscode.window.showTextDocument(doc);
 }
