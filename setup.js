@@ -283,6 +283,8 @@ async function getLatestBinaryDownloadUrl(target) {
       const data = await res.json();
       if (data.assets) {
         return data.assets.find((item) => item.name.toLowerCase().includes(target.toLowerCase()));
+      } else {
+        return Promise.reject(new Error(`Bad response for ink-lsp-binary assets: ${await res.text()}`));
       }
     }
   } catch (e) {
