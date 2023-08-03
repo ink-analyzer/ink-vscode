@@ -30,19 +30,11 @@ export default class ExtensionManager {
   }
 
   private updateState(status: ServerStatus, message?: string) {
-    const isRustAnalyzerEnabled = utils.isRustAnalyzerEnabled();
-    let statusMessage = message;
-    let serverStatus = status;
-    if (!isRustAnalyzerEnabled && status === 'started') {
-      serverStatus = 'warning';
-      statusMessage =
-        'Enable the [rust-analyzer](vscode:extension/rust-lang.rust-analyzer) extension for a better experience.';
-    }
     this.state = {
       ...this.state,
-      server: serverStatus,
-      message: statusMessage,
-      rustAnalyzer: isRustAnalyzerEnabled,
+      server: status,
+      message,
+      rustAnalyzer: utils.isRustAnalyzerEnabled(),
     };
     this.updateUI();
   }
