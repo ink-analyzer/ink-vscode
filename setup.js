@@ -212,6 +212,8 @@ async function setupBinaryForTarget(target, retryCount = 0) {
     archivePath = path.resolve(`./server/${asset.name}`);
     await downloadAsset(asset.browser_download_url, archivePath);
   } catch (e) {
+    log(chalk.red('Error:') + ' Binary download failed:\n', e);
+
     // Retries download binary setup process at least 10 times before giving up.
     const numTries = (retryCount || 0) + 1;
     if (numTries > 10) {
