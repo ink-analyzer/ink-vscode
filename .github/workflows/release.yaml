@@ -75,6 +75,8 @@ jobs:
           npm_config_arch: ${{ matrix.npm-config-arch }}
           INK_ANALYZER_ARCH: ${{ matrix.npm-config-arch }}
           INK_ANALYZER_SKIP_VERIFY: true
+          # Used by the setup script, otherwise we sometimes get hit by rate limits when determining the latest release from the GitHub API.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx vsce package --yarn -o ink-analyzer-${{ matrix.vsce-target }}.vsix --target ${{ matrix.vsce-target }}
 
       - name: Upload packages

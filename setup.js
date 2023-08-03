@@ -278,7 +278,15 @@ async function setupBinaryForTarget(target, retryCount = 0) {
 // Returns (if any) the download URL for the latest ink-lsp-server binary for this platform/target.
 async function getLatestBinaryDownloadUrl(target) {
   try {
-    const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest');
+    // Ref: https://docs.github.com/en/free-pro-team@latest/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
+    let headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'ink! Analyzer' };
+    // CLI runners sometimes hit rate limits due to shared IPs, so we use the GitHub token when available in that context.
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+    const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest', {
+      headers,
+    });
     if (res) {
       const data = await res.json();
       if (data.assets) {
