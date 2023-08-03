@@ -40,7 +40,7 @@
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
       "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "Pretest",
+      "preLaunchTask": "Compile Extension Tests",
       "internalConsoleOptions": "openOnSessionStart"
     }
   ]

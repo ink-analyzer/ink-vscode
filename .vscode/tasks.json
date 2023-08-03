@@ -27,9 +27,9 @@
       "group": "build"
     },
     {
-      "label": "Pretest",
+      "label": "Compile Extension Tests",
       "type": "npm",
-      "script": "pretest",
+      "script": "test-base",
       "problemMatcher": "$tsc",
       "isBackground": false,
       "presentation": {

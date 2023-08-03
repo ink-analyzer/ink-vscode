@@ -82,10 +82,10 @@
     "watch": "yarn build-base --sourcemap --watch",
     "build-publish": "yarn build-base --minify",
     "setup": "node setup.js",
-    "pretest": "yarn build && tsc",
+    "test-base": "yarn build && tsc",
     "lint": "eslint src --ext ts ./src --ext js",
     "format": "prettier --write . && eslint --ext ts ./src  --ext js --fix",
-    "test": "node ./out/test/runTest.js"
+    "test": "yarn test-base && node ./out/test/runTest.js"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
