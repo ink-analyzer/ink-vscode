@@ -1,11 +1,9 @@
 [workspace]
 
 members = [
-  "custom-environment",
   "erc20",
   "flipper",
-  "mother",
-  "multisig",
+  "non-packed-tuple-struct",
   "psp22-extension",
   "trait-flipper"
 ]
