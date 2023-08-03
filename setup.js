@@ -279,9 +279,16 @@ async function setupBinaryForTarget(target, retryCount = 0) {
 async function getLatestBinaryDownloadUrl(target) {
   const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest');
   if (res) {
-    const data = await res.json();
-    return data.assets.find((item) => item.name.toLowerCase().includes(target.toLowerCase()));
+    try {
+      const data = await res.json();
+      if (data.assets) {
+        return data.assets.find((item) => item.name.toLowerCase().includes(target.toLowerCase()));
+      }
+    } catch (e) {
+      throw e;
+    }
   }
+  throw new Error('Failed to get latest binary download url');
 }
 
 // Downloads an asset to a destination path.
