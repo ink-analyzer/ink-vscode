@@ -204,15 +204,17 @@ async function setupBinaryForTarget(target, retryCount = 0) {
   } catch (e) {}
 
   // Downloads the latest release of ink-lsp-server binary for the target platform.
-  const asset = await getLatestBinaryDownloadUrl(target);
-  const archivePath = path.resolve(`./server/${asset.name}`);
+  let asset;
+  let archivePath;
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   try {
+    asset = await getLatestBinaryDownloadUrl(target);
+    archivePath = path.resolve(`./server/${asset.name}`);
     await downloadAsset(asset.browser_download_url, archivePath);
   } catch (e) {
-    // Retries download binary setup process 10 times before giving up.
+    // Retries download binary setup process at least 10 times before giving up.
     const numTries = (retryCount || 0) + 1;
-    if (numTries >= 10) {
+    if (numTries > 10) {
       throw e;
     } else {
       return setupBinaryForTarget(target, numTries);
