@@ -26,10 +26,17 @@ jobs:
       - name: Run lints
         run: yarn lint
 
+      # Auto-downloads the platform specific language server (see https://github.com/ink-analyzer/ink-vscode/blob/master/setup.js).
       - name: Run tests (Windows and macOS)
         if: inputs.os != 'ubuntu-latest'
+        env:
+          # Used by the setup script,
+          # otherwise we sometimes get hit by rate limits when determining the latest release from the GitHub API.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: yarn test
 
       - name: Run tests (Linux)
         if: inputs.os == 'ubuntu-latest'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: xvfb-run -a yarn test
