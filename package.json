@@ -8,11 +8,11 @@
   "icon": "icon.png",
   "homepage": "https://github.com/ink-analyzer",
   "repository": {
-    "url": "https://github.com/ink-analyzer/ink-analyzer.git",
+    "url": "https://github.com/ink-analyzer/ink-vscode.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/ink-analyzer/ink-analyzer/issues"
+    "url": "https://github.com/ink-analyzer/ink-vscode/issues"
   },
   "license": "GPL-3.0",
   "engines": {
