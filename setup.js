@@ -292,7 +292,13 @@ async function getLatestBinaryDownloadUrl(target) {
       if (data.assets) {
         return data.assets.find((item) => item.name.toLowerCase().includes(target.toLowerCase()));
       } else {
-        return Promise.reject(new Error(`Bad response for ink-lsp-binary assets: ${JSON.stringify(data)}`));
+        return Promise.reject(
+          new Error(
+            `Bad response for ink-lsp-binary assets: ${JSON.stringify(data)} | header keys: ${JSON.stringify(
+              Object.keys(headers),
+            )}`,
+          ),
+        );
       }
     }
   } catch (e) {
