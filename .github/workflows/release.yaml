@@ -152,3 +152,10 @@ jobs:
           npm_config_arch: ${{ matrix.npm-config-arch }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release create ${{ github.ref_name }} --title ${{ github.ref_name }} --notes '${{ steps.extract-release-notes.outputs.release_notes }}' dist/*
+
+      # Publish packages.
+      - name: Publish all packages to Visual Studio Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          INK_ANALYZER_SKIP_SETUP: true
+        run: npx vsce publish --yarn --packagePath $(find ./dist -iname ink-analyzer-*.vsix)
