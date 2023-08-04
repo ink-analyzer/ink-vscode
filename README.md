@@ -11,6 +11,26 @@
 - code/intent actions - contextual assists for adding relevant ink! attribute macros and arguments to relevant items.
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
 
+## Screenshots
+
+### Completions
+
+![constructor completions](/images/screenshots/completion.png 'constructor completions')
+
+### Code Actions
+
+![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
+
+![message `fn` code action](/images/screenshots/code-action-2.png 'message `fn` code action')
+
+![`impl` code action](/images/screenshots/code-action-3.png '`impl` code action')
+
+### Diagnostics and Hover content
+
+![`anonymous` diagnostic and hover content](/images/screenshots/diagnostics.png '`anonymous` diagnostic and hover content')
+
+![`storage` hover content](/images/screenshots/hover.png '`storage` hover content')
+
 ## Recommendations
 
 [ink!](https://use.ink/) is built on top of [Rust](https://www.rust-lang.org/), so you'll have a much better experience with both [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer) and ink! analyzer enabled.
@@ -19,8 +39,8 @@
 
 This extension provides the following settings:
 
-- `ink-analyzer.server.path`: Sets the path to ink! Language Server (ink-lsp-server) binary/executable (points to bundled binary/executable by default).
-- `ink-analyzer.trace.server`: Enables/disables tracing of the communication between VS Code and the ink! Language Server (not recommended for regular users).
+- `ink-analyzer.server.path`: **(Optional)** Sets the path to ink! Language Server (ink-lsp-server) binary/executable (points to the bundled binary/executable that ships with the extension by default).
+- `ink-analyzer.trace.server`: **(Optional)** Enables/disables tracing of the communication between VS Code and the ink! Language Server (not recommended for regular users).
 
 ## Development and Testing
 
