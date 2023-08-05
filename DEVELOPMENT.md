@@ -33,7 +33,7 @@ When using a Dev Container, you can either:
 
 ##### 2. Opening a terminal
 
-When using a Dev Container, you can [open a terminal attached to the container inside VS Code](https://code.visualstudio.com/docs/devcontainers/containers#_opening-a-terminal)
+When using a Dev Container, you can [open a terminal attached to the container inside VS Code](https://code.visualstudio.com/docs/devcontainers/containers#_opening-a-terminal).
 
 ## Development
 
@@ -57,7 +57,7 @@ yarn install
     - Selecting `Start Debugging > Run Extension (alongside Rust Analyzer)` or `Start Debugging > Run Extension (without Rust Analyzer)` from the ["Command Palette"](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette).
     - Selecting `Run > Start Debugging` from the [application menu](https://code.visualstudio.com/docs/editor/debugging#_run-menu) to run the last run (or default) Debug configuration.
 
-**NOTE:** Extension source code is found in the [`src/`](/src) directory and [src/extension.ts](/src/extension.ts) is the entrypoint.
+**NOTE:** Extension source code is found in the [`src/`](/src) directory and [`src/extension.ts`](/src/extension.ts) is the entrypoint.
 
 ## Testing
 

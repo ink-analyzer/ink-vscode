@@ -17,6 +17,16 @@
 
 ![constructor completions](/images/screenshots/completion.png 'constructor completions')
 
+![contract completions](/images/screenshots/completion-2.png 'contract completions')
+
+![extension completions](/images/screenshots/completion-3.png 'extension completions')
+
+![trait definition completions](/images/screenshots/completion-4.png 'trait definition completions')
+
+![storage item completions](/images/screenshots/completion-5.png 'storage item completions')
+
+![event completions](/images/screenshots/completion-6.png 'event completions')
+
 ### Code Actions
 
 ![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
@@ -25,11 +35,27 @@
 
 ![`impl` code action](/images/screenshots/code-action-3.png '`impl` code action')
 
+![extension `fn` code action](/images/screenshots/code-action-4.png 'extension `fn` code action')
+
+![trait definition `trait` code action](/images/screenshots/code-action-5.png 'trait definition `trait` code action')
+
+![storage item `struct` code action](/images/screenshots/code-action-6.png 'storage item `struct` code action')
+
 ### Diagnostics and Hover content
 
-![`anonymous` diagnostic and hover content](/images/screenshots/diagnostics.png '`anonymous` diagnostic and hover content')
+![constructor `&self` diagnostic](/images/screenshots/diagnostic.png 'constructor `&self` diagnostic')
+
+![chain extension `ErrorCode` type diagnostic](/images/screenshots/diagnostic-2.png 'chain extension `ErrorCode` type diagnostic')
+
+![`anonymous` diagnostic and hover content](/images/screenshots/diagnostic-hover.png '`anonymous` diagnostic and hover content')
+
+![message self reference diagnostic and hover content](/images/screenshots/diagnostic-hover-2.png 'message self reference diagnostic and hover content')
+
+![constructor return type diagnostic and hover content](/images/screenshots/diagnostic-hover-3.png 'constructor return type diagnostic and hover content')
 
 ![`storage` hover content](/images/screenshots/hover.png '`storage` hover content')
+
+![`env` hover content](/images/screenshots/hover-2.png '`env` hover content')
 
 ## Recommendations
 
