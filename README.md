@@ -15,7 +15,7 @@
 
 ### Completions
 
-![constructor completions](/images/screenshots/completion.png 'constructor completions')
+![message completions](/images/screenshots/completion.png 'message completions')
 
 ![contract completions](/images/screenshots/completion-2.png 'contract completions')
 
