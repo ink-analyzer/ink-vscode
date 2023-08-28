@@ -34,8 +34,6 @@ export async function provideCodeActions(
         }
 
         const workspaceEdit = new vscode.WorkspaceEdit();
-        // Retrieves snippet text (if any) from the data field.
-        const snippetText: string = (item.data as { snippet: string })?.snippet ?? '';
         // WorkspaceEdit.size doesn't seem count snippet edits for some reason, so we keep track of inserted edits ourselves.
         let hasEdits = false;
         // Iterates through all code action edits.
@@ -44,6 +42,8 @@ export async function provideCodeActions(
           const snippetEdits: (vscode.TextEdit | vscode.SnippetTextEdit)[] = [];
           // Parses all snippet edits or fallbacks to a normal text edit.
           for (const edit of edits) {
+            // Retrieves snippet text (if any) from the data field.
+            const snippetText = item.data?.snippets?.[edit.newText] ?? ( item.data?.snippet ?? '' );
             const parsedSnippet = utils.parseSnippet(snippetText);
             if (parsedSnippet) {
               // Create snippet edit.
