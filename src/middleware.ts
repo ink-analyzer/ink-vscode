@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as lsp_types from 'vscode-languageclient/node';
-import * as utils from './utils';
+import { parseSnippet } from './snippets';
 
 // Code Actions middleware that adds support for snippets (tab stops and/or placeholders) in text edits returned by code actions.
 // LSP (v3.17) only supports snippets in completions.
@@ -34,7 +34,7 @@ export async function provideCodeActions(
         }
 
         const workspaceEdit = new vscode.WorkspaceEdit();
-        // WorkspaceEdit.size doesn't seem count snippet edits for some reason, so we keep track of inserted edits ourselves.
+        // WorkspaceEdit.size doesn't count snippet edits for some reason, so we keep track of inserted edits ourselves.
         let hasEdits = false;
         // Iterates through all code action edits.
         for (const [id, edits] of Object.entries(item.edit?.changes ?? {})) {
@@ -43,8 +43,8 @@ export async function provideCodeActions(
           // Parses all snippet edits or fallbacks to a normal text edit.
           for (const edit of edits) {
             // Retrieves snippet text (if any) from the data field.
-            const snippetText = item.data?.snippets?.[edit.newText] ?? ( item.data?.snippet ?? '' );
-            const parsedSnippet = utils.parseSnippet(snippetText);
+            const snippetText = item.data?.snippets?.[edit.newText] ?? item.data?.snippet ?? '';
+            const parsedSnippet = snippetText ? parseSnippet(snippetText) : undefined;
             if (parsedSnippet) {
               // Create snippet edit.
               snippetEdits.push(

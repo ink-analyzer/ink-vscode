@@ -80,7 +80,7 @@ export default class ExtensionManager {
       }
 
       if (!serverPath) {
-        // Shows error message for if server binary is missing.
+        // Shows error message if server binary is missing.
         const message =
           'No ink! Language Server binary found.\n\n' +
           'Please follow [these instructions](https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation) to install the ink! Language Server.\n\n' +
