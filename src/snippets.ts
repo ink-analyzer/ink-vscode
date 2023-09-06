@@ -33,12 +33,12 @@ export type SnippetTokenType = 'text' | 'tabStop' | 'placeholder';
 // Tokenizes snippet text (if any) into a sequence of tokens of specific types (i.e. `text`, `tabStop` or `placeholder`)
 // if and only if it has at least one tab stop or placeholder.
 // Ref: https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax
-export function tokenizeSnippet(snippet: string): SnippetToken[] {
+export function tokenize(snippet: string): SnippetToken[] {
   let snippetTokens: SnippetToken[] = [];
   if (snippet !== '') {
     // Finds a single tab stop or placeholder.
     // NOTE: We recurse on the suffix to make the tokenization exhaustive.
-    const matches = snippet?.match(
+    const matches = snippet.match(
       /(?<prefix>[^$]*)\$(?:(?<tabstop>[0-9]+)|({(?<tabstop_alt>[0-9]+):(?<placeholder>[^}]+)}))(?<suffix>[\s\S]*)/m,
     );
     const parsedSnippet = matches?.groups;
@@ -58,7 +58,7 @@ export function tokenizeSnippet(snippet: string): SnippetToken[] {
         }
         if (parsedSnippet.suffix) {
           // Recurse on the suffix to find more tab stops and/or placeholders.
-          const suffixSnippets = tokenizeSnippet(parsedSnippet.suffix);
+          const suffixSnippets = tokenize(parsedSnippet.suffix);
           if (suffixSnippets.length) {
             snippetTokens = snippetTokens.concat(suffixSnippets);
           } else {
@@ -75,11 +75,21 @@ export function tokenizeSnippet(snippet: string): SnippetToken[] {
 
 // Parses snippet text (if any) into a `vscode.SnippetString` if and only if it has at least one tab stop or placeholder.
 // Ref: https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax
-export function parseSnippet(snippet: string): vscode.SnippetString | undefined {
-  const tokens = tokenizeSnippet(snippet);
+export function parse(text: string, indentingConfig?: IndentingConfig): vscode.SnippetString | undefined {
+  const tokens = tokenize(text);
   if (tokens.length) {
-    // Composes `vscode.SnippetString` from the parsed
+    // Composes `vscode.SnippetString` from the parsed.
     const snippet = new vscode.SnippetString();
+
+    // Parse indenting based on config.
+    let indent = undefined;
+    let reducedIndent = undefined;
+    if (indentingConfig?.reduce || indentingConfig?.removeAll) {
+      const matches = text.match(/^\n*(?<indent>[^\S\r\n]+)/m);
+      indent = matches?.groups?.indent;
+      reducedIndent = indentingConfig?.removeAll ? '' : indent ? indent.replace(/^\s{4}|\t/, '') : '';
+    }
+
     for (const token of tokens) {
       switch (token.type) {
         case 'tabStop': {
@@ -91,13 +101,13 @@ export function parseSnippet(snippet: string): vscode.SnippetString | undefined 
           break;
         }
         default: {
-          // Hack: VSCode auto inserts extra spaces/indenting after every new line for snippet edits (this behaviour can't be disabled).
-          // So we reduce indenting (i.e. tabs and spaces) by one level for all new lines and let VSCode handle the formatting/indenting.
-          // Ref: https://github.com/microsoft/vscode/issues/145374#issuecomment-1255322331
-          // Ref: https://github.com/microsoft/vscode/issues/145374#issuecomment-1258274787
-          // Ref: https://github.com/microsoft/language-server-protocol/issues/724#issuecomment-631558796
-          // Ref: https://github.com/ink-analyzer/ink-analyzer/blob/analyzer-v0.7.1/crates/analyzer/src/analysis/utils.rs#L457-L471
-          snippet.appendText((token.text ?? '').replace(/\n([^\S\r\n\t]{4}|[^\S\r\n ])/g, '\n'));
+          let text = token.text ?? '';
+          if (text && (indentingConfig?.reduce || indentingConfig?.removeAll) && indent) {
+            // This is a hack to play nicely with VS Code whitespace "normalization" for snippet edits.
+            // See doc for `createIndentingConfig` function below for details, rationale and references.
+            text = text.replace(new RegExp(`\n${indent}`, 'g'), `\n${reducedIndent ?? ''}`);
+          }
+          snippet.appendText(text);
           break;
         }
       }
@@ -107,4 +117,49 @@ export function parseSnippet(snippet: string): vscode.SnippetString | undefined 
   }
 
   return undefined;
+}
+
+// Indenting config used by snippet parser.
+type IndentingConfig = {
+  // Reduce indenting by one-level.
+  reduce: boolean;
+  // Remove all top-level indenting.
+  removeAll: boolean;
+  // The character before the "insert" position.
+  prevCharacter?: string;
+};
+
+// Determines whether, indenting/formatting for snippets needs to be "de-normalized" based on the snippet, text document and an insert position.
+// "De-normalizing" of indenting/formatting is necessary because VS Code "normalizes" whitespace/indenting for snippet edits
+// by auto inserting extra whitespace/indenting after new lines (this behaviour can't be disabled).
+// So we remove either top-level or one level of indenting (i.e. tabs and spaces after new lines) on all lines,
+// and let VSCode handle the indenting/formatting.
+// Ref: https://github.com/microsoft/vscode/issues/145374#issuecomment-1255322331
+// Ref: https://github.com/microsoft/vscode/issues/145374#issuecomment-1258274787
+// Ref: https://github.com/microsoft/language-server-protocol/issues/724#issuecomment-631558796
+export function createIndentingConfig(
+  snippet: string,
+  document: vscode.TextDocument,
+  position: vscode.Position,
+): IndentingConfig {
+  if (position.character === 0) {
+    return {
+      reduce: false,
+      removeAll: false,
+      prevCharacter: position.line === 0 ? undefined : '\n',
+    };
+  }
+
+  // Only suggest "de-normalization" (i.e reducing indenting) if we're inserting after whitespace, a block (i.e. `}`) or a statement (i.e `;`),
+  // or at the beginning a block (i.e. after `{`) but only when the indenting is more than 1 level (i.e. more than 5 spaces or multiple tabs).
+  // (VS Code doesn't seem to "normalize" whitespace except in the above cases).
+  const prevCharacter = document.getText(new vscode.Range(position.translate(0, -1), position));
+  const isAfterWhitespaceBlockOrStatement = /\s|}|;/.test(prevCharacter);
+  const isAtBeginningOfBlock = prevCharacter === '{';
+  const isMoreThanOneLevelIndented = /^\n*([^\S\r\n\t]{5,}|[^\S\r\n ]{2,})/g.test(snippet);
+  return {
+    reduce: isAfterWhitespaceBlockOrStatement || (isAtBeginningOfBlock && isMoreThanOneLevelIndented),
+    removeAll: isAfterWhitespaceBlockOrStatement,
+    prevCharacter: prevCharacter,
+  };
 }
