@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2023-09-07
+
+- Add quickfixes for diagnostic errors and warnings.
+- Add support for ink! e2e macro (i.e. diagnostics, completions, code/intent actions and hover content).
+- Add inlay hints for ink! attribute arguments with values.
+- Add support for multiple snippets in code actions.
+- Limit diagnostic ranges to item "declarations".
+- General robustness improvements for semantic analyzer.
+
 ## [0.1.3] - 2023-08-05
 
 - Documentation improvements.
