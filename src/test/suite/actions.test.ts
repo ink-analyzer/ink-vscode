@@ -21,13 +21,13 @@ const ACTION_TESTS: Array<TestGroup> = [
     // Defines test cases for the ink! entity file.
     testCases: [
       {
-        name: '(env=$1|keep_attr="$1") <- #[ink::contract]',
+        name: '(env=${1:crate::}|keep_attr="$1") <- #[ink::contract]',
         // Makes no modifications.
         // Sets the selection range at the beginning of `#[ink::contract]`.
         params: { startPos: [2, 0], endPos: [2, 0] },
         // Describes the expected code actions.
         results: [
-          { text: '(env=$1)', startPos: [2, 15], endPos: [2, 15] },
+          { text: '(env=${1:crate::})', startPos: [2, 15], endPos: [2, 15] },
           { text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] },
         ],
       },
@@ -82,11 +82,12 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '#[ink::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn new(total_supply: Balance)',
+        name: '#[ink::test]|#[ink_e2e::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn new(total_supply: Balance)',
         edits: [{ text: '', startPos: [55, 8], endPos: [55, 27] }],
         params: { startPos: [56, 8] },
         results: [
           { text: '#[ink::test]', startPos: [56, 8], endPos: [56, 8] },
+          { text: '#[ink_e2e::test]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(constructor)]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(default)]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(message)]', startPos: [56, 8], endPos: [56, 8] },
@@ -104,11 +105,12 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '#[ink::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn total_supply(&self)',
+        name: '#[ink::test]|#[ink_e2e::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn total_supply(&self)',
         edits: [{ text: '', startPos: [73, 8], endPos: [73, 23] }],
         params: { startPos: [74, 8] },
         results: [
           { text: '#[ink::test]', startPos: [74, 8], endPos: [74, 8] },
+          { text: '#[ink_e2e::test]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(constructor)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(default)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(message)]', startPos: [74, 8], endPos: [74, 8] },
@@ -168,11 +170,10 @@ const ACTION_TESTS: Array<TestGroup> = [
         results: [{ text: ', handle_status=${1:true}', startPos: [16, 28], endPos: [16, 28] }],
       },
       {
-        name: '#[ink::test]|#[ink(extension=${1:1}|handle_status=${1:true})] <- fn token_name(asset_id: u32)',
+        name: '#[ink(extension=${1:1}|handle_status=${1:true})] <- fn token_name(asset_id: u32)',
         edits: [{ text: '', startPos: [16, 4], endPos: [16, 30] }],
         params: { startPos: [17, 4] },
         results: [
-          { text: '#[ink::test]', startPos: [17, 4], endPos: [17, 4] },
           { text: '#[ink(extension=${1:1})]', startPos: [17, 4], endPos: [17, 4] },
           { text: '#[ink(handle_status=${1:true})]', startPos: [17, 4], endPos: [17, 4] },
         ],
@@ -202,7 +203,7 @@ const ACTION_TESTS: Array<TestGroup> = [
   },
 ];
 
-suite('Code Actions', () => {
+suite('Code Actions', function () {
   suiteSetup(async function () {
     // Activates the extension.
     await activateExtension();
@@ -229,7 +230,7 @@ suite('Code Actions', () => {
 
       // Iterates over all test cases.
       for (const testCase of testGroup.testCases) {
-        test(testCase.name, async () => {
+        test(testCase.name, async function () {
           // Applies test case modifications/edits (if any).
           if (testCase.edits?.length) {
             await applyTestEdits(editor, testCase.edits);

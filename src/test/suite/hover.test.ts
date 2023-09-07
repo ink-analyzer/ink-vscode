@@ -154,7 +154,7 @@ const HOVER_TESTS: Array<TestGroup> = [
   },
 ];
 
-suite('Hover', () => {
+suite('Hover', function () {
   suiteSetup(async function () {
     // Activates the extension.
     await activateExtension();
@@ -181,7 +181,7 @@ suite('Hover', () => {
 
       // Iterates over all test cases.
       for (const testCase of testGroup.testCases) {
-        test(testCase.name, async () => {
+        test(testCase.name, async function () {
           // Applies test case modifications/edits (if any).
           if (testCase.edits?.length) {
             await applyTestEdits(editor, testCase.edits);

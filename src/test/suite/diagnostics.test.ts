@@ -166,7 +166,7 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
   },
 ];
 
-suite('Diagnostics', () => {
+suite('Diagnostics', function () {
   suiteSetup(async function () {
     // Activates the extension.
     await activateExtension();
@@ -193,7 +193,7 @@ suite('Diagnostics', () => {
 
       // Iterates over all test cases.
       for (const testCase of testGroup.testCases) {
-        test(testCase.name, async () => {
+        test(testCase.name, async function () {
           // Applies test case modifications/edits (if any).
           if (testCase.edits?.length) {
             await applyTestEdits(editor, testCase.edits);

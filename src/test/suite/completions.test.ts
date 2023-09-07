@@ -29,10 +29,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'ink::contract' }],
       },
       {
-        name: 'env=|keep_attr=',
+        name: 'env=crate::|keep_attr=""',
         edits: [{ text: '#[ink::contract()]', startPos: [2, 0], endPos: [2, 17] }],
         params: { startPos: [2, 16] },
-        results: [{ text: 'env=' }, { text: 'keep_attr=' }],
+        results: [{ text: 'env=crate::' }, { text: 'keep_attr=""' }],
       },
       {
         name: 'storage',
@@ -53,10 +53,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'constructor' }],
       },
       {
-        name: 'constructor -> default|payable|selector=',
+        name: 'constructor -> default|payable|selector=1',
         edits: [{ text: '#[ink(constructor,)]', startPos: [55, 8], endPos: [55, 27] }],
         params: { startPos: [55, 26] },
-        results: [{ text: 'default' }, { text: 'payable' }, { text: 'selector=' }],
+        results: [{ text: 'default' }, { text: 'payable' }, { text: 'selector=1' }],
       },
       {
         name: 'message',
@@ -65,10 +65,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'message' }],
       },
       {
-        name: 'message -> default|payable|selector=',
+        name: 'message -> default|payable|selector=1',
         edits: [{ text: '#[ink(message,)]', startPos: [73, 8], endPos: [73, 23] }],
         params: { startPos: [73, 22] },
-        results: [{ text: 'default' }, { text: 'payable' }, { text: 'selector=' }],
+        results: [{ text: 'default' }, { text: 'payable' }, { text: 'selector=1' }],
       },
       {
         name: 'test',
@@ -88,10 +88,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'trait_definition' }],
       },
       {
-        name: 'keep_attr=|namespace=',
+        name: 'keep_attr=""|namespace="my_namespace"',
         edits: [{ text: '#[ink::trait_definition()]', startPos: [3, 0], endPos: [73, 24] }],
         params: { startPos: [3, 24] },
-        results: [{ text: 'keep_attr=' }, { text: 'namespace=' }],
+        results: [{ text: 'keep_attr=""' }, { text: 'namespace="my_namespace"' }],
       },
     ],
   },
@@ -111,16 +111,16 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [],
       },
       {
-        name: 'extension=|handle_status=',
+        name: 'extension=1|handle_status=true',
         edits: [{ text: '#[ink()]', startPos: [16, 4], endPos: [16, 30] }],
         params: { startPos: [16, 10] },
-        results: [{ text: 'extension=' }, { text: 'handle_status=' }],
+        results: [{ text: 'extension=1' }, { text: 'handle_status=true' }],
       },
       {
-        name: 'handle_status=',
+        name: 'handle_status=true',
         edits: [{ text: '#[ink(extension = 0x3d26,)]', startPos: [16, 4], endPos: [16, 30] }],
         params: { startPos: [16, 29] },
-        results: [{ text: 'handle_status=' }],
+        results: [{ text: 'handle_status=true' }],
       },
     ],
   },
@@ -134,16 +134,16 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'ink::storage_item' }],
       },
       {
-        name: 'derive=',
+        name: 'derive=true',
         edits: [{ text: '#[ink::storage_item()]', startPos: [8, 0], endPos: [8, 20] }],
         params: { startPos: [8, 20] },
-        results: [{ text: 'derive=' }],
+        results: [{ text: 'derive=true' }],
       },
     ],
   },
 ];
 
-suite('Completions', () => {
+suite('Completions', function () {
   suiteSetup(async function () {
     // Activates the extension.
     await activateExtension();
@@ -170,7 +170,7 @@ suite('Completions', () => {
 
       // Iterates over all test cases.
       for (const testCase of testGroup.testCases) {
-        test(testCase.name, async () => {
+        test(testCase.name, async function () {
           // Applies test case modifications/edits (if any).
           if (testCase.edits?.length) {
             await applyTestEdits(editor, testCase.edits);
