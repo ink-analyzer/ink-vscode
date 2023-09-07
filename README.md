@@ -7,17 +7,21 @@
 ## Features
 
 - diagnostics - errors and warnings based on ink! semantic rules.
+- quickfixes - suggested edits/code actions for diagnostic errors and warnings.
 - completions - completion suggestions for ink! attribute macros and arguments.
 - code/intent actions - contextual assists for adding relevant ink! attribute macros and arguments to relevant items.
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
+- inlay hints - inline type and format information for ink! attribute arguments values (e.g. `u32 | _` for ink! selector).
 
 ## Screenshots
 
 ### Completions
 
+![contract completions](/images/screenshots/completion-2.png 'contract completions')
+
 ![message completions](/images/screenshots/completion.png 'message completions')
 
-![contract completions](/images/screenshots/completion-2.png 'contract completions')
+![event completions](/images/screenshots/completion-6.png 'event completions')
 
 ![extension completions](/images/screenshots/completion-3.png 'extension completions')
 
@@ -25,7 +29,29 @@
 
 ![storage item completions](/images/screenshots/completion-5.png 'storage item completions')
 
-![event completions](/images/screenshots/completion-6.png 'event completions')
+### Diagnostics
+
+![`anonymous` diagnostic](/images/screenshots/diagnostic-5.png '`anonymous` diagnostic')
+
+![constructor `&self` receiver diagnostic](/images/screenshots/diagnostic.png 'constructor `&self` receiver diagnostic')
+
+![constructor return type diagnostic](/images/screenshots/diagnostic-4.png 'constructor return type diagnostic')
+
+![message self reference receiver diagnostic](/images/screenshots/diagnostic-3.png 'message self reference receiver diagnostic')
+
+![chain extension `ErrorCode` type diagnostic](/images/screenshots/diagnostic-2.png 'chain extension `ErrorCode` type diagnostic')
+
+### Quick Fixes
+
+![`anonymous` quickfix](/images/screenshots/quickfix.png '`anonymous` quickfix')
+
+![constructor `&self` receiver quickfix](/images/screenshots/quickfix-2.png 'constructor `&self` receiver quickfix')
+
+![constructor return type quickfix](/images/screenshots/quickfix-3.png 'constructor return type quickfix')
+
+![message self reference receiver quickfix](/images/screenshots/quickfix-4.png 'message self reference receiver quickfix')
+
+![chain extension `ErrorCode` type quickfix](/images/screenshots/quickfix-5.png 'chain extension `ErrorCode` type quickfix')
 
 ### Code Actions
 
@@ -41,21 +67,19 @@
 
 ![storage item `struct` code action](/images/screenshots/code-action-6.png 'storage item `struct` code action')
 
-### Diagnostics and Hover content
-
-![constructor `&self` diagnostic](/images/screenshots/diagnostic.png 'constructor `&self` diagnostic')
-
-![chain extension `ErrorCode` type diagnostic](/images/screenshots/diagnostic-2.png 'chain extension `ErrorCode` type diagnostic')
-
-![`anonymous` diagnostic and hover content](/images/screenshots/diagnostic-hover.png '`anonymous` diagnostic and hover content')
-
-![message self reference diagnostic and hover content](/images/screenshots/diagnostic-hover-2.png 'message self reference diagnostic and hover content')
-
-![constructor return type diagnostic and hover content](/images/screenshots/diagnostic-hover-3.png 'constructor return type diagnostic and hover content')
+### Hover content
 
 ![`storage` hover content](/images/screenshots/hover.png '`storage` hover content')
 
 ![`env` hover content](/images/screenshots/hover-2.png '`env` hover content')
+
+### Inlay Hints
+
+![`env: impl Environment` inlay hint](/images/screenshots/inlay-hint.png '`env: impl Environment` inlay hint')
+
+![`selector: u32 | _` inlay hint](/images/screenshots/inlay-hint-2.png '`selector: u32 | _` inlay hint')
+
+![`extension: u32` inlay hint](/images/screenshots/inlay-hint-3.png '`extension: u32` inlay hint')
 
 ## Recommendations
 
