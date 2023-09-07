@@ -200,8 +200,8 @@ suite('Diagnostics', function () {
           }
 
           // Gets diagnostics (blocks for 500ms to wait for diagnostic notifications from language server).
-          // NOTE: Needed a max of about ~300ms on an AMD Ryzen 5900X CPU, so 60% headroom seems reasonable :-).
-          await sleep(500);
+          // NOTE: Needed a max of about ~300ms on an AMD Ryzen 5900X CPU, so 1.5x headroom seems reasonable :-).
+          await sleep(750);
           const results = vscode.languages.getDiagnostics(docUri);
 
           // Verifies expected results.
