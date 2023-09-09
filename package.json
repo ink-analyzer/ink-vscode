@@ -2,7 +2,7 @@
   "name": "ink-analyzer",
   "displayName": "ink! Analyzer",
   "description": "ink! language support for Visual Studio Code",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "publisher": "ink-analyzer",
   "icon": "icon.png",
