@@ -82,12 +82,15 @@ export function parse(text: string, indentingConfig?: IndentingConfig): vscode.S
     const snippet = new vscode.SnippetString();
 
     // Parse indenting based on config.
-    let indent = undefined;
-    let reducedIndent = undefined;
+    let indentPattern = undefined;
+    let indentReplacement = undefined;
     if (indentingConfig?.reduce || indentingConfig?.removeAll) {
       const matches = text.match(/^\n*(?<indent>[^\S\r\n]+)/m);
-      indent = matches?.groups?.indent;
-      reducedIndent = indentingConfig?.removeAll ? '' : indent ? indent.replace(/^\s{4}|\t/, '') : '';
+      const indent = matches?.groups?.indent;
+      if (indent) {
+        indentPattern = new RegExp(`\n${indent}`, 'g');
+        indentReplacement = indentingConfig?.removeAll ? '' : indent.replace(/^\s{4}|\t/, '');
+      }
     }
 
     for (const token of tokens) {
@@ -102,10 +105,10 @@ export function parse(text: string, indentingConfig?: IndentingConfig): vscode.S
         }
         default: {
           let text = token.text ?? '';
-          if (text && (indentingConfig?.reduce || indentingConfig?.removeAll) && indent) {
+          if (text && (indentingConfig?.reduce || indentingConfig?.removeAll) && indentPattern) {
             // This is a hack to play nicely with VS Code whitespace "normalization" for snippet edits.
             // See doc for `createIndentingConfig` function below for details, rationale and references.
-            text = text.replace(new RegExp(`\n${indent}`, 'g'), `\n${reducedIndent ?? ''}`);
+            text = text.replace(indentPattern, `\n${indentReplacement ?? ''}`);
           }
           snippet.appendText(text);
           break;
