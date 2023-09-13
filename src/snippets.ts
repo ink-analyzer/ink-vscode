@@ -153,16 +153,22 @@ export function createIndentingConfig(
     };
   }
 
-  // Only suggest "de-normalization" (i.e reducing indenting) if we're inserting after whitespace, a block (i.e. `}`) or a statement (i.e `;`),
-  // or at the beginning a block (i.e. after `{`) but only when the indenting is more than 1 level (i.e. more than 5 spaces or multiple tabs).
+  // Only suggest "de-normalization" (i.e reducing indenting) if we're inserting after whitespace, a comment,
+  // a block (i.e. `}`) or a statement (i.e. `;`), or at the beginning a block
+  // (i.e. after `{`) but only when the indenting is more than 1 level (i.e. 5 or more spaces or multiple tabs).
   // (VS Code doesn't seem to "normalize" whitespace except in the above cases).
   const prevCharacter = document.getText(new vscode.Range(position.translate(0, -1), position));
   const isAfterWhitespaceBlockOrStatement = /\s|}|;/.test(prevCharacter);
   const isAtBeginningOfBlock = prevCharacter === '{';
   const isMoreThanOneLevelIndented = /^\n*([^\S\r\n\t]{5,}|[^\S\r\n ]{2,})/g.test(snippet);
+  // Determines if insert position is after a comment.
+  // NOTE: works for rustdoc as well since '//' is a substring of '///'.
+  const line = document.lineAt(position);
+  const commentStart = line.text.indexOf('//');
+  const isAfterComment = commentStart > -1 && position.character > commentStart;
   return {
-    reduce: isAfterWhitespaceBlockOrStatement || (isAtBeginningOfBlock && isMoreThanOneLevelIndented),
-    removeAll: isAfterWhitespaceBlockOrStatement,
+    reduce: isAfterWhitespaceBlockOrStatement || isAfterComment || (isAtBeginningOfBlock && isMoreThanOneLevelIndented),
+    removeAll: isAfterWhitespaceBlockOrStatement || isAfterComment,
     prevCharacter: prevCharacter,
   };
 }
