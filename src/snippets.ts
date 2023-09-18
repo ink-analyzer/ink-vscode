@@ -167,7 +167,7 @@ export function createIndentingConfig(
   const commentStart = line.text.indexOf('//');
   const isAfterComment = commentStart > -1 && position.character > commentStart;
   // Determines if the item being inserted is a "block" field (e.g. a struct field).
-  const isBlockField = (prevCharacter == ',' && snippet.startsWith('\n')) || snippet.startsWith(',\n');
+  const isBlockField = (prevCharacter === ',' && snippet.startsWith('\n')) || snippet.startsWith(',\n');
   return {
     reduce:
       isAfterWhitespaceBlockOrStatement ||
