@@ -166,9 +166,15 @@ export function createIndentingConfig(
   const line = document.lineAt(position);
   const commentStart = line.text.indexOf('//');
   const isAfterComment = commentStart > -1 && position.character > commentStart;
+  // Determines if the item being inserted is a "block" field (e.g. a struct field).
+  const isBlockField = (prevCharacter == ',' && snippet.startsWith('\n')) || snippet.startsWith(',\n');
   return {
-    reduce: isAfterWhitespaceBlockOrStatement || isAfterComment || (isAtBeginningOfBlock && isMoreThanOneLevelIndented),
-    removeAll: isAfterWhitespaceBlockOrStatement || isAfterComment,
+    reduce:
+      isAfterWhitespaceBlockOrStatement ||
+      isAfterComment ||
+      isBlockField ||
+      (isAtBeginningOfBlock && isMoreThanOneLevelIndented),
+    removeAll: isAfterWhitespaceBlockOrStatement || isAfterComment || isBlockField,
     prevCharacter: prevCharacter,
   };
 }
