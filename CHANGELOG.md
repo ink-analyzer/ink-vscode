@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2023-09-18
+
+- Improve formatting of text edits (i.e. code actions and quickfixes) inserted after ADT fields.
+- General robustness improvements for semantic analyzer.
+
 ## [0.1.7] - 2023-09-13
 
 - Add code actions for adding ink! entities (i.e. code stubs/snippets for items not just attributes).
