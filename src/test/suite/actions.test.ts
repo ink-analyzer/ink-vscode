@@ -82,12 +82,10 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '#[ink::test]|#[ink_e2e::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn new(total_supply: Balance)',
+        name: '#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn new(total_supply: Balance)',
         edits: [{ text: '', startPos: [55, 8], endPos: [55, 27] }],
         params: { startPos: [56, 8] },
         results: [
-          { text: '#[ink::test]', startPos: [56, 8], endPos: [56, 8] },
-          { text: '#[ink_e2e::test]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(constructor)]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(default)]', startPos: [56, 8], endPos: [56, 8] },
           { text: '#[ink(message)]', startPos: [56, 8], endPos: [56, 8] },
@@ -105,12 +103,10 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '#[ink::test]|#[ink_e2e::test]|#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn total_supply(&self)',
+        name: '#[ink(constructor|default|message|payable|selector=${1:1})] <- pub fn total_supply(&self)',
         edits: [{ text: '', startPos: [73, 8], endPos: [73, 23] }],
         params: { startPos: [74, 8] },
         results: [
-          { text: '#[ink::test]', startPos: [74, 8], endPos: [74, 8] },
-          { text: '#[ink_e2e::test]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(constructor)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(default)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(message)]', startPos: [74, 8], endPos: [74, 8] },

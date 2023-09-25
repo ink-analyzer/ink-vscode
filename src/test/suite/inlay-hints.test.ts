@@ -6,7 +6,7 @@ import { TestGroup, TestResult } from './types';
 
 // Describes a collection of inlay hints tests to run against
 // optionally modified ink! smart contract code in the `test-fixtures` directory in the project root.
-const ACTION_TESTS: Array<TestGroup> = [
+const INLAY_HINTS_TESTS: Array<TestGroup> = [
   {
     // Reads source code from the `erc20/lib.rs` contract in `test-fixtures` directory.
     source: 'erc20',
@@ -44,14 +44,14 @@ const ACTION_TESTS: Array<TestGroup> = [
         edits: [
           {
             text: '#[ink_e2e::test(additional_contracts="adder/Cargo.toml flipper/Cargo.toml", environment=MyEnvironment, keep_attr="foo,bar")]',
-            startPos: [271, 8],
-            endPos: [271, 20],
+            startPos: [513, 8],
+            endPos: [513, 24],
           },
         ],
         results: [
-          { text: ': &str', startPos: [271, 44] },
-          { text: ': impl Environment', startPos: [271, 95] },
-          { text: ': &str', startPos: [271, 120] },
+          { text: ': &str', startPos: [513, 44] },
+          { text: ': impl Environment', startPos: [513, 95] },
+          { text: ': &str', startPos: [513, 120] },
         ],
       },
     ],
@@ -137,8 +137,8 @@ suite('Inlay Hints', function () {
     await activateExtension();
   });
 
-  // Iterates over all test case groups (see `ACTION_TESTS` doc and inline comments).
-  for (const testGroup of ACTION_TESTS) {
+  // Iterates over all test case groups (see `INLAY_HINTS_TESTS` doc and inline comments).
+  for (const testGroup of INLAY_HINTS_TESTS) {
     suite(testGroup.source, function () {
       const docUri = getDocumentUri(`${testGroup.source}/lib.rs`);
       let editor: vscode.TextEditor;

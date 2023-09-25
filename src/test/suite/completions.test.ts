@@ -89,7 +89,7 @@ const COMPLETION_TESTS: Array<TestGroup> = [
       },
       {
         name: 'keep_attr=""|namespace="my_namespace"',
-        edits: [{ text: '#[ink::trait_definition()]', startPos: [3, 0], endPos: [73, 24] }],
+        edits: [{ text: '#[ink::trait_definition()]', startPos: [3, 0], endPos: [3, 24] }],
         params: { startPos: [3, 24] },
         results: [{ text: 'keep_attr=""' }, { text: 'namespace="my_namespace"' }],
       },
