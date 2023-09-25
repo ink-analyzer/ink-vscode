@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.10] - 2023-09-25
+
+- Add signature help for ink! attribute arguments.
+- Add code actions for "flattening" ink! attributes.
+- General robustness improvements for semantic analyzer.
+
 ## [0.1.9] - 2023-09-19
 
 - Improve diagnostics and quickfixes for ambiguous attribute arguments.
