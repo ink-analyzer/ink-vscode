@@ -12,6 +12,7 @@
 - code/intent actions - contextual assists for adding relevant ink! attribute macros and arguments to relevant items.
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
 - inlay hints - inline type and format information for ink! attribute arguments values (e.g. `u32 | _` for ink! selector).
+- signature help - popup information for valid ink! attribute arguments for the current context/cursor position.
 
 ## Screenshots
 
@@ -80,6 +81,12 @@
 ![`selector: u32 | _` inlay hint](/images/screenshots/inlay-hint-2.png '`selector: u32 | _` inlay hint')
 
 ![`extension: u32` inlay hint](/images/screenshots/inlay-hint-3.png '`extension: u32` inlay hint')
+
+### Signature Help
+
+![`constructor` signature help](/images/screenshots/signature-help.png '`constructor` signature help')
+
+![`contract` signature help](/images/screenshots/signature-help-2.png '`contract` signature help')
 
 ## Recommendations
 
