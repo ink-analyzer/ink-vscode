@@ -18,13 +18,14 @@
 
 The instructions below are written for the [flipper contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/flipper/lib.rs), so open that in VS Code first.
 
-### 1. Diagnostics and quickfixes
+### 1. Diagnostics and Quickfixes
 
 ![`storage` quickfix](/images/screenshots/diagnostic-quickfix.png '`storage` quickfix')
 
 **Action:**
 
 Remove the ink! storage item i.e.
+
 ```rust
 #[ink(storage)]
 pub struct Flipper {
@@ -67,11 +68,11 @@ All the above edits should result in diagnostics squiggles that reveal one or mo
 
 Hovering over an ink! attribute macro (e.g. `#[ink::contract]`) or argument (e.g. `#[ink(storage)]` or the `env = ...` part in `#[ink::contract(env = crate::Environment)]`) will reveal related usage documentation for the ink! attribute macro or specific ink! attribute argument in a popup.
 
-### 4. Code actions
+### 4. Code Actions
 
 ![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
 
-Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]`) or on the "declaration" (e.g. anywhere on the line `pub mod flipper {` but not inside the body) of a Rust item that is either already annotated with ink! attributes or can be annotated with ink! attributes (e.g. `mod`, `struct`, `fn`, `impl` e.t.c) will trigger a "light bulb" with relevant code actions. 
+Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]`) or on the "declaration" (e.g. anywhere on the line `pub mod flipper {` but not inside the body) of a Rust item that is either already annotated with ink! attributes or can be annotated with ink! attributes (e.g. `mod`, `struct`, `fn`, `impl` e.t.c) will trigger a "light bulb" with relevant code actions.
 
 **Testing examples:**
 
@@ -83,15 +84,14 @@ Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]
 - Positioning the cursor on the item "declaration" of a "test" `mod` with an additional `e2e-tests` feature condition (i.e. a `mod` annotated with `#[cfg(all(test, feature = "e2e-tests"))]` or similar e.g. on the line `mod e2e_tests {`) will trigger a "light bulb" with code actions for adding an `ink! e2e test "fn"` to the `mod` item.
 - Positioning the cursor on the "declaration" of a Rust item with multiple ink! attributes (e.g. `#[ink(event)]\n#[ink(anonymous)]` e.t.c) will trigger a "light bulb" with code actions for "flattening" the ink! attributes.
 
-### 5. Inlay hints
+### 5. Inlay Hints
 
 ![`env: impl Environment` inlay hint](/images/screenshots/inlay-hint.png '`env: impl Environment` inlay hint')
 
 ink! attribute arguments that are expected to have values (e.g. `selector`, `env`, `keep_attr`, `namespace`, `extension`, `handle_status`, `derive` e.t.c) will have inlay hints (additional inline information) about the type of the expected value added right after the `name` part of the `name=value` pair (e.g. `: u32 | _` for `selector`, `: impl Environment` for `env` and `: bool` for `handle_status`).
 
-### 6. Signature help
+### 6. Signature Help
 
 ![`message` signature help](/images/screenshots/signature-help-3.png '`message` signature help')
 
 When adding ink! attribute arguments (e.g. "primary" like `storage`, `event`, `constructor`, `message` e.t.c or "complementary"/"additional" like `env`, `keep_attr`, `payable`, `selector`, `anonymous` e.t.c), a popup with additional information about the "signature" for the ink! attribute and a description about the current argument can be triggered either automatically after typing the opening parenthesis (`(`) character or a comma (`,`) separator character, or manually by hitting `Cmd/Ctrl + Shift + Space`.
-

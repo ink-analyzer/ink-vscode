@@ -78,6 +78,8 @@ yarn test
 
 **NOTE:** See the [`Development > Debugging`](#debugging) section above for instructions for starting a debugging session using a launch configuration.
 
+**NOTE:** For instructions for manual feature testing, refer to the ["Manual Feature Testing Guide"](/TESTING.md).
+
 ## License
 
 Licensed under [GPL-3.0](/LICENSE).
