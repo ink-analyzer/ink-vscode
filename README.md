@@ -84,7 +84,7 @@
 
 ### Signature Help
 
-![`constructor` signature help](/images/screenshots/signature-help.png '`constructor` signature help')
+![`message` signature help](/images/screenshots/signature-help-3.png '`message` signature help')
 
 ![`contract` signature help](/images/screenshots/signature-help-2.png '`contract` signature help')
 
