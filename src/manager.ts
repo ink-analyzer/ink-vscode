@@ -1,19 +1,21 @@
+import * as os from 'os';
 import * as vscode from 'vscode';
 import * as lsp_types from 'vscode-languageclient/node';
-import * as os from 'os';
 
-import * as utils from './utils';
 import { COMMANDS, EXTENSION_ID } from './constants';
 import * as middleware from './middleware';
+import * as utils from './utils';
 
 // Visual cue UX delay to let the users see that their clicks have an effect.
 const VISUAL_CUE_DELAY = 100; // in ms.
 
 // Global object for managing extension state.
 export default class ExtensionManager {
-  private context: vscode.ExtensionContext;
+  readonly context: vscode.ExtensionContext;
   private statusBar: vscode.StatusBarItem;
   private client?: lsp_types.LanguageClient;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private subscriptions: ((client: lsp_types.LanguageClient, manager: ExtensionManager) => any)[] = [];
 
   private state: ExtensionState = {
     server: 'stopped',
@@ -26,10 +28,10 @@ export default class ExtensionManager {
     this.context = context;
     this.statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
 
-    this.updateState('stopped');
+    this.updateStatus('stopped');
   }
 
-  private updateState(status: ServerStatus, message?: string) {
+  updateStatus(status: ServerStatus, message?: string) {
     this.state = {
       ...this.state,
       server: status,
@@ -88,7 +90,7 @@ export default class ExtensionManager {
         vscode.window.showErrorMessage(message, 'Got it');
 
         // Update state with error details.
-        this.updateState('error', message);
+        this.updateStatus('error', message);
       } else {
         // Creates a language client if the server binary exists.
         // Sets options for the language server.
@@ -142,16 +144,19 @@ export default class ExtensionManager {
     }
 
     // Starts the language client which in turn launches the language server.
-    this.updateState('starting');
+    this.updateStatus('starting');
     this.client.start().then(
       () => {
         // Timeout is for a visual UX cue.
         setTimeout(() => {
-          this.updateState('started');
+          this.updateStatus('started');
+
+          // Process subscriptions.
+          this.processSubscriptions();
         }, VISUAL_CUE_DELAY);
       },
       () => {
-        this.updateState(
+        this.updateStatus(
           'stopped',
           'Failed to start ink! Language Server..\n\n' +
             'Make sure the ink-lsp-server binary has executable permissions.',
@@ -179,16 +184,16 @@ export default class ExtensionManager {
     }
 
     // Stops the language client which in turn stops the language server.
-    this.updateState('stopping');
+    this.updateStatus('stopping');
     this.client.stop().then(
       () => {
         // Timeout is for a visual UX cue.
         setTimeout(() => {
-          this.updateState('stopped', 'ink! Language Server was stopped.');
+          this.updateStatus('stopped', 'ink! Language Server was stopped.');
         }, VISUAL_CUE_DELAY);
       },
       () => {
-        this.updateState('error', 'Failed to stop ink! Language Server.');
+        this.updateStatus('error', 'Failed to stop ink! Language Server.');
       },
     );
   }
@@ -212,11 +217,13 @@ export default class ExtensionManager {
     let status = '';
     let icon = '';
     let progressPrefix = '';
+    let progressSuffix = '';
     let command = COMMANDS.restart;
     let color = undefined;
     let bgColor = undefined;
-    const restartServerTooltip = `[Restart server](command:${COMMANDS.restart})`;
-    const stopServerTooltip = `[Stop server](command:${COMMANDS.stop})`;
+    const createProjectTooltip = `[Create new project](command:${COMMANDS.createProject})`;
+    const restartServerTooltip = `[Restart language server](command:${COMMANDS.restart})`;
+    const stopServerTooltip = `[Stop language server](command:${COMMANDS.stop})`;
     let tooltipCommands = [restartServerTooltip, stopServerTooltip];
 
     switch (this.state.server) {
@@ -231,6 +238,7 @@ export default class ExtensionManager {
       case 'started': {
         status = 'ink! Analyzer is ready!';
         command = COMMANDS.stop;
+        tooltipCommands = [createProjectTooltip, restartServerTooltip, stopServerTooltip];
         break;
       }
       case 'stopping': {
@@ -263,12 +271,24 @@ export default class ExtensionManager {
         tooltipCommands = [restartServerTooltip];
         break;
       }
+      case 'initializing': {
+        status = 'Initializing new ink! project ...';
+        icon = '$(sync~spin)';
+        progressSuffix = ': initializing new project';
+        break;
+      }
       default: {
         break;
       }
     }
 
-    this.statusBar.text = [icon, progressPrefix, 'ink! analyzer', progressPrefix ? '...' : '']
+    this.statusBar.text = [
+      icon,
+      progressPrefix,
+      'ink! analyzer',
+      progressSuffix,
+      progressPrefix || progressSuffix ? '...' : '',
+    ]
       .filter(Boolean)
       .join(' ');
     this.statusBar.command = command;
@@ -287,9 +307,26 @@ export default class ExtensionManager {
     this.context.subscriptions.push(vscode.commands.registerCommand(command, handler(this)));
     return this;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onStart(handler: (client: lsp_types.LanguageClient, manager: ExtensionManager) => any) {
+    this.subscriptions.push(handler);
+
+    if (this.client) {
+      this.processSubscriptions();
+    }
+  }
+
+  private processSubscriptions() {
+    if (this.client) {
+      for (const handler of this.subscriptions) {
+        handler(this.client, this);
+      }
+    }
+  }
 }
 
-type ServerStatus = 'starting' | 'started' | 'stopping' | 'stopped' | 'error' | 'warning';
+type ServerStatus = 'starting' | 'started' | 'stopping' | 'stopped' | 'error' | 'warning' | 'initializing';
 
 type ExtensionState = {
   server: ServerStatus;

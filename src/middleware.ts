@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as lsp_types from 'vscode-languageclient/node';
+
 import * as snippets from './snippets';
 
 // Code Actions middleware that adds support for snippets (tab stops and/or placeholders) in text edits returned by code actions.
@@ -76,7 +77,6 @@ export async function provideCodeActions(
         }
       }
 
-      // Returns middleware results.
       return results;
     });
 }
