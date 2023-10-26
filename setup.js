@@ -12,7 +12,6 @@ const chalk = require('chalk');
 const admZip = require('adm-zip');
 
 const pipe = promisify(pipeline);
-const log = console.log;
 
 const BINARY_INSTALL_INSTRUCTIONS =
   "You'll need to:\n" +
@@ -26,7 +25,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
 (async () => {
   if (process.env.INK_ANALYZER_SKIP_SETUP) {
     // Allows skipping of language server setting when publishing pre-packaged extensions.
-    log(
+    console.log(
       chalk.yellow('⚠️ Warning:') +
         ' Skipping ink-lsp-server binary setup and verification because the ' +
         chalk.yellow('`INK_ANALYZER_SKIP_SETUP`') +
@@ -35,7 +34,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
     process.exit(0);
   }
 
-  log('🔎 Searching for ink-lsp-server binary ...');
+  console.log('🔎 Searching for ink-lsp-server binary ...');
   const target = getBinaryTarget();
 
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
@@ -101,7 +100,7 @@ function getBinaryTarget() {
   // Allows cross compilation by setting the `INK_ANALYZER_ARCH` environment variable to the target architecture.
   const processArch = process.env.INK_ANALYZER_ARCH || process.arch;
   if (process.env.INK_ANALYZER_ARCH) {
-    log(
+    console.log(
       chalk.yellow('⚠️ Warning:') +
         ' Manually setting the architecture to ' +
         chalk.yellow(`"${processArch}"`) +
@@ -137,22 +136,22 @@ function getBinaryTarget() {
 
 // Exits with a success message and exit code.
 function exitWithSuccess(serverPath) {
-  log(chalk.green('✅ An executable ink-lsp-server binary is available at:'), serverPath);
+  console.log(chalk.green('✅ An executable ink-lsp-server binary is available at:'), serverPath);
   process.exit(0);
 }
 
 // Exits with an error message.
 function exitWithError(message) {
-  log(`❌ ${message}`);
+  console.log(`❌ ${message}`);
   process.exit(1);
 }
 
 // Verifies that the binary is executable on this platform.
 function verifyBinary(serverPath) {
-  log('⌛ Verifying binary/executable at: ', serverPath);
+  console.log('⌛ Verifying binary/executable at: ', serverPath);
   // Skips verification during cross-compilation.
   if (process.env.INK_ANALYZER_ARCH || process.env.INK_ANALYZER_SKIP_VERIFY) {
-    log(
+    console.log(
       chalk.yellow('⚠️ Warning:') +
         ' Skipping ink-lsp-server binary verification because the ' +
         chalk.yellow(process.env.INK_ANALYZER_ARCH ? '`INK_ANALYZER_ARCH`' : '`INK_ANALYZER_SKIP_VERIFY`') +
@@ -165,7 +164,7 @@ function verifyBinary(serverPath) {
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
     return result.toString().includes('ink-lsp-server');
   } catch (e) {
-    log(chalk.red('Error:') + ' Binary verification failed:\n', (e.stderr && e.stderr.toString()) || e);
+    console.log(chalk.red('Error:') + ' Binary verification failed:\n', (e.stderr && e.stderr.toString()) || e);
   }
   return false;
 }
@@ -177,14 +176,14 @@ function fixBinaryPermissions(serverPath) {
     return true;
   }
 
-  log('⚒️ Attempting to add executable permissions to the binary at: ', serverPath);
+  console.log('⚒️ Attempting to add executable permissions to the binary at: ', serverPath);
   // Fix permissions on Linux and macOS (may work for others but these are the primary targets).
   try {
     execSync(`chmod +x ${path.resolve(serverPath)}`, { timeout: 100 });
     // The binary should be able to pass verification after the above command.
     return verifyBinary(serverPath);
   } catch (e) {
-    log(chalk.red('Error:') + ' Failed to fix binary permissions:\n', (e.stderr && e.stderr.toString()) || e);
+    console.log(chalk.red('Error:') + ' Failed to fix binary permissions:\n', (e.stderr && e.stderr.toString()) || e);
   }
   return false;
 }
@@ -192,9 +191,9 @@ function fixBinaryPermissions(serverPath) {
 // Downloads, decompresses and configures an ink-lsp-server for the target platform.
 async function setupBinaryForTarget(target, retryCount = 0) {
   if (retryCount) {
-    log(`📡 Download retry #${retryCount}: ink-lsp-server binary for ${target} ...`);
+    console.log(`📡 Download retry #${retryCount}: ink-lsp-server binary for ${target} ...`);
   } else {
-    log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
+    console.log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
   }
 
   // Cleans server directory.
@@ -212,7 +211,7 @@ async function setupBinaryForTarget(target, retryCount = 0) {
     archivePath = path.resolve(`./server/${asset.name}`);
     await downloadAsset(asset.browser_download_url, archivePath);
   } catch (e) {
-    log(chalk.red('Error:') + ' Binary download failed:\n', e);
+    console.log(chalk.red('Error:') + ' Binary download failed:\n', e);
 
     // Retries download binary setup process at least 10 times before giving up.
     const numTries = (retryCount || 0) + 1;
