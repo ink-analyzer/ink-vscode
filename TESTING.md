@@ -18,7 +18,15 @@
 
 The instructions below are written for the [flipper contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/flipper/lib.rs), so open that in VS Code first.
 
-### 1. Diagnostics and Quickfixes
+### 1. Commands
+
+You can view a list of all available commands by typing `ink!` into the ["Command Palette"](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (i.e. type `Cmd/Ctrl + Shift + P` and then type `ink!`), or hovering over the `ink! analyzer` ["Status Bar"](https://code.visualstudio.com/docs/getstarted/userinterface) item.
+
+![command palette](/images/screenshots/command-palette.png 'command palette')
+
+![status bar commands](/images/screenshots/status-bar-item.png 'status bar commands')
+
+### 2. Diagnostics and Quickfixes
 
 ![`storage` quickfix](/images/screenshots/diagnostic-quickfix.png '`storage` quickfix')
 
@@ -53,7 +61,7 @@ pub struct Flipper {
 All the above edits should result in diagnostics squiggles that reveal one or more quickfixes for the issues.
 **NOTE:** The list of diagnostics and quickfixes above is not exhaustive.
 
-### 2. Completions
+### 3. Completions
 
 ![message completions](/images/screenshots/completion.png 'message completions')
 
@@ -62,13 +70,13 @@ All the above edits should result in diagnostics squiggles that reveal one or mo
 - For "additional" attribute argument completions (e.g. `payable`, `default`, `selector` for `#[ink(message)]`, or `anonymous` for `#[ink(event)]` e.t.c), add a comma after an existing attribute argument (e.g. change `#[ink(message)]` to `#[ink(message,)]`) and either typing the comma (`,`) character, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
 - For complementary argument completions for ink! attribute macros (e.g. `env` and `keep_attr` for `#[ink::contract]`), add parenthesis after the attribute macro (e.g. change `#[ink::contract]` to `#[ink::contract()]`), and either typing the `(` character, or starting to type inside the brackets, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
 
-### 3. Hover content
+### 4. Hover content
 
 ![`env` hover content](/images/screenshots/hover-2.png '`env` hover content')
 
 Hovering over an ink! attribute macro (e.g. `#[ink::contract]`) or argument (e.g. `#[ink(storage)]` or the `env = ...` part in `#[ink::contract(env = crate::Environment)]`) will reveal related usage documentation for the ink! attribute macro or specific ink! attribute argument in a popup.
 
-### 4. Code Actions
+### 5. Code Actions
 
 ![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
 
@@ -84,13 +92,13 @@ Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]
 - Positioning the cursor on the item "declaration" of a "test" `mod` with an additional `e2e-tests` feature condition (i.e. a `mod` annotated with `#[cfg(all(test, feature = "e2e-tests"))]` or similar e.g. on the line `mod e2e_tests {`) will trigger a "light bulb" with code actions for adding an `ink! e2e test "fn"` to the `mod` item.
 - Positioning the cursor on the "declaration" of a Rust item with multiple ink! attributes (e.g. `#[ink(event)]\n#[ink(anonymous)]` e.t.c) will trigger a "light bulb" with code actions for "flattening" the ink! attributes.
 
-### 5. Inlay Hints
+### 6. Inlay Hints
 
 ![`env: impl Environment` inlay hint](/images/screenshots/inlay-hint.png '`env: impl Environment` inlay hint')
 
 ink! attribute arguments that are expected to have values (e.g. `selector`, `env`, `keep_attr`, `namespace`, `extension`, `handle_status`, `derive` e.t.c) will have inlay hints (additional inline information) about the type of the expected value added right after the `name` part of the `name=value` pair (e.g. `: u32 | _` for `selector`, `: impl Environment` for `env` and `: bool` for `handle_status`).
 
-### 6. Signature Help
+### 7. Signature Help
 
 ![`message` signature help](/images/screenshots/signature-help-3.png '`message` signature help')
 
