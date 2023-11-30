@@ -46,7 +46,7 @@ pub struct Flipper {
 - You should see diagnostic squiggles on the ink! contract `mod` item (i.e. covering the line `pub mod flipper {`).
 - Hovering over the squiggles should show a diagnostic message like `Missing ink! storage`.
 - Hovering over the squiggles should reveal a "quickfix" to `Add ink! storage "struct".`
-- Alternatively, positioning the cursor on the squiggles and clicking the "light bulb" that's trigger by this action will also reveal the above quickfix.
+- Alternatively, positioning the cursor on the squiggles and clicking the "light bulb" that's triggered by this action will also reveal the above quickfix.
 
 **Additional testing examples:**
 
@@ -55,7 +55,7 @@ pub struct Flipper {
 - Add an unknown argument to one of the ink! attributes (e.g. change `#[ink(constructor)]` to `#[ink(constructor, xyz)]`).
 - Apply an ink! attribute to the wrong Rust item kind (e.g. add an `#[ink::test]` attribute above the line `impl Flipper {`).
 - Add unexpected or remove required Rust item invariants e.g. remove the `Self` return type (i.e. remove ` -> Self`) from one of the ink! constructor functions or add a self reference receiver (i.e. add `&self` as the first parameter) to one of the ink! constructor functions.
-- Add clashing selectors to ink! constructors or ink! messages (e.g. change all `#[ink(message)]` attributes to `#[ink(message, selector = 1)]`, or add an ink! constructor or ink! message with the same `fn` name as an existing callable e.g. add another ink! message name `flip`).
+- Add clashing selectors to ink! constructors or ink! messages (e.g. change all `#[ink(message)]` attributes to `#[ink(message, selector = 1)]`, or add an ink! constructor or ink! message with the same `fn` name as an existing callable e.g. add another ink! message named `flip`).
 - Move an ink! entity to the wrong scope (e.g. move an ink! message into the root of the contract `mod` - e.g. move the `flip` ink! message to the line right after the ink! storage `struct`).
 
 All the above edits should result in diagnostics squiggles that reveal one or more quickfixes for the issues.
@@ -66,9 +66,9 @@ All the above edits should result in diagnostics squiggles that reveal one or mo
 ![message completions](/images/screenshots/completion.png 'message completions')
 
 - For attribute macro completions, make one of the ink! macro-based attributes "incomplete" (e.g. change `#[ink::contract]` to `#[ink]` or `#[ink::c]`) and either start typing to complete the macro name or hit `Cmd/Ctrl + Space` to trigger a completion proposal manually.
-- For "primary" attribute argument completions (e.g. `storage`, `event`, `constructor`, `message` e.t.c), make one of the ink! argument-based attributes "incomplete" (e.g. change `#[ink(storage)]` to `#[ink()]`) and either typing the `(` character, or starting to type inside the brackets, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
+- For "primary" attribute argument completions (e.g. `storage`, `event`, `constructor`, `message` e.t.c), make one of the ink! argument-based attributes "incomplete" (e.g. change `#[ink(storage)]` to `#[ink()]`) and either typing the `(` character, or starting to type inside the parentheses, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
 - For "additional" attribute argument completions (e.g. `payable`, `default`, `selector` for `#[ink(message)]`, or `anonymous` for `#[ink(event)]` e.t.c), add a comma after an existing attribute argument (e.g. change `#[ink(message)]` to `#[ink(message,)]`) and either typing the comma (`,`) character, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
-- For complementary argument completions for ink! attribute macros (e.g. `env` and `keep_attr` for `#[ink::contract]`), add parenthesis after the attribute macro (e.g. change `#[ink::contract]` to `#[ink::contract()]`), and either typing the `(` character, or starting to type inside the brackets, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
+- For complementary argument completions for ink! attribute macros (e.g. `env` and `keep_attr` for `#[ink::contract]`), add parentheses after the attribute macro (e.g. change `#[ink::contract]` to `#[ink::contract()]`), and either typing the `(` character, or starting to type inside the parentheses, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
 
 ### 4. Hover content
 
