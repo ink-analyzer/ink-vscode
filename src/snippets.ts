@@ -153,18 +153,30 @@ export function createIndentingConfig(
     };
   }
 
-  // Only suggest "de-normalization" (i.e reducing indenting) if we're inserting after whitespace, a comment,
-  // a block (i.e. `}`) or a statement (i.e. `;`), or at the beginning a block
-  // (i.e. after `{`) but only when the indenting is more than 1 level (i.e. 5 or more spaces or multiple tabs).
+  // Only suggest "de-normalization" (i.e. reducing indenting) if:
+  // - either the snippet or preceding line is indented.
+  // - and we're inserting after whitespace, a comment, a block (i.e. `}`) or a statement (i.e. `;`),
+  //   or at the beginning a block (i.e. after `{`), but only when the indenting is more than 1 level
+  //   (i.e. 5 or more spaces or multiple tabs).
   // (VS Code doesn't seem to "normalize" whitespace except in the above cases).
-  const prevCharacter = document.getText(new vscode.Range(position.translate(0, -1), position));
+  const indentPattern = /^[\r\n]*[\t ]+/;
+  const isIndented = indentPattern.test(snippet);
+  const prevCharPosition = position.translate(0, -1);
+  const isPrevItemIndented = indentPattern.test(document.lineAt(prevCharPosition.line).text);
+  const prevCharacter = document.getText(new vscode.Range(prevCharPosition, position));
+
+  if (!isIndented && !isPrevItemIndented) {
+    return {
+      reduce: false,
+      removeAll: false,
+      prevCharacter,
+    };
+  }
+
   const isAfterWhitespaceBlockOrStatement = /\s|}|;/.test(prevCharacter);
   const isAtBeginningOfBlock = prevCharacter === '{';
   const isMoreThanOneLevelIndented = /^\n*([^\S\r\n\t]{5,}|[^\S\r\n ]{2,})/g.test(snippet);
-  // Determines if insert position is after a comment.
-  // NOTE: works for rustdoc as well since '//' is a substring of '///'.
-  const line = document.lineAt(position);
-  const commentStart = line.text.indexOf('//');
+  const commentStart = document.lineAt(position).text.indexOf('//');
   const isAfterComment = commentStart > -1 && position.character > commentStart;
   // Determines if the item being inserted is a "block" field (e.g. a struct field).
   const isBlockField = (prevCharacter === ',' && snippet.startsWith('\n')) || snippet.startsWith(',\n');
