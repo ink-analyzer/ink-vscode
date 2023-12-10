@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.16] - 2023-12-10
+
+- Improvements for chain environment implementation resolution.
+
 ## [0.1.15] - 2023-12-04
 
 - Add diagnostics and quickfixes for chain environment arguments (i.e. argument value is a path to an item `T` and `T: impl ink::env::Environment`).
