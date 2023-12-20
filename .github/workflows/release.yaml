@@ -30,10 +30,6 @@ jobs:
             vsce-target: win32-x64
             npm-config-arch: x64
           - os: windows-latest
-            target: i686-pc-windows-msvc
-            vsce-target: win32-ia32
-            npm-config-arch: ia32
-          - os: windows-latest
             target: aarch64-pc-windows-msvc
             vsce-target: win32-arm64
             npm-config-arch: arm64
@@ -108,10 +104,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: ink-analyzer-win32-x64.vsix
-          path: dist
-      - uses: actions/download-artifact@v3
-        with:
-          name: ink-analyzer-win32-ia32.vsix
           path: dist
       - uses: actions/download-artifact@v3
         with:
