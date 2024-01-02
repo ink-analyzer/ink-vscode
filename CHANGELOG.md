@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.20] - 2024-01-02
+
+- Performance improvements for language server.
+
 ## [0.1.19] - 2024-01-01
 
 - General robustness improvements for semantic analyzer.
