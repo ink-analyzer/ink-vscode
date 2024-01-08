@@ -119,6 +119,15 @@ const ACTION_TESTS: Array<TestGroup> = [
         params: { startPos: [271, 8] },
         results: [],
       },
+      {
+        name: '(additional_contracts="$1"|environment=${1:crate::}|keep_attr="$1") <- #[ink_e2e::test]',
+        params: { startPos: [513, 8] },
+        results: [
+          { text: '(additional_contracts="$1")', startPos: [513, 23], endPos: [513, 23] },
+          { text: '(environment=${1:crate::})', startPos: [513, 23], endPos: [513, 23] },
+          { text: '(keep_attr="$1")', startPos: [513, 23], endPos: [513, 23] },
+        ],
+      },
     ],
   },
   {

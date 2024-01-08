@@ -71,10 +71,22 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'default' }, { text: 'payable' }, { text: 'selector=1' }],
       },
       {
-        name: 'test',
+        name: 'ink::test',
         edits: [{ text: '#[ink::te]', startPos: [271, 8], endPos: [271, 20] }],
         params: { startPos: [271, 17] },
         results: [{ text: 'test' }],
+      },
+      {
+        name: 'ink_e2e::test',
+        edits: [{ text: '#[ink_e2e::te]', startPos: [513, 8], endPos: [513, 24] }],
+        params: { startPos: [513, 21] },
+        results: [{ text: 'test' }],
+      },
+      {
+        name: 'additional_contracts=""|environment=crate::|keep_attr="" <- #[ink_e2e::test()]',
+        edits: [{ text: '#[ink_e2e::test()]', startPos: [513, 8], endPos: [513, 24] }],
+        params: { startPos: [513, 24] },
+        results: [{ text: 'additional_contracts=""' }, { text: 'environment=crate::' }, { text: 'keep_attr=""' }],
       },
     ],
   },

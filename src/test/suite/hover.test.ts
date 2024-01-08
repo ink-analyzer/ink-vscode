@@ -90,6 +90,35 @@ const HOVER_TESTS: Array<TestGroup> = [
         params: { startPos: [271, 16] },
         results: [{ text: '`#[ink::test]`' }],
       },
+      {
+        name: '#[ink_e2e::test]',
+        params: { startPos: [513, 20] },
+        results: [{ text: '`#[ink_e2e::test]`' }],
+      },
+      {
+        name: '#[ink_e2e::test(additional_contracts = S: string)]',
+        edits: [
+          {
+            text: '#[ink_e2e::test(additional_contracts="adder/Cargo.toml flipper/Cargo.toml")]',
+            startPos: [513, 8],
+            endPos: [513, 24],
+          },
+        ],
+        params: { startPos: [513, 24] },
+        results: [{ text: '`#[ink_e2e::test(additional_contracts = S: string)]`' }],
+      },
+      {
+        name: '#[ink_e2e::test(environment = E: impl Environment)]',
+        edits: [{ text: '#[ink_e2e::test(environment=MyEnvironment)]', startPos: [513, 8], endPos: [513, 24] }],
+        params: { startPos: [513, 24] },
+        results: [{ text: '`#[ink_e2e::test(environment = E: impl Environment)]`' }],
+      },
+      {
+        name: '#[ink_e2e::test(keep_attr = N: string)]',
+        edits: [{ text: '#[ink_e2e::test(keep_attr="foo,bar")]', startPos: [513, 8], endPos: [513, 24] }],
+        params: { startPos: [513, 24] },
+        results: [{ text: '`#[ink_e2e::test(keep_attr = N: string)]`' }],
+      },
     ],
   },
 
