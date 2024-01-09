@@ -281,6 +281,34 @@ const ACTION_TESTS: Array<TestGroup> = [
           { text: '#[ink::storage_item]', startPos: [106, 0], endPos: [106, 0] },
         ],
       },
+      {
+        name: 'type ErrorCode = ();',
+        edits: [{ text: '()', startPos: [12, 21], endPos: [12, 31] }],
+        params: { startPos: [12, 21], endPos: [12, 21] },
+        results: [{ text: '${1:crate::Psp22Error}', startPos: [12, 21], endPos: [12, 23] }],
+      },
+      {
+        name: 'Self::ErrorCode',
+        edits: [{ text: 'core::result::Result<Vec<u8>, Self::ErrorCode>', startPos: [17, 36], endPos: [17, 51] }],
+        params: { startPos: [17, 66], endPos: [17, 66] },
+        results: [
+          { text: '${1:crate::Psp22Error}', startPos: [17, 66], endPos: [17, 81] },
+          { text: ', handle_status=${1:true}', startPos: [16, 28], endPos: [16, 28] },
+        ],
+      },
+      {
+        name: 'SCALE codec traits',
+        edits: [{ text: '', startPos: [79, 0], endPos: [80, 58] }],
+        params: { startPos: [80, 0], endPos: [80, 0] },
+        results: [
+          {
+            text: '#[derive(${1:scale::Encode}, ${2:scale::Decode}, ${3:scale_info::TypeInfo})]',
+            startPos: [80, 0],
+            endPos: [80, 0],
+          },
+          { text: '#[ink::storage_item]', startPos: [80, 0], endPos: [80, 0] },
+        ],
+      },
     ],
   },
   {
