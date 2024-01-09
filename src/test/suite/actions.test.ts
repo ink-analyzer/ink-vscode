@@ -220,6 +220,39 @@ const ACTION_TESTS: Array<TestGroup> = [
         params: { startPos: [33, 4], endPos: [33, 4] },
         results: [{ text: '#[ink(impl)]', startPos: [33, 4], endPos: [33, 4] }],
       },
+      {
+        name: 'missing method',
+        edits: [{ text: '', startPos: [34, 8], endPos: [37, 9] }],
+        params: { startPos: [33, 4], endPos: [33, 4] },
+        results: [
+          { text: 'fn flip(&mut self) {', isSnippet: true, startPos: [39, 9], endPos: [39, 9] },
+          { text: '#[ink(impl)]', startPos: [33, 4], endPos: [33, 4] },
+        ],
+      },
+      {
+        name: 'undeclared method',
+        edits: [{ text: '', startPos: [5, 4], endPos: [7, 23] }],
+        params: { startPos: [32, 8], endPos: [32, 8] },
+        results: [{ text: '', startPos: [32, 8], endPos: [37, 8] }],
+      },
+      {
+        name: 'mismatching parameters',
+        edits: [{ text: '&self, a: u8', startPos: [35, 16], endPos: [35, 25] }],
+        params: { startPos: [35, 16], endPos: [35, 16] },
+        results: [{ text: '(&mut self)', startPos: [35, 15], endPos: [35, 29] }],
+      },
+      {
+        name: 'mismatching return type',
+        edits: [{ text: ' -> u8', startPos: [35, 26], endPos: [35, 26] }],
+        params: { startPos: [35, 27], endPos: [35, 27] },
+        results: [{ text: '', startPos: [35, 27], endPos: [35, 33] }],
+      },
+      {
+        name: 'mismatching attribute arguments',
+        edits: [{ text: ', payable', startPos: [34, 21], endPos: [34, 21] }],
+        params: { startPos: [34, 23], endPos: [34, 23] },
+        results: [{ text: '', startPos: [34, 21], endPos: [34, 30] }],
+      },
     ],
   },
   {
@@ -395,15 +428,22 @@ suite('Code Actions', function () {
             // So when `workspaceEdit.get(docUri)` returns undefined
             // and the expected result contains a snippet (i.e. tab stop and/or placeholder),
             // we hack our way into obtaining a `SnippetTextEdit` object.
+            function assertContainsText(haystack: string, needle: string) {
+              if (needle.length > 0) {
+                assert.include(removeWhitespace(haystack), removeWhitespace(needle));
+              } else {
+                assert.equal(haystack, needle);
+              }
+            }
             if (!edit && (expectedItem.text.includes('$') || expectedItem.isSnippet)) {
               const snippetObject = Object.entries(workspaceEdit)[0][1][0];
               const snippetValue = snippetObject.edit.value as string;
               const snippetRange = snippetObject.range as vscode.Range;
-              assert.include(removeWhitespace(snippetValue), removeWhitespace(expectedItem.text));
+              assertContainsText(snippetValue, expectedItem.text);
               assert.deepEqual(snippetRange, expectedRange);
             } else {
               assert.isObject(edit);
-              assert.include(removeWhitespace(edit.newText), removeWhitespace(expectedItem.text));
+              assertContainsText(edit.newText, expectedItem.text);
               assert.deepEqual(edit.range, expectedRange);
             }
           });
