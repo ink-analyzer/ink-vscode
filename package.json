@@ -95,6 +95,7 @@
     "test": "yarn test-base && node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.11",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
@@ -104,6 +105,7 @@
     "@vscode/test-electron": "^2.3.8",
     "@vscode/vsce": "^2.22.0",
     "adm-zip": "^0.5.10",
+    "chai": "^4.4.0",
     "chalk": "^4.1.2",
     "esbuild": "^0.17.11",
     "eslint": "^8.34.0",

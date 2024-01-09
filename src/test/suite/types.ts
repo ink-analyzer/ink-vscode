@@ -27,4 +27,5 @@ export type TestResult = {
   text: string;
   startPos?: [number, number];
   endPos?: [number, number];
+  isSnippet?: boolean;
 };

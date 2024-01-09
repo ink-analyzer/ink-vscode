@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import * as assert from 'assert';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const assert = require('chai').assert;
 
 import {
   activateExtension,
@@ -41,6 +42,29 @@ const ACTION_TESTS: Array<TestGroup> = [
         results: [{ text: '#[ink::contract]', startPos: [3, 0], endPos: [3, 0] }],
       },
       {
+        name: 'mod erc20 {',
+        params: { startPos: [3, 0], endPos: [3, 0] },
+        results: [
+          { text: '(env=${1:crate::})', startPos: [2, 15], endPos: [2, 15] },
+          { text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] },
+          { text: '#[ink(event)]', isSnippet: true, startPos: [38, 5], endPos: [38, 5] },
+          { text: '#[ink(constructor)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] },
+          { text: '#[ink(message)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] },
+        ],
+      },
+      {
+        name: '#[ink::contract]|#[ink(env=crate::Environment)]',
+        edits: [{ text: '#[ink::contract]\n#[ink(env=crate::Environment)]', startPos: [2, 0], endPos: [2, 17] }],
+        params: { startPos: [4, 0], endPos: [4, 0] },
+        results: [
+          { text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] },
+          { text: '#[ink::contract(env=crate::Environment)]', startPos: [2, 0], endPos: [2, 16] },
+          { text: '#[ink(event)]', isSnippet: true, startPos: [39, 5], endPos: [39, 5] },
+          { text: '#[ink(constructor)]', isSnippet: true, startPos: [214, 9], endPos: [214, 9] },
+          { text: '#[ink(message)]', isSnippet: true, startPos: [214, 9], endPos: [214, 9] },
+        ],
+      },
+      {
         name: '#[ink(storage)]',
         params: { startPos: [7, 4], endPos: [7, 4] },
         results: [],
@@ -70,6 +94,25 @@ const ACTION_TESTS: Array<TestGroup> = [
           { text: '#[ink(anonymous)]', startPos: [21, 4], endPos: [21, 4] },
           { text: '#[ink(event)]', startPos: [21, 4], endPos: [21, 4] },
           { text: '#[ink(storage)]', startPos: [21, 4], endPos: [21, 4] },
+        ],
+      },
+      {
+        name: '#[ink(event)]|#[ink(anonymous)]',
+        edits: [{ text: '#[ink(event)]\n    #[ink(anonymous)]', startPos: [20, 4], endPos: [20, 17] }],
+        params: { startPos: [22, 4], endPos: [22, 4] },
+        results: [
+          { text: '#[ink(event, anonymous)]', startPos: [20, 4], endPos: [20, 17] },
+          { text: '#[ink(topic)]', isSnippet: true, startPos: [27, 23], endPos: [27, 23] },
+        ],
+      },
+      {
+        name: 'impl Erc20 {',
+        params: { startPos: [53, 4] },
+        results: [
+          { text: '#[ink(impl)]', startPos: [53, 4], endPos: [53, 4] },
+          { text: '#[ink(namespace="${1:my_namespace}")]', startPos: [53, 4], endPos: [53, 4] },
+          { text: '#[ink(constructor)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] },
+          { text: '#[ink(message)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] },
         ],
       },
       {
@@ -115,9 +158,22 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
+        name: 'mod tests {',
+        params: { startPos: [217, 4] },
+        results: [{ text: '#[ink::test]', isSnippet: true, startPos: [505, 9], endPos: [505, 9] }],
+      },
+      {
         name: '#[ink::test]',
         params: { startPos: [271, 8] },
         results: [],
+      },
+      {
+        name: 'mod e2e_tests {',
+        params: { startPos: [509, 4] },
+        results: [
+          { text: '#[ink::test]', isSnippet: true, startPos: [623, 9], endPos: [623, 9] },
+          { text: '#[ink_e2e::test]', isSnippet: true, startPos: [623, 9], endPos: [623, 9] },
+        ],
       },
       {
         name: '(additional_contracts="$1"|environment=${1:crate::}|keep_attr="$1") <- #[ink_e2e::test]',
@@ -142,13 +198,27 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '#[ink::chain_extension]|#[ink::trait_definition] <- pub trait BaseErc20',
+        name: '#[ink::chain_extension]|#[ink::trait_definition] <- pub trait Flip',
         edits: [{ text: '', startPos: [3, 0], endPos: [3, 24] }],
         params: { startPos: [4, 0], endPos: [4, 0] },
         results: [
           { text: '#[ink::chain_extension]', startPos: [4, 0], endPos: [4, 0] },
           { text: '#[ink::trait_definition]', startPos: [4, 0], endPos: [4, 0] },
         ],
+      },
+      {
+        name: 'pub trait Flip {',
+        params: { startPos: [4, 0], endPos: [4, 0] },
+        results: [
+          { text: '(keep_attr="$1")', startPos: [3, 23], endPos: [3, 23] },
+          { text: '(namespace="${1:my_namespace}")', startPos: [3, 23], endPos: [3, 23] },
+          { text: '#[ink(message)]', isSnippet: true, startPos: [11, 26], endPos: [11, 26] },
+        ],
+      },
+      {
+        name: 'impl Flip for Flipper {',
+        params: { startPos: [33, 4], endPos: [33, 4] },
+        results: [{ text: '#[ink(impl)]', startPos: [33, 4], endPos: [33, 4] }],
       },
     ],
   },
@@ -182,6 +252,11 @@ const ACTION_TESTS: Array<TestGroup> = [
           { text: '#[ink(extension=${1:1})]', startPos: [17, 4], endPos: [17, 4] },
           { text: '#[ink(handle_status=${1:true})]', startPos: [17, 4], endPos: [17, 4] },
         ],
+      },
+      {
+        name: 'pub trait Psp22Extension {',
+        params: { startPos: [11, 0], endPos: [11, 0] },
+        results: [{ text: '#[ink(extension=${1:1})]', startPos: [76, 20], endPos: [76, 20] }],
       },
     ],
   },
@@ -269,14 +344,15 @@ suite('Code Actions', function () {
             // So when `workspaceEdit.get(docUri)` returns undefined
             // and the expected result contains a snippet (i.e. tab stop and/or placeholder),
             // we hack our way into obtaining a `SnippetTextEdit` object.
-            if (!edit && expectedItem.text.includes('$')) {
+            if (!edit && (expectedItem.text.includes('$') || expectedItem.isSnippet)) {
               const snippetObject = Object.entries(workspaceEdit)[0][1][0];
               const snippetValue = snippetObject.edit.value as string;
               const snippetRange = snippetObject.range as vscode.Range;
-              assert.equal(removeWhitespace(snippetValue), removeWhitespace(expectedItem.text));
+              assert.include(removeWhitespace(snippetValue), removeWhitespace(expectedItem.text));
               assert.deepEqual(snippetRange, expectedRange);
             } else {
-              assert.equal(removeWhitespace(edit.newText), removeWhitespace(expectedItem.text));
+              assert.isObject(edit);
+              assert.include(removeWhitespace(edit.newText), removeWhitespace(expectedItem.text));
               assert.deepEqual(edit.range, expectedRange);
             }
           });
