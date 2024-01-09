@@ -258,6 +258,29 @@ const ACTION_TESTS: Array<TestGroup> = [
         params: { startPos: [11, 0], endPos: [11, 0] },
         results: [{ text: '#[ink(extension=${1:1})]', startPos: [76, 20], endPos: [76, 20] }],
       },
+      {
+        name: 'crate::CustomEnvironment <- self::CustomEnvironment',
+        edits: [{ text: 'self::CustomEnvironment', startPos: [121, 22], endPos: [121, 46] }],
+        params: { startPos: [121, 22], endPos: [121, 22] },
+        results: [
+          { text: 'env=${1:crate::CustomEnvironment}', startPos: [121, 16], endPos: [121, 45] },
+          { text: ', keep_attr="$1"', startPos: [121, 45], endPos: [121, 45] },
+        ],
+      },
+      {
+        name: 'impl ink::env::Environment',
+        edits: [{ text: '', startPos: [108, 0], endPos: [119, 1] }],
+        params: { startPos: [106, 0], endPos: [106, 0] },
+        results: [
+          {
+            text: 'impl ink::env::Environment for CustomEnvironment {',
+            isSnippet: true,
+            startPos: [106, 29],
+            endPos: [106, 29],
+          },
+          { text: '#[ink::storage_item]', startPos: [106, 0], endPos: [106, 0] },
+        ],
+      },
     ],
   },
   {
