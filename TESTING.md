@@ -12,7 +12,7 @@
 - Follow the VS Code extension's ["Development and Testing Guide"](/DEVELOPMENT.md) to set up a test environment.
 - Use the "Run Extension (without Rust Analyzer)" launch configuration to test the extension in an isolated environment (see further instructions in the ["Development and Testing Guide"](/DEVELOPMENT.md)).
 
-**NOTE:** If you're using the Debug Environment option and have already cloned the [VS Code extension repository](https://github.com/ink-analyzer/ink-vscode) in the past, be sure to pull the latest changes, and (if it exists) delete the `/server` directory (this will be automated in a future update) to make sure you get the latest release of the language server.
+**NOTE:** If you're using the Debug Environment option and have already cloned the [VS Code extension repository](https://github.com/ink-analyzer/ink-vscode) in the past, be sure to pull the latest changes to make sure you get the latest release of the language server.
 
 ## Testing
 
@@ -94,13 +94,14 @@ Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]
 
 **Testing examples:**
 
-- Position the cursor on an ink! attribute (e.g. on `#[ink::contract]`) will trigger a "light bulb" with code actions for adding complementary arguments (if any) to the ink! attribute (i.e. `env` and `keep_attr` for `#[ink(contract)]` or `payable`, `default` and `selector` for `#[ink(message)]`).
+- Positioning the cursor on an ink! attribute (e.g. on `#[ink::contract]`) will trigger a "light bulb" with code actions for adding complementary arguments (if any) to the ink! attribute (i.e. `env` and `keep_attr` for `#[ink(contract)]` or `payable`, `default` and `selector` for `#[ink(message)]`).
 - Positioning the cursor on the "declaration" of a Rust item without any other ink! attributes but whose item kind can be annotated with ink! attributes (e.g. `mod`, `struct`, `fn`, `impl` e.t.c) will trigger a "light bulb" with code actions for adding relevant ink! attributes depending on the context (e.g. `Add ink! message attribute` for an `fn` item).
 - Positioning the cursor on the ink! contract `mod` item "declaration" (i.e. on the line `pub mod flipper {`) will trigger a "light bulb" with code actions for adding an `ink! event "struct"`, `ink! message "fn"` or `ink! constructor "fn"` to the ink! contract.
 - After inserting an ink! event (e.g. use code action described above), positioning the cursor on the ink! event `struct` item "declaration" (i.e. on the line `pub struct MyFlipperEvent {`) will trigger a "light bulb" with code actions for adding an `ink! topic "field"`.
 - Positioning the cursor on the item "declaration" of a "test" `mod` (i.e. a `mod` annotated with `#[cfg(test)]` or similar e.g. on the line `mod tests {`) will trigger a "light bulb" with code actions for adding an `ink! test "fn"` to the `mod` item.
 - Positioning the cursor on the item "declaration" of a "test" `mod` with an additional `e2e-tests` feature condition (i.e. a `mod` annotated with `#[cfg(all(test, feature = "e2e-tests"))]` or similar e.g. on the line `mod e2e_tests {`) will trigger a "light bulb" with code actions for adding an `ink! e2e test "fn"` to the `mod` item.
 - Positioning the cursor on the "declaration" of a Rust item with multiple ink! attributes (e.g. `#[ink(event)]\n#[ink(anonymous)]` e.t.c) will trigger a "light bulb" with code actions for "flattening" the ink! attributes.
+- For VS Code version 1.86 or newer, positioning the cursor on an empty new line will trigger a "light bulb" with code actions for inserting relevant ink! entities for the context (e.g. placing the cursor on the new line between `#![cfg_attr(not(feature = "std"), no_std, no_main)]` and `#[ink::contract]` trigger a "light bulb" with code actions for adding an ink! trait definition, ink! chain extension, ink! storage item or a custom ink! environment at the cursor position). **NOTE:** For VS Code versions 1.85.x (or older), you have to right click at the empty new line position, and select "Refactor" from the subsequent context menu to reveal the equivalent code actions.  
 
 ### 6. Inlay Hints
 
