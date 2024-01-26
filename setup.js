@@ -15,10 +15,10 @@ const pipe = promisify(pipeline);
 
 const BINARY_INSTALL_INSTRUCTIONS =
   "You'll need to:\n" +
-  '- clone the ink! Analyzer repository\n' +
-  '- manually build an ink-lsp-server binary\n' +
-  '- copy the binary into the a `./server` directory in the project root\n' +
-  '- make the binary executable\n\n' +
+  '- Clone the ink! Analyzer repository\n' +
+  '- Manually build an ink-lsp-server binary\n' +
+  '- Copy the binary into the `./server` directory in the project root\n' +
+  '- Make the binary executable\n\n' +
   'Please find further instructions at: ' +
   chalk.blue.underline('https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation');
 
@@ -34,24 +34,42 @@ const BINARY_INSTALL_INSTRUCTIONS =
     process.exit(0);
   }
 
-  console.log('🔎 Searching for ink-lsp-server binary ...');
-  const target = getBinaryTarget();
+  let version = process.env.INK_ANALYZER_LSP_SERVER_VERSION;
+  if (!version) {
+    console.log('⌛ Reading package metadata ...');
+    const packageMetadata = getPackageMetadata();
+    version = packageMetadata && packageMetadata.lspServerVersion;
+  }
+  if (!version) {
+    console.log(
+      chalk.yellow('⚠️ Warning:') +
+        ' Failed to determine a target ink-lsp-server version. Make sure the ' +
+        chalk.yellow('`lspServerVersion`') +
+        ' key is set in `package.json` or set the ' +
+        chalk.yellow('`INK_ANALYZER_LSP_SERVER_VERSION`') +
+        ' environment variable.',
+    );
+  }
 
+  console.log('🔎 Searching for ink-lsp-server binary ...');
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   const stat = fs.statSync(serverPath, { throwIfNoEntry: false });
   const binaryExists = stat && stat.isFile();
-  if (binaryExists && verifyBinary(serverPath)) {
-    // Exits successfully if a binary exists at the expected location.
-    exitWithSuccess(serverPath);
-  }
+  if (binaryExists) {
+    if (verifyBinary(serverPath, version)) {
+      // Exits successfully if a binary exists at the expected location.
+      exitWithSuccess(serverPath);
+    }
 
-  // Tries to fix binaries permissions for the existing binary.
-  if (binaryExists && fixBinaryPermissions(serverPath)) {
-    // Exits successfully if the executable permissions were added successfully to the existing binary.
-    exitWithSuccess(serverPath);
+    // Tries to fix binaries permissions for the existing binary.
+    if (fixBinaryPermissions(serverPath, version)) {
+      // Exits successfully if the executable permissions were added successfully to the existing binary.
+      exitWithSuccess(serverPath);
+    }
   }
 
   // Exits with an error if ink! Analyzer doesn't ship ink-lsp-server binaries for this platform.
+  const target = getBinaryTarget();
   if (!target) {
     exitWithError(
       chalk.red("ink! Analyzer doesn't currently ship ink-lsp-server binaries for your platform: ") +
@@ -62,7 +80,7 @@ const BINARY_INSTALL_INSTRUCTIONS =
   }
 
   // Tries to download, decompress and configure the target binary otherwise exits with an error.
-  const newServerPath = await setupBinaryForTarget(target).catch(() => {
+  const newServerPath = await setupBinaryForTarget(target, version).catch(() => {
     exitWithError(
       chalk.red('Failed to setup a binary for your platform: ') + target + '\n' + BINARY_INSTALL_INSTRUCTIONS,
     );
@@ -146,8 +164,17 @@ function exitWithError(message) {
   process.exit(1);
 }
 
+// Parses package.json as JSON.
+function getPackageMetadata() {
+  try {
+    return JSON.parse(fs.readFileSync(path.resolve('./package.json'), 'utf-8'));
+  } catch (e) {
+    console.log(chalk.red('Error:') + ' Failed read package metadata:\n', e.message || e);
+  }
+}
+
 // Verifies that the binary is executable on this platform.
-function verifyBinary(serverPath) {
+function verifyBinary(serverPath, version) {
   console.log('⌛ Verifying binary/executable at: ', serverPath);
   // Skips verification during cross-compilation.
   if (process.env.INK_ANALYZER_ARCH || process.env.INK_ANALYZER_SKIP_VERIFY) {
@@ -162,7 +189,8 @@ function verifyBinary(serverPath) {
   try {
     const result = execSync(`${path.resolve(serverPath)} -V`, { timeout: 500 });
     // `ink-lsp-server -v` returns something like `ink-lsp-server x.y.z` when it works.
-    return result.toString().includes('ink-lsp-server');
+    const output = result.toString();
+    return output.includes('ink-lsp-server') && (!version || output.includes(version));
   } catch (e) {
     console.log(chalk.red('Error:') + ' Binary verification failed:\n', (e.stderr && e.stderr.toString()) || e);
   }
@@ -170,7 +198,7 @@ function verifyBinary(serverPath) {
 }
 
 // Attempts to add executable permissions to the binary.
-function fixBinaryPermissions(serverPath) {
+function fixBinaryPermissions(serverPath, version) {
   // Assume permissions are always fine on works on Windows.
   if (process.platform === 'win32') {
     return true;
@@ -181,7 +209,7 @@ function fixBinaryPermissions(serverPath) {
   try {
     execSync(`chmod +x ${path.resolve(serverPath)}`, { timeout: 100 });
     // The binary should be able to pass verification after the above command.
-    return verifyBinary(serverPath);
+    return verifyBinary(serverPath, version);
   } catch (e) {
     console.log(chalk.red('Error:') + ' Failed to fix binary permissions:\n', (e.stderr && e.stderr.toString()) || e);
   }
@@ -189,11 +217,13 @@ function fixBinaryPermissions(serverPath) {
 }
 
 // Downloads, decompresses and configures an ink-lsp-server for the target platform.
-async function setupBinaryForTarget(target, retryCount = 0) {
+async function setupBinaryForTarget(target, version, retryCount = 0) {
   if (retryCount) {
     console.log(`📡 Download retry #${retryCount}: ink-lsp-server binary for ${target} ...`);
   } else {
-    console.log(`📦 Downloading ink-lsp-server binary for ${target} ...`);
+    console.log(
+      `📦 Downloading ink-lsp-server binary (${version ? `version ${version}` : 'latest'}) for ${target} ...`,
+    );
   }
 
   // Cleans server directory.
@@ -207,7 +237,7 @@ async function setupBinaryForTarget(target, retryCount = 0) {
   let archivePath;
   const serverPath = path.resolve(`./server/ink-lsp-server${process.platform === 'win32' ? '.exe' : ''}`);
   try {
-    asset = await getLatestBinaryDownloadUrl(target);
+    asset = await getBinaryDownloadUrl(target, version);
     archivePath = path.resolve(`./server/${asset.name}`);
     await downloadAsset(asset.browser_download_url, archivePath);
   } catch (e) {
@@ -218,7 +248,7 @@ async function setupBinaryForTarget(target, retryCount = 0) {
     if (numTries > 10) {
       throw e;
     } else {
-      return setupBinaryForTarget(target, numTries);
+      return setupBinaryForTarget(target, version, numTries);
     }
   }
 
@@ -274,18 +304,25 @@ async function setupBinaryForTarget(target, retryCount = 0) {
   throw new Error('Failed to setup binary');
 }
 
-// Returns (if any) the download URL for the latest ink-lsp-server binary for this platform/target.
-async function getLatestBinaryDownloadUrl(target) {
+// Returns (if any) the download URL for the ink-lsp-server binary version for
+// the specified platform/target and version (defaults to latest).
+async function getBinaryDownloadUrl(target, version) {
   try {
-    // Ref: https://docs.github.com/en/free-pro-team@latest/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
+    // Ref: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
+    // Ref: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-a-release-by-tag-name
     let headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'ink! Analyzer' };
     // CLI runners sometimes hit rate limits due to shared IPs, so we use the GitHub token when available in that context.
     if (process.env.GITHUB_TOKEN) {
       headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
     }
-    const res = await fetch('https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/latest', {
-      headers,
-    });
+    const res = await fetch(
+      `https://api.github.com/repos/ink-analyzer/ink-analyzer/releases/${
+        version ? `tags/lsp-server-v${version}` : 'latest'
+      }`,
+      {
+        headers,
+      },
+    );
     if (res) {
       const data = await res.json();
       if (data.assets) {
@@ -304,7 +341,7 @@ async function getLatestBinaryDownloadUrl(target) {
     throw e;
   }
 
-  throw new Error('Failed to get latest binary download url');
+  throw new Error(`Failed to get ${version || 'latest'} binary download url`);
 }
 
 // Downloads an asset to a destination path.
