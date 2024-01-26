@@ -16,7 +16,7 @@
 
 ## Testing
 
-The instructions below are written for the [flipper contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/flipper/lib.rs), so open that in VS Code first.
+The instructions below are written for the [flipper contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/flipper/lib.rs) (unless stated otherwise), so open that in VS Code first.
 
 ### 1. Commands
 
