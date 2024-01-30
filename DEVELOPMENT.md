@@ -1,4 +1,4 @@
-# ink! Analyzer for Visual Studio Code: Development and Automated Testing Guide
+# ink! Analyzer for Visual Studio Code: Development, Debugging and Automated Testing Guide
 
 ## Prerequisites
 

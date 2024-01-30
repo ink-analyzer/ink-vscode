@@ -9,8 +9,8 @@
 
 ### Option 2: Debug Environment
 
-- Follow the VS Code extension's ["Development and Testing Guide"](/DEVELOPMENT.md) to set up a test environment.
-- Use the "Run Extension (without Rust Analyzer)" launch configuration to test the extension in an isolated environment (see further instructions in the ["Development and Testing Guide"](/DEVELOPMENT.md)).
+- Follow the VS Code extension's ["Development, Debugging and Automated Testing Guide"](/DEVELOPMENT.md) to set up a test environment.
+- Use the "Run Extension (without Rust Analyzer)" launch configuration to test the extension in an isolated environment (see further instructions in the ["Development, Debugging and Automated Testing Guide"](/DEVELOPMENT.md)).
 
 **NOTE:** If you're using the Debug Environment option and have already cloned the [VS Code extension repository](https://github.com/ink-analyzer/ink-vscode) in the past, be sure to pull the latest changes to make sure you get the latest release of the language server.
 
