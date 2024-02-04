@@ -50,6 +50,7 @@ export async function initializeProject(client: lsp_types.LanguageClient, manage
     // Ref: https://github.com/microsoft/vscode-languageserver-node/issues/1272
     // Ref: https://github.com/microsoft/vscode-languageserver-node/pull/1273
     // FIXME: Remove this and intercept and save workspace edits in middleware when `middleware.workspace.handleApplyEdit` ships.
+    // NOTE: Expected in `vscode-languageclient` version 9.0.2
     // Tracks creation of project files.
     let hasCreatedLib = false;
     let hasCreatedCargo = false;
