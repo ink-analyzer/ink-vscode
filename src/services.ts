@@ -45,8 +45,8 @@ export async function initializeProject(client: lsp_types.LanguageClient, manage
     // Delete placeholder activation file if request is successful.
     fs.unlinkSync(path.join(projectPath, NEW_PROJECT_ACTIVATION_FILE));
 
-    // This is a hack to save the workspace edit (VS Code doesn't do this automatically)
-    // that the language server sends in response to a successful request.
+    // This is a hack to save the workspace edit that the language server sends in response to a successful request
+    // (VS Code doesn't do this automatically).
     // Ref: https://github.com/microsoft/vscode-languageserver-node/issues/1272
     // Ref: https://github.com/microsoft/vscode-languageserver-node/pull/1273
     // FIXME: Remove this and intercept and save workspace edits in middleware when `middleware.workspace.handleApplyEdit` ships.

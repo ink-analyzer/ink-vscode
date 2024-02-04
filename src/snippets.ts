@@ -73,7 +73,7 @@ export function tokenize(snippet: string): SnippetToken[] {
   return snippetTokens;
 }
 
-// Parses snippet text (if any) into a `vscode.SnippetString` if and only if it has at least one tab stop or placeholder.
+// Parses snippet text (if any) into a `vscode.SnippetString` if it has at least one tab stop or placeholder.
 // Ref: https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax
 export function parse(text: string, indentingConfig?: IndentingConfig): vscode.SnippetString | undefined {
   const tokens = tokenize(text);
@@ -132,9 +132,10 @@ type IndentingConfig = {
   prevCharacter?: string;
 };
 
-// Determines whether, indenting/formatting for snippets needs to be "de-normalized" based on the snippet, text document and an insert position.
-// "De-normalizing" of indenting/formatting is necessary because VS Code "normalizes" whitespace/indenting for snippet edits
-// by auto inserting extra whitespace/indenting after new lines (this behaviour can't be disabled).
+// Determines whether, indenting/formatting for snippets needs to be "de-normalized" based on the snippet,
+// text document and an insert position.
+// "De-normalizing" of indenting/formatting is necessary because VS Code "normalizes" whitespace/indenting
+// for snippet edits by auto inserting extra whitespace/indenting after new lines (this behaviour can't be disabled).
 // So we remove either top-level or one level of indenting (i.e. tabs and spaces after new lines) on all lines,
 // and let VSCode handle the indenting/formatting.
 // Ref: https://github.com/microsoft/vscode/issues/145374#issuecomment-1255322331

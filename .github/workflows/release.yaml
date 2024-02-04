@@ -65,7 +65,8 @@ jobs:
           npm_config_arch: ${{ matrix.npm-config-arch }}
         run: yarn install --frozen-lockfile
 
-      # Auto-downloads the platform specific language server (see https://github.com/ink-analyzer/ink-vscode/blob/master/setup.js).
+      # Auto-downloads the platform specific language server
+      # (see https://github.com/ink-analyzer/ink-vscode/blob/master/setup.js).
       - name: Build packages
         env:
           npm_config_arch: ${{ matrix.npm-config-arch }}

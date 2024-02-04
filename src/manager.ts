@@ -85,8 +85,9 @@ export default class ExtensionManager {
         // Shows error message if server binary is missing.
         const message =
           'No ink! Language Server binary found.\n\n' +
-          'Please follow [these instructions](https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation) to install the ink! Language Server.\n\n' +
-          'Then set `ink-analyzer.server.path` in your extension settings to the path to the installed executable binary.';
+          'Please follow [these instructions](https://github.com/ink-analyzer/ink-analyzer/tree/master/crates/lsp-server#installation)' +
+          ' to install the ink! Language Server.\n\n' +
+          'Then set `ink-analyzer.server.path` in your settings to the path to the installed executable binary.';
         vscode.window.showErrorMessage(message, 'Got it');
 
         // Update state with error details.
@@ -167,7 +168,8 @@ export default class ExtensionManager {
 
   async restart() {
     // Stop and dispose existing client.
-    // We dispose the existing client because user may be restarting because some settings have changed (e.g. the language server path).
+    // We dispose the existing client because user may be restarting because some settings have changed
+    // (e.g. the language server path).
     if (this.client) {
       await this.client?.stop();
       await this.client.dispose();

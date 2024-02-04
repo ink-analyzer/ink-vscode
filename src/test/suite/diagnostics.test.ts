@@ -22,7 +22,8 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
         name: 'missing `#[ink::contract]`',
         // Removes `#[ink::contract]`.
         edits: [{ text: '', startPos: [2, 0], endPos: [2, 17] }],
-        // Expects 10 diagnostic errors/warnings (i.e 1 storage, 2 events, 1 constructor and 6 messages without a contract parent).
+        // Expects 10 diagnostic errors/warnings
+        // (i.e 1 storage, 2 events, 1 constructor and 6 messages without a contract parent).
         results: 10,
       },
       {

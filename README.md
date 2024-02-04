@@ -96,8 +96,10 @@
 
 This extension provides the following settings:
 
-- `ink-analyzer.server.path`: **(Optional)** Sets the path to ink! Language Server (ink-lsp-server) binary/executable (points to the bundled binary/executable that ships with the extension by default).
-- `ink-analyzer.trace.server`: **(Optional)** Enables/disables tracing of the communication between VS Code and the ink! Language Server (not recommended for regular users).
+- `ink-analyzer.server.path`: **(Optional)** Sets the path to ink! Language Server (ink-lsp-server) binary/executable
+  (points to the bundled binary/executable that ships with the extension by default).
+- `ink-analyzer.trace.server`: **(Optional)** Enables/disables tracing of the communication between VS Code and
+  the ink! Language Server (not recommended for regular users).
 
 ## Development and Testing
 
@@ -109,9 +111,8 @@ Licensed under [GPL-3.0](/LICENSE).
 
 ## Contribution
 
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work by you, as defined in the GPL-3.0 license, shall be
-licensed as above, without any additional terms or conditions.
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you,
+as defined in the GPL-3.0 license, shall be licensed as above, without any additional terms or conditions.
 
 ## Acknowledgements
 

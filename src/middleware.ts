@@ -3,7 +3,7 @@ import * as lsp_types from 'vscode-languageclient/node';
 
 import * as snippets from './snippets';
 
-// Code Actions middleware that adds support for snippets (tab stops and/or placeholders) in text edits returned by code actions.
+// Code Actions middleware that adds support for snippets (tab stops and/or placeholders) in text edits in code actions.
 // LSP (v3.17) only supports snippets in completions.
 // Ref: https://github.com/microsoft/language-server-protocol/issues/592
 // Ref: https://github.com/microsoft/language-server-protocol/issues/724
