@@ -2,7 +2,8 @@
 
 [ink!](https://use.ink/) language support for Visual Studio Code.
 
-[ink!](https://use.ink/) is a programming language used for writing smart contracts for blockchains built with [Substrate](https://substrate.io/).
+[ink!](https://use.ink/) is a programming language used for writing smart contracts for blockchains built with
+[Substrate](https://substrate.io/).
 
 ## Features
 
@@ -13,8 +14,16 @@
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
 - inlay hints - inline type and format information for ink! attribute arguments values (e.g. `u32 | _` for ink! selector).
 - signature help - popup information for valid ink! attribute arguments for the current context/cursor position.
+- commands - triggers for custom functionality like creating a new ink! project with a contract stub or
+  restarting/stopping the ink! language server.
 
 ## Screenshots
+
+### Commands
+
+![command palette](/images/screenshots/command-palette.png 'command palette')
+
+![status bar commands](/images/screenshots/status-bar-item.png 'status bar commands')
 
 ### Completions
 
@@ -90,7 +99,9 @@
 
 ## Recommendations
 
-[ink!](https://use.ink/) is built on top of [Rust](https://www.rust-lang.org/), so you'll have a much better experience with both [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer) and ink! analyzer enabled.
+[ink!](https://use.ink/) is built on top of [Rust](https://www.rust-lang.org/), so you'll have a much better experience
+with both [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer) and
+ink! analyzer enabled.
 
 ## Extension Settings
 
