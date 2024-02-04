@@ -65,6 +65,17 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
+        name: 'root level empty line',
+        // i.e. empty line between `#![cfg_attr(not(feature = "std"), no_std, no_main)]` and `#[ink::contract]`
+        params: { startPos: [1, 0], endPos: [1, 0] },
+        results: [
+          { text: '#[ink::trait_definition]', isSnippet: true, startPos: [1, 0], endPos: [1, 0] },
+          { text: '#[ink::chain_extension]', isSnippet: true, startPos: [1, 0], endPos: [1, 0] },
+          { text: '#[ink::storage_item]', isSnippet: true, startPos: [1, 0], endPos: [1, 0] },
+          { text: 'impl ink::env::Environment for ', isSnippet: true, startPos: [1, 0], endPos: [1, 0] },
+        ],
+      },
+      {
         name: '#[ink(storage)]',
         params: { startPos: [7, 4], endPos: [7, 4] },
         results: [],
@@ -104,6 +115,12 @@ const ACTION_TESTS: Array<TestGroup> = [
           { text: '#[ink(event, anonymous)]', startPos: [20, 4], endPos: [20, 17] },
           { text: '#[ink(topic)]', isSnippet: true, startPos: [27, 23], endPos: [27, 23] },
         ],
+      },
+      {
+        name: 'mod level empty line',
+        // i.e. empty line between `Erc20` storage struct and `Transfer` event struct.
+        params: { startPos: [18, 0], endPos: [18, 0] },
+        results: [{ text: '#[ink(event)]', isSnippet: true, startPos: [18, 0], endPos: [18, 0] }],
       },
       {
         name: 'impl Erc20 {',
@@ -155,6 +172,15 @@ const ACTION_TESTS: Array<TestGroup> = [
           { text: '#[ink(message)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(payable)]', startPos: [74, 8], endPos: [74, 8] },
           { text: '#[ink(selector=${1:1})]', startPos: [74, 8], endPos: [74, 8] },
+        ],
+      },
+      {
+        name: 'impl level empty line',
+        // i.e. empty line between `new` constructor fn and `total_supply` message fn.
+        params: { startPos: [71, 0], endPos: [71, 0] },
+        results: [
+          { text: '#[ink(constructor)]', isSnippet: true, startPos: [71, 0], endPos: [71, 0] },
+          { text: '#[ink(message)]', isSnippet: true, startPos: [71, 0], endPos: [71, 0] },
         ],
       },
       {
