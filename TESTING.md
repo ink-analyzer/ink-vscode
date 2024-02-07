@@ -28,10 +28,15 @@ The instructions below are written for the
 
 ### 1. Commands
 
-You can view a list of all available commands by typing `ink!` into the
-["Command Palette"](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
-(i.e. type `Cmd/Ctrl + Shift + P` and then type `ink!`), or hovering over the `ink! analyzer`
-["Status Bar"](https://code.visualstudio.com/docs/getstarted/userinterface) item.
+You can view a list of all available commands in one of the following ways:
+
+- Typing `>ink!` into the ["Command Palette"](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
+  (notice the preceding `>` before `ink!` in this case).
+- Clicking in the "Command Palette", then selecting `Show and Run Commands >`, and then typing `ink!`
+  (after the now prefilled `>`).
+- Typing `Cmd/Ctrl + Shift + P` to navigate directly into the `Show and Run Commands >` section of
+  the "Command Palette", and then type `ink!`.
+- Hovering over the `ink! analyzer` ["Status Bar"](https://code.visualstudio.com/docs/getstarted/userinterface) item.
 
 ![command palette](/images/screenshots/command-palette.png 'command palette')
 
