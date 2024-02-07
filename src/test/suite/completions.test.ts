@@ -141,14 +141,14 @@ const COMPLETION_TESTS: Array<TestGroup> = [
     testCases: [
       {
         name: 'ink::storage_item',
-        edits: [{ text: '#[ink]', startPos: [8, 0], endPos: [8, 20] }],
-        params: { startPos: [8, 5] },
+        edits: [{ text: '#[ink]', startPos: [4, 0], endPos: [4, 20] }],
+        params: { startPos: [4, 5] },
         results: [{ text: 'ink::storage_item' }],
       },
       {
         name: 'derive=true',
-        edits: [{ text: '#[ink::storage_item()]', startPos: [8, 0], endPos: [8, 20] }],
-        params: { startPos: [8, 20] },
+        edits: [{ text: '#[ink::storage_item()]', startPos: [4, 0], endPos: [4, 20] }],
+        params: { startPos: [4, 20] },
         results: [{ text: 'derive=true' }],
       },
     ],

@@ -375,18 +375,18 @@ const ACTION_TESTS: Array<TestGroup> = [
     testCases: [
       {
         name: '(derive=${1:true}) <- #[ink::storage_item]',
-        params: { startPos: [8, 0], endPos: [8, 0] },
-        results: [{ text: '(derive=${1:true})', startPos: [8, 19], endPos: [8, 19] }],
+        params: { startPos: [4, 0], endPos: [4, 0] },
+        results: [{ text: '(derive=${1:true})', startPos: [4, 19], endPos: [4, 19] }],
       },
       {
         name: '#[ink::storage_item]|#[ink(anonymous|event|storage)] <- struct Contract(',
-        edits: [{ text: '', startPos: [8, 0], endPos: [8, 20] }],
-        params: { startPos: [10, 0], endPos: [10, 0] },
+        edits: [{ text: '', startPos: [4, 0], endPos: [4, 20] }],
+        params: { startPos: [6, 0], endPos: [6, 0] },
         results: [
-          { text: '#[ink::storage_item]', startPos: [10, 0], endPos: [10, 0] },
-          { text: '#[ink(anonymous)]', startPos: [10, 0], endPos: [10, 0] },
-          { text: '#[ink(event)]', startPos: [10, 0], endPos: [10, 0] },
-          { text: '#[ink(storage)]', startPos: [10, 0], endPos: [10, 0] },
+          { text: '#[ink::storage_item]', startPos: [6, 0], endPos: [6, 0] },
+          { text: '#[ink(anonymous)]', startPos: [6, 0], endPos: [6, 0] },
+          { text: '#[ink(event)]', startPos: [6, 0], endPos: [6, 0] },
+          { text: '#[ink(storage)]', startPos: [6, 0], endPos: [6, 0] },
         ],
       },
     ],

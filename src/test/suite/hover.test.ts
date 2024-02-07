@@ -170,13 +170,13 @@ const HOVER_TESTS: Array<TestGroup> = [
     testCases: [
       {
         name: '#[ink::storage_item]',
-        params: { startPos: [8, 8] },
+        params: { startPos: [4, 8] },
         results: [{ text: '`#[ink::storage_item]`' }],
       },
       {
         name: '#[ink::storage_item(derive = flag: bool)]',
-        edits: [{ text: '#[ink::storage_item(derive=false)]', startPos: [8, 0], endPos: [8, 20] }],
-        params: { startPos: [8, 22] },
+        edits: [{ text: '#[ink::storage_item(derive=false)]', startPos: [4, 0], endPos: [4, 20] }],
+        params: { startPos: [4, 22] },
         results: [{ text: '`#[ink::storage_item(derive = flag: bool)]`' }],
       },
     ],

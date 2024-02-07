@@ -88,8 +88,8 @@ const SIGNATURE_HELP_TESTS: Array<TestGroup> = [
     testCases: [
       {
         name: 'derive: bool',
-        edits: [{ text: '#[ink::storage_item()]', startPos: [8, 0], endPos: [8, 20] }],
-        params: { startPos: [8, 20] },
+        edits: [{ text: '#[ink::storage_item()]', startPos: [4, 0], endPos: [4, 20] }],
+        params: { startPos: [4, 20] },
         results: [{ text: 'derive: bool' }],
       },
     ],

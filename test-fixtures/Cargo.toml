@@ -7,3 +7,5 @@ members = [
   "psp22-extension",
   "trait-flipper"
 ]
+
+resolver = "2"

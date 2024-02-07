@@ -124,8 +124,8 @@ const INLAY_HINTS_TESTS: Array<TestGroup> = [
       },
       {
         name: '#[ink::storage_item(derive=false)]',
-        edits: [{ text: '#[ink::storage_item(derive=false)]', startPos: [8, 0], endPos: [8, 20] }],
-        results: [{ text: ': bool', startPos: [8, 26] }],
+        edits: [{ text: '#[ink::storage_item(derive=false)]', startPos: [4, 0], endPos: [4, 20] }],
+        results: [{ text: ': bool', startPos: [4, 26] }],
       },
     ],
   },
