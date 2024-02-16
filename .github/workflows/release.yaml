@@ -52,12 +52,12 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
           cache: yarn
 
       - name: Install dependencies
@@ -78,7 +78,7 @@ jobs:
         run: npx vsce package --yarn -o ink-analyzer-${{ matrix.vsce-target }}.vsix --target ${{ matrix.vsce-target }}
 
       - name: Upload packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ink-analyzer-${{ matrix.vsce-target }}.vsix
           path: ink-analyzer-${{ matrix.vsce-target }}.vsix
@@ -88,12 +88,12 @@ jobs:
     needs: [test, build]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 18
           cache: yarn
 
       - name: Install dependencies
@@ -102,31 +102,31 @@ jobs:
         run: yarn install --frozen-lockfile
 
       # Download Windows packages.
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-win32-x64.vsix
           path: dist
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-win32-arm64.vsix
           path: dist
 
       # Download Linux packages.
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-linux-x64.vsix
           path: dist
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-linux-arm64.vsix
           path: dist
 
       # Download macOS packages.
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-darwin-x64.vsix
           path: dist
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ink-analyzer-darwin-arm64.vsix
           path: dist
@@ -137,7 +137,7 @@ jobs:
 
       - name: Extract release notes from the changelog
         id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v1
+        uses: ffurrer2/extract-release-notes@v2
         with:
           changelog_file: CHANGELOG.md
 
