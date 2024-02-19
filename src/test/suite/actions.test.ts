@@ -22,13 +22,13 @@ const ACTION_TESTS: Array<TestGroup> = [
     // Defines test cases for the ink! entity file.
     testCases: [
       {
-        name: '(env=${1:crate::}|keep_attr="$1") <- #[ink::contract]',
+        name: '(env=${1:ink::env::DefaultEnvironment}|keep_attr="$1") <- #[ink::contract]',
         // Makes no modifications.
         // Sets the selection range at the beginning of `#[ink::contract]`.
         params: { startPos: [2, 0], endPos: [2, 0] },
         // Describes the expected code actions.
         results: [
-          { text: '(env=${1:crate::})', startPos: [2, 15], endPos: [2, 15] },
+          { text: '(env=${1:ink::env::DefaultEnvironment})', startPos: [2, 15], endPos: [2, 15] },
           { text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] },
         ],
       },
@@ -45,7 +45,7 @@ const ACTION_TESTS: Array<TestGroup> = [
         name: 'mod erc20 {',
         params: { startPos: [3, 0], endPos: [3, 0] },
         results: [
-          { text: '(env=${1:crate::})', startPos: [2, 15], endPos: [2, 15] },
+          { text: '(env=${1:ink::env::DefaultEnvironment})', startPos: [2, 15], endPos: [2, 15] },
           { text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] },
           { text: '#[ink(event)]', isSnippet: true, startPos: [38, 5], endPos: [38, 5] },
           { text: '#[ink(constructor)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] },
@@ -202,11 +202,11 @@ const ACTION_TESTS: Array<TestGroup> = [
         ],
       },
       {
-        name: '(additional_contracts="$1"|environment=${1:crate::}|keep_attr="$1") <- #[ink_e2e::test]',
+        name: '(additional_contracts="$1"|environment=${1:ink::env::DefaultEnvironment}|keep_attr="$1") <- #[ink_e2e::test]',
         params: { startPos: [513, 8] },
         results: [
           { text: '(additional_contracts="$1")', startPos: [513, 23], endPos: [513, 23] },
-          { text: '(environment=${1:crate::})', startPos: [513, 23], endPos: [513, 23] },
+          { text: '(environment=${1:ink::env::DefaultEnvironment})', startPos: [513, 23], endPos: [513, 23] },
           { text: '(keep_attr="$1")', startPos: [513, 23], endPos: [513, 23] },
         ],
       },

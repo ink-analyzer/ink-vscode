@@ -29,10 +29,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'ink::contract' }],
       },
       {
-        name: 'env=crate::|keep_attr=""',
+        name: 'env=ink::env::DefaultEnvironment|keep_attr=""',
         edits: [{ text: '#[ink::contract()]', startPos: [2, 0], endPos: [2, 17] }],
         params: { startPos: [2, 16] },
-        results: [{ text: 'env=crate::' }, { text: 'keep_attr=""' }],
+        results: [{ text: 'env=ink::env::DefaultEnvironment' }, { text: 'keep_attr=""' }],
       },
       {
         name: 'storage',
@@ -83,10 +83,14 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'test' }],
       },
       {
-        name: 'additional_contracts=""|environment=crate::|keep_attr="" <- #[ink_e2e::test()]',
+        name: 'additional_contracts=""|environment=ink::env::DefaultEnvironment|keep_attr="" <- #[ink_e2e::test()]',
         edits: [{ text: '#[ink_e2e::test()]', startPos: [513, 8], endPos: [513, 24] }],
         params: { startPos: [513, 24] },
-        results: [{ text: 'additional_contracts=""' }, { text: 'environment=crate::' }, { text: 'keep_attr=""' }],
+        results: [
+          { text: 'additional_contracts=""' },
+          { text: 'environment=ink::env::DefaultEnvironment' },
+          { text: 'keep_attr=""' },
+        ],
       },
     ],
   },

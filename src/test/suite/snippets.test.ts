@@ -11,7 +11,10 @@ const SNIPPET_TESTS: SnippetsTest[] = [
     snippet: 'handle_status=${1:true}',
     tokens: [SnippetToken.asText('handle_status='), SnippetToken.asPlaceholder('true', 1)],
   },
-  { snippet: 'env=${1:crate::}', tokens: [SnippetToken.asText('env='), SnippetToken.asPlaceholder('crate::', 1)] },
+  {
+    snippet: 'env=${1:ink::env::DefaultEnvironment}',
+    tokens: [SnippetToken.asText('env='), SnippetToken.asPlaceholder('ink::env::DefaultEnvironment', 1)],
+  },
   {
     snippet: 'keep_attr="$1"',
     tokens: [SnippetToken.asText('keep_attr="'), SnippetToken.asTabStop(1), SnippetToken.asText('"')],
@@ -37,10 +40,10 @@ const SNIPPET_TESTS: SnippetsTest[] = [
     ],
   },
   {
-    snippet: 'env=${1:crate::}, keep_attr="$2"',
+    snippet: 'env=${1:ink::env::DefaultEnvironment}, keep_attr="$2"',
     tokens: [
       SnippetToken.asText('env='),
-      SnippetToken.asPlaceholder('crate::', 1),
+      SnippetToken.asPlaceholder('ink::env::DefaultEnvironment', 1),
       SnippetToken.asText(', keep_attr="'),
       SnippetToken.asTabStop(2),
       SnippetToken.asText('"'),
