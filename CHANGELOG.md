@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.27] - 2024-03-16
+## [0.1.27] - 2024-03-16
 
 - 🎉 Support for [ink! v5](https://github.com/paritytech/ink/releases/tag/v5.0.0)
 - Performance improvements and general and robustness updates for semantic analyzer and language server.
