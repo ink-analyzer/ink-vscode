@@ -12,7 +12,8 @@
 - completions - completion suggestions for ink! attribute macros and arguments.
 - code/intent actions - contextual assists for adding relevant ink! attribute macros and arguments to relevant items.
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
-- inlay hints - inline type and format information for ink! attribute arguments values (e.g. `u32 | _` for ink! selector).
+- inlay hints - inline type and format information for ink! attribute arguments values 
+  (e.g. `u32 | _| @` for ink! message selectors).
 - signature help - popup information for valid ink! attribute arguments for the current context/cursor position.
 - commands - triggers for custom functionality like creating a new ink! project with a contract stub or
   restarting/stopping the ink! language server.
