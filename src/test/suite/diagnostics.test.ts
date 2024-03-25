@@ -2,143 +2,226 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 
 import { activateExtension, applyTestEdits, getDocumentUri, openDocument, setDocumentContent, sleep } from './utils';
-import { TestGroup } from './types';
+import { TestCase, TestGroup } from './types';
 
 // Describes a collection of diagnostics tests to run against
 // optionally modified ink! smart contract code in the `test-fixtures` directory in the project root.
+const ERC20_TESTS: Array<TestCase> = [
+  {
+    name: 'well defined contract',
+    // Makes no modifications.
+    // Expects no diagnostic errors/warnings.
+    results: 0,
+  },
+  {
+    name: 'missing `#[ink::contract]`',
+    // Removes `#[ink::contract]`.
+    edits: [{ text: '', startPos: [2, 0], endPos: [2, 17] }],
+    // Expects 10 diagnostic errors/warnings
+    // (i.e 1 storage, 2 events, 1 constructor and 6 messages without a contract parent).
+    results: 10,
+  },
+  {
+    name: 'missing `#[ink(storage)]`',
+    // Removes `#[ink(storage)]`.
+    edits: [{ text: '', startPos: [7, 4], endPos: [7, 19] }],
+    // missing storage.
+    results: 1,
+  },
+  {
+    name: 'no ink! constructor(s)',
+    // Removes `#[ink(constructor)]`.
+    edits: [{ text: '', startPos: [55, 8], endPos: [55, 27] }],
+    // no constructor(s).
+    results: 1,
+  },
+  {
+    name: 'no ink! message(s)',
+    // Removes all `#[ink(message)]` annotations.
+    edits: [
+      { text: '', startPos: [73, 8], endPos: [73, 23] },
+      { text: '', startPos: [81, 8], endPos: [81, 23] },
+      { text: '', startPos: [102, 8], endPos: [102, 23] },
+      { text: '', startPos: [128, 8], endPos: [128, 23] },
+      { text: '', startPos: [141, 8], endPos: [141, 23] },
+      { text: '', startPos: [167, 8], endPos: [167, 23] },
+    ],
+    // no message(s).
+    results: 1,
+  },
+];
+const TRAIT_ERC20_TESTS: Array<TestCase> = [
+  {
+    name: 'well defined trait definition',
+    // Makes no modifications.
+    // Expects no diagnostic errors/warnings.
+    results: 0,
+  },
+  {
+    name: 'missing `#[ink::trait_definition]`',
+    // Removes `#[ink::trait_definition]`.
+    edits: [{ text: '', startPos: [3, 0], endPos: [3, 24] }],
+    // 6 messages without a trait definition nor impl parent.
+    results: 6,
+  },
+  {
+    name: 'no ink! message(s)',
+    // Removes all `#[ink(message)]` annotations from the implementation.
+    edits: [
+      { text: '', startPos: [6, 4], endPos: [6, 19] },
+      { text: '', startPos: [10, 4], endPos: [10, 19] },
+      { text: '', startPos: [14, 4], endPos: [14, 19] },
+      { text: '', startPos: [18, 4], endPos: [18, 19] },
+      { text: '', startPos: [23, 4], endPos: [23, 19] },
+      { text: '', startPos: [27, 4], endPos: [27, 19] },
+    ],
+    // 1 trait level "missing message(s)", 6 method level "not a message" errors.
+    results: 7,
+  },
+];
+const PSP22_CHAIN_EXTENSION_TESTS: Array<TestCase> = [
+  {
+    name: 'well defined chain extension',
+    // Makes no modifications.
+    // Expects no diagnostic errors/warnings.
+    results: 0,
+  },
+  {
+    name: 'missing `ErrorCode` type',
+    edits: [{ text: '', startPos: [12, 4], endPos: [12, 32] }],
+    // missing `ErrorCode` type.
+    results: 1,
+  },
+];
 const DIAGNOSTICS_TESTS: Array<TestGroup> = [
   {
-    // Reads source code from the `erc20/lib.rs` contract in `test-fixtures` directory.
-    source: 'erc20',
+    // Reads source code from the `v5/erc20/lib.rs` contract in `test-fixtures` directory.
+    source: 'v5/erc20',
     // Defines test cases for the ink! entity file.
+    testCases: ERC20_TESTS.concat([
+      {
+        name: 'conflicting `anonymous` and `signature_topic`',
+        edits: [
+          {
+            text: '#[ink::event(anonymous, signature_topic="1111111111111111111111111111111111111111111111111111111111111111")]',
+            startPos: [20, 4],
+            endPos: [20, 17],
+          },
+        ],
+        // conflicting `anonymous` and `signature_topic` arguments.
+        results: 1,
+      },
+    ]),
+  },
+  {
+    source: 'v4/erc20',
+    testCases: ERC20_TESTS,
+  },
+  {
+    source: 'v5/events/event-def/src',
     testCases: [
       {
-        name: 'well defined contract',
+        name: 'well defined event 2.0',
         // Makes no modifications.
         // Expects no diagnostic errors/warnings.
         results: 0,
       },
       {
-        name: 'missing `#[ink::contract]`',
-        // Removes `#[ink::contract]`.
-        edits: [{ text: '', startPos: [2, 0], endPos: [2, 17] }],
-        // Expects 10 diagnostic errors/warnings
-        // (i.e 1 storage, 2 events, 1 constructor and 6 messages without a contract parent).
-        results: 10,
-      },
-      {
-        name: 'missing `#[ink(storage)]`',
-        // Removes `#[ink(storage)]`.
-        edits: [{ text: '', startPos: [7, 4], endPos: [7, 19] }],
-        // missing storage.
-        results: 1,
-      },
-      {
-        name: 'no ink! constructor(s)',
-        // Removes `#[ink(constructor)]`.
-        edits: [{ text: '', startPos: [55, 8], endPos: [55, 27] }],
-        // no constructor(s).
-        results: 1,
-      },
-      {
-        name: 'no ink! message(s)',
-        // Removes all `#[ink(message)]` annotations.
+        name: 'conflicting `anonymous` and `signature_topic`',
         edits: [
-          { text: '', startPos: [73, 8], endPos: [73, 23] },
-          { text: '', startPos: [81, 8], endPos: [81, 23] },
-          { text: '', startPos: [102, 8], endPos: [102, 23] },
-          { text: '', startPos: [128, 8], endPos: [128, 23] },
-          { text: '', startPos: [141, 8], endPos: [141, 23] },
-          { text: '', startPos: [167, 8], endPos: [167, 23] },
+          {
+            text: '#[ink::event(anonymous, signature_topic="1111111111111111111111111111111111111111111111111111111111111111")]',
+            startPos: [2, 0],
+            endPos: [2, 13],
+          },
         ],
-        // no message(s).
+        // conflicting `anonymous` and `signature_topic` arguments.
         results: 1,
       },
     ],
   },
   {
-    source: 'flipper',
+    source: 'v5/wildcard-selector',
     testCases: [
       {
-        name: 'well defined contract',
+        name: 'well defined wildcard selectors',
         // Makes no modifications.
         // Expects no diagnostic errors/warnings.
         results: 0,
       },
       {
-        name: 'missing `#[ink::contract]`',
-        // Removes `#[ink::contract]`.
-        edits: [{ text: '', startPos: [2, 0], endPos: [2, 17] }],
-        // 1 storage, 2 constructors and 2 messages without a contract parent.
-        results: 5,
-      },
-      {
-        name: 'missing `#[ink(storage)]`',
-        // Removes `#[ink(storage)]`.
-        edits: [{ text: '', startPos: [4, 4], endPos: [4, 19] }],
-        // missing storage.
+        name: 'missing wildcard selector on message',
+        edits: [
+          {
+            text: '',
+            startPos: [18, 21],
+            endPos: [18, 35],
+          },
+        ],
+        // missing wildcard selector.
         results: 1,
       },
       {
-        name: 'no ink! constructor(s)',
-        // Removes all `#[ink(constructor)]` annotations.
+        name: 'missing message with wildcard selector',
         edits: [
-          { text: '', startPos: [11, 8], endPos: [11, 27] },
-          { text: '', startPos: [17, 8], endPos: [17, 27] },
+          {
+            text: '',
+            startPos: [17, 8],
+            endPos: [27, 9],
+          },
         ],
-        // no constructor(s).
+        // missing message with wildcard complement selector.
         results: 1,
       },
       {
-        name: 'no ink! message(s)',
-        // Removes all `#[ink(message)]` annotations.
+        name: 'missing wildcard complement selector on message',
         edits: [
-          { text: '', startPos: [23, 8], endPos: [23, 23] },
-          { text: '', startPos: [29, 8], endPos: [29, 23] },
+          {
+            text: '',
+            startPos: [30, 21],
+            endPos: [30, 35],
+          },
         ],
-        // no message(s).
+        // missing wildcard complement selector.
+        results: 1,
+      },
+      {
+        name: 'missing message with wildcard complement selector',
+        edits: [
+          {
+            text: '',
+            startPos: [29, 8],
+            endPos: [33, 9],
+          },
+        ],
+        // missing message with wildcard complement selector.
         results: 1,
       },
     ],
   },
   {
-    source: 'trait-flipper',
-    testCases: [
-      {
-        name: 'well defined trait definition',
-        // Makes no modifications.
-        // Expects no diagnostic errors/warnings.
-        results: 0,
-      },
-      {
-        name: 'missing `#[ink::trait_definition]`',
-        // Removes `#[ink::trait_definition]`.
-        edits: [{ text: '', startPos: [3, 0], endPos: [3, 24] }],
-        // 2 messages without a trait definition nor impl parent.
-        results: 2,
-      },
-      {
-        name: 'no ink! message(s)',
-        // Removes all `#[ink(message)]` annotations.
-        edits: [
-          { text: '', startPos: [34, 8], endPos: [34, 23] },
-          { text: '', startPos: [39, 8], endPos: [39, 23] },
-        ],
-        // 1 trait level "missing message(s)", 2 method level "not a message" errors,
-        // however the 2 method level errors are silenced by VS Code since the trait level one covers their range.
-        results: 1,
-      },
-    ],
+    source: 'v5/trait-erc20',
+    testCases: TRAIT_ERC20_TESTS,
   },
   {
-    source: 'psp22-extension',
-    testCases: [
+    source: 'v4/trait-erc20',
+    testCases: TRAIT_ERC20_TESTS,
+  },
+  {
+    source: 'v5/psp22-extension',
+    testCases: PSP22_CHAIN_EXTENSION_TESTS.concat([
       {
-        name: 'well defined chain extension',
-        // Makes no modifications.
-        // Expects no diagnostic errors/warnings.
-        results: 0,
+        name: 'missing `#[ink::chain_extension]`',
+        // Removes `#[ink::chain_extension(extension = 13)]`.
+        edits: [{ text: '', startPos: [10, 0], endPos: [10, 39] }],
+        // 11 extensions without a chain extension parent.
+        results: 11,
       },
+    ]),
+  },
+  {
+    source: 'v4/psp22-extension',
+    testCases: PSP22_CHAIN_EXTENSION_TESTS.concat([
       {
         name: 'missing `#[ink::chain_extension]`',
         // Removes `#[ink::chain_extension]`.
@@ -146,16 +229,21 @@ const DIAGNOSTICS_TESTS: Array<TestGroup> = [
         // 11 extensions without a chain extension parent.
         results: 11,
       },
+    ]),
+  },
+  {
+    source: 'v5/non-packed-tuple-struct',
+    testCases: [
       {
-        name: 'missing `ErrorCode` type',
-        edits: [{ text: '', startPos: [12, 4], endPos: [12, 32] }],
-        // missing `ErrorCode` type.
-        results: 1,
+        name: 'well defined storage item',
+        // Makes no modifications.
+        // Expects no diagnostic errors/warnings.
+        results: 0,
       },
     ],
   },
   {
-    source: 'non-packed-tuple-struct',
+    source: 'v4/non-packed-tuple-struct',
     testCases: [
       {
         name: 'well defined storage item',

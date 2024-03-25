@@ -5,4 +5,5 @@ node_modules
 *.vsix
 server
 .idea
-test-fixtures
+test-fixtures/**/target/
+test-fixtures/**/Cargo.lock

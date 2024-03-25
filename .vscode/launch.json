@@ -21,7 +21,7 @@
       "request": "launch",
       "args": [
         "${workspaceFolder}/test-fixtures",
-        "${workspaceFolder}/test-fixtures/flipper/lib.rs",
+        "${workspaceFolder}/test-fixtures/v5/erc20/lib.rs",
         "--disable-extensions",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],

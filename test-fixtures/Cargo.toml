@@ -1,11 +1,16 @@
 [workspace]
 
 members = [
-  "erc20",
-  "flipper",
-  "non-packed-tuple-struct",
-  "psp22-extension",
-  "trait-flipper"
+  # v5
+  "v5/events",
+  "v5/psp22-extension",
+  "v5/wildcard-selector",
+  # v4
+  "v4/erc20",
+  "v4/flipper",
+  "v4/non-packed-tuple-struct",
+  "v4/psp22-extension",
+  "v4/trait-flipper"
 ]
 
 resolver = "2"
