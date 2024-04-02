@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.30] - 2024-04-02
+
+- Improve support for ink! workspace dependencies.
+- General robustness improvements for semantic analyzer and language server.
+
 ## [0.1.29] - 2024-03-18
 
 - Improve support for [ink! v5](https://github.com/paritytech/ink/releases/tag/v5.0.0)
