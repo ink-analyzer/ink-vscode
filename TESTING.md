@@ -23,7 +23,7 @@ be sure to pull the latest changes to make sure you get the latest release of th
 ## Testing
 
 The instructions below are written for the
-[flipper contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/flipper/lib.rs)
+[erc20 contract in the "test-fixtures" directory/workspace of the VS Code extension's repository](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/erc20/lib.rs)
 (unless stated otherwise), so open that in VS Code first.
 
 ### 1. Commands
@@ -51,16 +51,20 @@ You can view a list of all available commands in one of the following ways:
 Remove the ink! storage item i.e.
 
 ```rust
+/// A simple ERC-20 contract.
 #[ink(storage)]
-pub struct Flipper {
-    value: bool,
+// ...
+pub struct Erc20 {
+  /// Total token supply.
+  total_supply: Balance,
+  // ...
 }
 ```
 
 **Expected Result:**
 
 - You should see diagnostic "squiggles" (zigzag underlines) on the ink! contract `mod` item
-  (i.e. covering the line `pub mod flipper {`).
+  (i.e. covering the line `mod erc20 {`).
 - Hovering over the "squiggles" should show a diagnostic message like `Missing ink! storage`.
 - Hovering over the "squiggles" should reveal a "quickfix" to `Add ink! storage "struct".`
 - Alternatively, positioning the cursor on the "squiggles" and clicking the "light bulb" that's triggered by
@@ -74,60 +78,59 @@ pub struct Flipper {
 - Add an unknown argument to one of the ink! attributes
   (e.g. change `#[ink(constructor)]` to `#[ink(constructor, xyz)]`).
 - Apply an ink! attribute to the wrong Rust item kind
-  (e.g. add an `#[ink::test]` attribute above the line `impl Flipper {`).
+  (e.g. add an `#[ink::test]` attribute above the line `impl Erc20 {`).
 - Add unexpected or remove required Rust item invariants e.g. remove the `Self` return type (i.e. remove `-> Self`)
   from one of the ink! constructor functions or add a self reference receiver (i.e. add `&self` as the first parameter)
   to one of the ink! constructor functions.
 - Add clashing selectors to ink! constructors or ink! messages (e.g. change all `#[ink(message)]` attributes to
   `#[ink(message, selector = 1)]`, or add an ink! constructor or ink! message with the same `fn` name as an
-  existing callable e.g. add another ink! message named `flip`).
+  existing callable e.g. add another ink! message named `total_supply`).
 - Move an ink! entity to the wrong scope (e.g. move an ink! message into the root of the contract `mod` - e.g.
-  move the `flip` ink! message to the line right after the ink! storage `struct`).
+  move the `total_supply` ink! message to the line right after the ink! storage `struct`).
 - Set a wrong value for an ink! `env` argument value (e.g. replace `#[ink::contract(env = crate::CustomEnvironment)]`
   with `#[ink::contract(env = self::CustomEnvironment)]` in the
-  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/psp22-extension/lib.rs)
+  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
 - Remove the `ink::env::Environment` implementation for a custom chain environment type
   (e.g. remove the `ink::env::Environment` implementation for the `CustomEnvironment` type i.e.
   by removing the `impl` block starting with the line `impl Environment for CustomEnvironment {` in the
-  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/psp22-extension/lib.rs)
+  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
-- Remove one of the methods in a trait definition implementation block (e.g. remove the `get(&self) -> bool` method
-  from the `impl` block starting with line `impl Flip for Flipper {` in the
-  [trait-flipper contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/trait-flipper/lib.rs)
+- Remove one of the methods in a trait definition implementation block (e.g. remove the `total_supply(&self) -> Balance` method
+  from the `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
+  [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Add a custom method that's not defined in the trait definition to its implementation block (e.g. add a method named
-  `another` to the `impl` block starting with line `impl Flip for Flipper {` in the
-  [trait-flipper contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/trait-flipper/lib.rs)
+  `another` to the `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
+  [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Modify the signature of a trait definition implementation block method to not match the signature of the similarly
-  named method in the trait definition (e.g. replace the immutable self receiver in `get(&self) -> bool` with
-  a mutable self receiver i.e. `get(&mut self) -> bool`, or replace the `bool` return type with a `Option<bool>`
-  return type for the `impl` block starting with line `impl Flip for Flipper {` in the
-  [trait-flipper contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/trait-flipper/lib.rs)
+  named method in the trait definition (e.g. replace the immutable self receiver in `total_supply(&self) -> Balance` 
+  with a mutable self receiver i.e. `total_supply(&mut self) -> Balance`, or replace the `bool` return type with a 
+  `Option<bool>` return type for the `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
+  [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Modify the ink! attribute arguments of a trait definition implementation block method to not match those of the
   similarly named method in the trait definition (e.g. add the ink! `payable` attribute argument to the
-  `get(&self) -> bool` method i.e. replace `#[ink(message)]` with `#[ink(message, payable)]` for the `impl` block
-  starting with line `impl Flip for Flipper {` in the
-  [trait-flipper contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/trait-flipper/lib.rs)
+  `total_supply(&self) -> Balance` method i.e. replace `#[ink(message)]` with `#[ink(message, payable)]` for the 
+  `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
+  [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Remove the `ink::env::chain_extension::FromStatusCode` implementation for a chain extension's `ErrorCode` type (e.g.
   remove the `ink::env::chain_extension::FromStatusCode` implementation for the `Psp22Error` type i.e. by removing
   the `impl` block starting with the line `impl ink::env::chain_extension::FromStatusCode for Psp22Error {` in the
-  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/psp22-extension/lib.rs)
+  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
 - Use `Self::ErrorCode` in a chain extension (e.g. change the `token_name` extension declaration from
   `fn token_name(asset_id: u32) -> Result<Vec<u8>>;` to
   `fn token_name(asset_id: u32) -> core::result::Result<Vec<u8>, Self::ErrorCode>;` in the
-  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/psp22-extension/lib.rs)
+  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
 - Remove at least one SCALE codec trait (i.e. `scale::Encode`, `scale::Decode` or `scale_info::TypeInfo`) implementation
-  (including via `#[derive(...)]` attributes) from a chain extension's `ErrorCode` type or a custom input or
-  output type for one of its methods (e.g. remove the `#[derive(scale::Encode, scale::Decode)]` and/or
-  `#[cfg_attr(feature = "std", derive(scale_info::TypeInfo))]` attribute for the `Psp22Error` type i.e.
-  by removing the attributes above the line `pub enum Psp22Error {` in the
-  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/psp22-extension/lib.rs)
+  (including via `#[ink::scale_derive(...)]` or `#[derive(...)]` attributes) from a chain extension's `ErrorCode` type 
+  or a custom input or output type for one of its methods (e.g. remove the `#[ink::scale_derive(Encode, Decode, TypeInfo)]` 
+  attribute for the `Psp22Error` type i.e. by removing the attributes above the line `pub enum Psp22Error {` in the
+  [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
 
 All the above edits should result in diagnostics "squiggles" that reveal one or more quickfixes for the issues.
@@ -167,7 +170,7 @@ ink! attribute macro or specific ink! attribute argument in a popup.
 ![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
 
 Positioning the cursor either on an ink! attribute (e.g. on an `#[ink::contract]`) or on the "declaration"
-(e.g. anywhere on the line `pub mod flipper {` but not inside the body) of a Rust item that is either already annotated
+(e.g. anywhere on the line `mod erc20 {` but not inside the body) of a Rust item that is either already annotated
 with ink! attributes or can be annotated with ink! attributes (e.g. `mod`, `struct`, `fn`, `impl` e.t.c) will trigger
 a "light bulb" with relevant code actions.
 
@@ -180,11 +183,11 @@ a "light bulb" with relevant code actions.
   can be annotated with ink! attributes (e.g. `mod`, `struct`, `fn`, `impl` e.t.c) will trigger a "light bulb" with
   code actions for adding relevant ink! attributes depending on the context
   (e.g. `Add ink! message attribute` for an `fn` item).
-- Positioning the cursor on the ink! contract `mod` item "declaration" (i.e. on the line `pub mod flipper {`) will
+- Positioning the cursor on the ink! contract `mod` item "declaration" (i.e. on the line `mod erc20 {`) will
   trigger a "light bulb" with code actions for adding an `ink! event "struct"`, `ink! message "fn"` or
   `ink! constructor "fn"` to the ink! contract.
 - After inserting an ink! event (e.g. use code action described above), positioning the cursor on the
-  ink! event `struct` item "declaration" (i.e. on the line `pub struct MyFlipperEvent {`) will trigger a "light bulb"
+  ink! event `struct` item "declaration" (i.e. on the line `pub struct MyEvent {`) will trigger a "light bulb"
   with code actions for adding an `ink! topic "field"`.
 - Positioning the cursor on the item "declaration" of a "test" `mod` (i.e. a `mod` annotated with `#[cfg(test)]` or
   similar e.g. on the line `mod tests {`) will trigger a "light bulb" with code actions for adding an `ink! test "fn"`
