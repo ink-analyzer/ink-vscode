@@ -3,7 +3,7 @@
   "displayName": "ink! Analyzer",
   "description": "ink! language support for Visual Studio Code",
   "version": "0.1.29",
-  "lspServerVersion": "0.2.28",
+  "lspServerVersion": "0.2.29",
   "private": true,
   "publisher": "ink-analyzer",
   "icon": "icon.png",
