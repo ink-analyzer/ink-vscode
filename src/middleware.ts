@@ -25,12 +25,16 @@ export async function provideCodeActions(
   };
   return client
     .sendRequest(lsp_types.CodeActionRequest.type, params, token)
-    .then((values): (vscode.CodeAction | vscode.Command)[] => {
+    .then(async (values): Promise<(vscode.CodeAction | vscode.Command)[]> => {
       const results: (vscode.CodeAction | vscode.Command)[] = [];
       for (const item of values ?? []) {
-        // No modifications needed for commands, we just forward them to VSCode.
+        // No modifications needed for commands or code actions without edits, we just forward them to VSCode.
         if (lsp_types.Command.is(item)) {
           results.push(client.protocol2CodeConverter.asCommand(item));
+          continue;
+        }
+        if (item.command || !item.edit) {
+          results.push(await client.protocol2CodeConverter.asCodeAction(item));
           continue;
         }
 

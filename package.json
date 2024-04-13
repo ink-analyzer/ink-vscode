@@ -7,7 +7,7 @@
   "private": true,
   "publisher": "ink-analyzer",
   "icon": "icon.png",
-  "homepage": "https://github.com/ink-analyzer",
+  "homepage": "https://analyze.ink",
   "repository": {
     "url": "https://github.com/ink-analyzer/ink-vscode.git",
     "type": "git"

@@ -105,14 +105,14 @@ pub struct Erc20 {
   [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Modify the signature of a trait definition implementation block method to not match the signature of the similarly
-  named method in the trait definition (e.g. replace the immutable self receiver in `total_supply(&self) -> Balance` 
-  with a mutable self receiver i.e. `total_supply(&mut self) -> Balance`, or replace the `bool` return type with a 
+  named method in the trait definition (e.g. replace the immutable self receiver in `total_supply(&self) -> Balance`
+  with a mutable self receiver i.e. `total_supply(&mut self) -> Balance`, or replace the `bool` return type with a
   `Option<bool>` return type for the `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
   [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
 - Modify the ink! attribute arguments of a trait definition implementation block method to not match those of the
   similarly named method in the trait definition (e.g. add the ink! `payable` attribute argument to the
-  `total_supply(&self) -> Balance` method i.e. replace `#[ink(message)]` with `#[ink(message, payable)]` for the 
+  `total_supply(&self) -> Balance` method i.e. replace `#[ink(message)]` with `#[ink(message, payable)]` for the
   `impl` block starting with line `impl BaseErc20 for Erc20 {` in the
   [trait-erc20 contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/trait-erc20/lib.rs)
   in the test-fixtures directory).
@@ -127,8 +127,8 @@ pub struct Erc20 {
   [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
 - Remove at least one SCALE codec trait (i.e. `scale::Encode`, `scale::Decode` or `scale_info::TypeInfo`) implementation
-  (including via `#[ink::scale_derive(...)]` or `#[derive(...)]` attributes) from a chain extension's `ErrorCode` type 
-  or a custom input or output type for one of its methods (e.g. remove the `#[ink::scale_derive(Encode, Decode, TypeInfo)]` 
+  (including via `#[ink::scale_derive(...)]` or `#[derive(...)]` attributes) from a chain extension's `ErrorCode` type
+  or a custom input or output type for one of its methods (e.g. remove the `#[ink::scale_derive(Encode, Decode, TypeInfo)]`
   attribute for the `Psp22Error` type i.e. by removing the attributes above the line `pub enum Psp22Error {` in the
   [psp22-extension contract](https://github.com/ink-analyzer/ink-vscode/blob/master/test-fixtures/v5/psp22-extension/lib.rs)
   in the test-fixtures directory).
@@ -148,11 +148,11 @@ All the above edits should result in diagnostics "squiggles" that reveal one or 
   make one of the ink! argument-based attributes "incomplete" (e.g. change `#[ink(storage)]` to `#[ink()]`) and
   either typing the `(` character, or starting to type inside the parentheses, or hitting `Cmd/Ctrl + Space`
   should trigger completion proposals.
-- For "additional" attribute argument completions
+- For "complementary" attribute argument completions
   (e.g. `payable`, `default`, `selector` for `#[ink(message)]`, or `anonymous` for `#[ink(event)]` e.t.c),
   add a comma after an existing attribute argument (e.g. change `#[ink(message)]` to `#[ink(message,)]`) and
   either typing the comma (`,`) character, or hitting `Cmd/Ctrl + Space` should trigger completion proposals.
-- For complementary argument completions for ink! attribute macros (e.g. `env` and `keep_attr` for `#[ink::contract]`),
+- For "complementary" argument completions for ink! attribute macros (e.g. `env` and `keep_attr` for `#[ink::contract]`),
   add parentheses after the attribute macro (e.g. change `#[ink::contract]` to `#[ink::contract()]`), and
   either typing the `(` character, or starting to type inside the parentheses, or hitting `Cmd/Ctrl + Space`
   should trigger completion proposals.
