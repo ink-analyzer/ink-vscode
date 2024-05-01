@@ -3,6 +3,8 @@ import * as path from 'path';
 
 import { TestEdit } from './types';
 import { EXTENSION_ID } from '../../constants';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const assert = require('chai').assert;
 
 // Activates the extension.
 export async function activateExtension() {
@@ -73,4 +75,13 @@ export function toRange(startPos: [number, number], endPos?: [number, number]) {
   const start = new vscode.Position(startPos[0], startPos[1]);
   const end = endPos ? new vscode.Position(endPos[0], endPos[1]) : start;
   return new vscode.Range(start, end);
+}
+
+// Asserts that `needle` is a substring of `haystack`.
+export function assertContainsText(haystack: string, needle: string) {
+  if (needle.length > 0) {
+    assert.include(removeWhitespace(haystack), removeWhitespace(needle));
+  } else {
+    assert.equal(haystack, needle);
+  }
 }
