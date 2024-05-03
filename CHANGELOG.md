@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.31] - 2024-05-03
+
+- Code action for [migrating ink! 4.x projects to ink! 5.0](https://use.ink/faq/migrating-from-ink-4-to-5/).
+- Completions for full ink! entities (i.e. inserting full Rust items not just ink! attribute macros and arguments e.g. ink! constructor and message `fn` items as completions when typing `fn` inside `impl` blocks e.t.c)
+- Code action for extracting ink! events into standalone packages (only for [ink! v5](https://github.com/paritytech/ink/releases/tag/v5.0.0) projects).
+- Completions and code actions for `ink::combine_extensions!` declarative macro.
+- General performance and robustness improvements for semantic analyzer and language server.
+
 ## [0.1.30] - 2024-04-02
 
 - Improve support for ink! workspace dependencies.
