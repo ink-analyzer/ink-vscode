@@ -9,8 +9,12 @@
 
 - diagnostics - errors and warnings based on ink! semantic rules.
 - quickfixes - suggested edits/code actions for diagnostic errors and warnings.
-- completions - completion suggestions for ink! attribute macros and arguments.
-- code/intent actions - contextual assists for adding relevant ink! attribute macros and arguments to relevant items.
+- completions - completion suggestions for ink! attribute macros, arguments and entities/items.
+- code/intent actions - contextual assists for:
+  - adding relevant ink! attribute macros, arguments and entities/items
+  - migrating ink! projects to newer versions of ink! (e.g. ink! 4.x to 5.0)
+  - extracting ink! entities (e.g. ink! 5.0 events) into standalone packages
+  - and more!
 - hover content - descriptive/informational text for ink! attribute macros and arguments.
 - inlay hints - inline type and format information for ink! attribute arguments values
   (e.g. `u32 | _| @` for ink! message selectors).
@@ -32,13 +36,9 @@
 
 ![message completions](/images/screenshots/completion.png 'message completions')
 
-![event completions](/images/screenshots/completion-6.png 'event completions')
+![`fn` completions](/images/screenshots/completion-8.png '`fn` completions')
 
-![extension completions](/images/screenshots/completion-3.png 'extension completions')
-
-![trait definition completions](/images/screenshots/completion-4.png 'trait definition completions')
-
-![storage item completions](/images/screenshots/completion-5.png 'storage item completions')
+![`ink::combine_extensions!` completions](/images/screenshots/completion-9.png '`ink::combine_extensions!` completions')
 
 ### Diagnostics
 
@@ -46,19 +46,11 @@
 
 ![constructor `&self` receiver diagnostic](/images/screenshots/diagnostic.png 'constructor `&self` receiver diagnostic')
 
-![constructor return type diagnostic](/images/screenshots/diagnostic-4.png 'constructor return type diagnostic')
-
-![message self reference receiver diagnostic](/images/screenshots/diagnostic-3.png 'message self reference receiver diagnostic')
-
-![chain extension `ErrorCode` type diagnostic](/images/screenshots/diagnostic-2.png 'chain extension `ErrorCode` type diagnostic')
-
 ### Quick Fixes
 
 ![`anonymous` quickfix](/images/screenshots/quickfix.png '`anonymous` quickfix')
 
 ![constructor `&self` receiver quickfix](/images/screenshots/quickfix-2.png 'constructor `&self` receiver quickfix')
-
-![constructor return type quickfix](/images/screenshots/quickfix-3.png 'constructor return type quickfix')
 
 ![message self reference receiver quickfix](/images/screenshots/quickfix-4.png 'message self reference receiver quickfix')
 
@@ -66,17 +58,13 @@
 
 ### Code Actions
 
-![contract `mod` code action](/images/screenshots/code-action.png 'contract `mod` code action')
+![contract `mod` code action](/images/screenshots/code-action-8.png 'contract `mod` code action')
+
+![event `struct` code action](/images/screenshots/code-action-7.png 'event `struct` code action')
 
 ![message `fn` code action](/images/screenshots/code-action-2.png 'message `fn` code action')
 
 ![`impl` code action](/images/screenshots/code-action-3.png '`impl` code action')
-
-![extension `fn` code action](/images/screenshots/code-action-4.png 'extension `fn` code action')
-
-![trait definition `trait` code action](/images/screenshots/code-action-5.png 'trait definition `trait` code action')
-
-![storage item `struct` code action](/images/screenshots/code-action-6.png 'storage item `struct` code action')
 
 ### Hover content
 
@@ -128,4 +116,4 @@ as defined in the GPL-3.0 license, shall be licensed as above, without any addit
 
 ## Acknowledgements
 
-🌱 Funded by: the [Web3 Foundation](https://web3.foundation/).
+🌱 Funded by: the [Web3 Foundation](https://web3.foundation/) and [Polkadot Treasury](https://polkadot.network/ecosystem/treasury/).
