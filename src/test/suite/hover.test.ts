@@ -190,16 +190,16 @@ const HOVER_TESTS: Array<TestGroup> = [
         results: [{ text: '`#[ink_e2e::test(backend(node|runtime_only))]`' }],
       },
       {
-        name: '#[ink_e2e::test(backend(runtime_only(sandbox = S: impl drink::Sandbox))]',
+        name: '#[ink_e2e::test(backend(runtime_only(sandbox = S: impl ink_sandbox::Sandbox))]',
         edits: [
           {
-            text: '#[ink_e2e::test(backend(runtime_only(sandbox=ink_e2e::MinimalSandbox))]',
+            text: '#[ink_e2e::test(backend(runtime_only(sandbox=ink_e2e::DefaultSandbox))]',
             startPos: [520, 8],
             endPos: [520, 24],
           },
         ],
         params: { startPos: [520, 45] },
-        results: [{ text: '`#[ink_e2e::test(backend(runtime_only(sandbox = S: impl drink::Sandbox))]`' }],
+        results: [{ text: '`#[ink_e2e::test(backend(runtime_only(sandbox = S: impl ink_sandbox::Sandbox))]`' }],
       },
       {
         name: '`additional_contracts` is deprecated',

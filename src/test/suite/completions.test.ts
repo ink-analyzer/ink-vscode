@@ -182,10 +182,10 @@ const COMPLETION_TESTS: Array<TestGroup> = [
         results: [{ text: 'url="ws://127.0.0.1:9000"', kind: vscode.CompletionItemKind.Field }],
       },
       {
-        name: 'sandbox=ink_e2e::MinimalSandbox <- #[ink_e2e::test(backend(runtime_only()))]',
+        name: 'sandbox=ink_e2e::DefaultSandbox <- #[ink_e2e::test(backend(runtime_only()))]',
         edits: [{ text: '#[ink_e2e::test(backend(runtime_only()))]', startPos: [513, 8], endPos: [513, 24] }],
         params: { startPos: [513, 45] },
-        results: [{ text: 'sandbox=ink_e2e::MinimalSandbox', kind: vscode.CompletionItemKind.Field }],
+        results: [{ text: 'sandbox=ink_e2e::DefaultSandbox', kind: vscode.CompletionItemKind.Field }],
       },
       {
         name: 'e2e test `mod` level entity completions',
