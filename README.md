@@ -1,9 +1,12 @@
 # ![icon](/images/iconx32.png 'icon') ink! Analyzer for Visual Studio Code
 
-[ink!](https://use.ink/) language support for Visual Studio Code.
+[ink!] language support for Visual Studio Code.
 
-[ink!](https://use.ink/) is a programming language used for writing smart contracts for blockchains built with
-[Substrate](https://substrate.io/).
+[ink!] is a programming language used for writing smart contracts for blockchains built with
+[Substrate][substrate].
+
+[ink!]: https://use.ink/
+[substrate]: https://substrate.io/
 
 ## Features
 
@@ -15,10 +18,10 @@
   - migrating ink! projects to newer versions of ink! (e.g. ink! 4.x to 5.0)
   - extracting ink! entities (e.g. ink! 5.0 events) into standalone packages
   - and more!
-- hover content - descriptive/informational text for ink! attribute macros and arguments.
 - inlay hints - inline type and format information for ink! attribute arguments values
   (e.g. `u32 | _| @` for ink! message selectors).
 - signature help - popup information for valid ink! attribute arguments for the current context/cursor position.
+- hover content - descriptive/informational text for ink! attribute macros and arguments.
 - commands - triggers for custom functionality like creating a new ink! project with a contract stub or
   restarting/stopping the ink! language server.
 
@@ -88,9 +91,11 @@
 
 ## Recommendations
 
-[ink!](https://use.ink/) is built on top of [Rust](https://www.rust-lang.org/), so you'll have a much better experience
-with both [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer) and
-ink! analyzer enabled.
+[ink!] is built on top of [Rust], so you'll have a much better experience 
+with both [rust-analyzer] and ink! analyzer enabled.
+
+[Rust]: https://www.rust-lang.org/
+[rust-analyzer]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
 
 ## Extension Settings
 
@@ -116,4 +121,7 @@ as defined in the GPL-3.0 license, shall be licensed as above, without any addit
 
 ## Acknowledgements
 
-🌱 Funded by: the [Web3 Foundation](https://web3.foundation/) and [Polkadot Treasury](https://polkadot.network/ecosystem/treasury/).
+🌱 Funded by: the [Web3 Foundation][W3F] and [Polkadot Treasury][Treasury].
+
+[W3F]: https://web3.foundation/
+[Treasury]: https://polkadot.network/ecosystem/treasury/
