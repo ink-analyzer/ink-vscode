@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.33] - 2025-10-30
+
+- 🎉 Support for [ink! v6](https://use.ink/docs/v6/faq/migrating-from-ink-5-to-6)
+  - Diagnostics, quickfixes, completions, inlay hints and signature help for the following v6 attribute macros and arguments
+    - `#[ink::contract_ref]` attribute
+    - `#[ink(name = "..")]` attribute argument
+    - `#[ink::error]` attribute
+  - New actions for inserting `#[ink::contract_ref]` and `#[ink::error]` snippets
+  - Diagnostics and quickfixes for immutable payable messages
+  - Deprecation warnings for chain extensions
+  - Updated actions for inserting custom `Environment` snippets
+  - Updated new contract template for v6
+
 ## [0.1.32] - 2025-02-05
 
 - 🎉 Support for [ink! v5.1](https://github.com/paritytech/ink/releases/tag/v5.1.0).
