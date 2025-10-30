@@ -165,7 +165,7 @@ const ACTION_TESTS: Array<TestGroup> = [
           },
           { label: 'Add', edits: [{ text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] }] },
           { label: 'Add', edits: [{ text: '#[ink::event]', isSnippet: true, startPos: [2, 0], endPos: [2, 0] }] },
-          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [38, 5], endPos: [38, 5] }] },
+          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [48, 5], endPos: [48, 5] }] },
           {
             label: 'Add',
             edits: [{ text: '#[ink(constructor)]', isSnippet: true, startPos: [217, 9], endPos: [217, 9] }],
@@ -184,7 +184,7 @@ const ACTION_TESTS: Array<TestGroup> = [
             edits: [{ text: '#[ink::contract(env=crate::Environment)]', startPos: [2, 0], endPos: [2, 16] }],
           },
           { label: 'Add', edits: [{ text: '#[ink::event]', isSnippet: true, startPos: [2, 0], endPos: [2, 0] }] },
-          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [39, 5], endPos: [39, 5] }] },
+          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [49, 5], endPos: [49, 5] }] },
           {
             label: 'Add',
             edits: [{ text: '#[ink(constructor)]', isSnippet: true, startPos: [218, 9], endPos: [218, 9] }],
@@ -355,7 +355,7 @@ const ACTION_TESTS: Array<TestGroup> = [
             edits: [{ text: '(env=${1:ink::env::DefaultEnvironment})', startPos: [2, 15], endPos: [2, 15] }],
           },
           { label: 'Add', edits: [{ text: '(keep_attr="$1")', startPos: [2, 15], endPos: [2, 15] }] },
-          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [38, 5], endPos: [38, 5] }] },
+          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [48, 5], endPos: [48, 5] }] },
           {
             label: 'Add',
             edits: [{ text: '#[ink(constructor)]', isSnippet: true, startPos: [213, 9], endPos: [213, 9] }],
@@ -374,7 +374,7 @@ const ACTION_TESTS: Array<TestGroup> = [
             label: 'Add',
             edits: [{ text: '#[ink::contract(env=crate::Environment)]', startPos: [2, 0], endPos: [2, 16] }],
           },
-          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [39, 5], endPos: [39, 5] }] },
+          { label: 'Add', edits: [{ text: '#[ink(event)]', isSnippet: true, startPos: [49, 5], endPos: [49, 5] }] },
           {
             label: 'Add',
             edits: [{ text: '#[ink(constructor)]', isSnippet: true, startPos: [214, 9], endPos: [214, 9] }],
