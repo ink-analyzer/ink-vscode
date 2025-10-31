@@ -1,4 +1,4 @@
-# ink! Analyzer for Visual Studio Code: Manual Feature Testing Guide
+# ink! analyzer for Visual Studio Code: Manual Feature Testing Guide
 
 ## Setup
 

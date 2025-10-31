@@ -1,5 +1,5 @@
 {
-  "name": "ink! Analyzer: VS Code",
+  "name": "ink! analyzer: VS Code",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1.0-16-bullseye",
   "features": {
     "ghcr.io/devcontainers/features/rust:1": {

@@ -131,7 +131,7 @@ export default class ExtensionManager {
           },
         };
         // Creates the language client.
-        this.client = new lsp_types.LanguageClient(EXTENSION_ID, 'ink! Analyzer', serverOptions, clientOptions);
+        this.client = new lsp_types.LanguageClient(EXTENSION_ID, 'ink! analyzer', serverOptions, clientOptions);
       }
     }
   }
@@ -238,7 +238,7 @@ export default class ExtensionManager {
         break;
       }
       case 'started': {
-        status = 'ink! Analyzer is ready!';
+        status = 'ink! analyzer is ready!';
         command = COMMANDS.stop;
         tooltipCommands = [createProjectTooltip, restartServerTooltip, stopServerTooltip];
         break;

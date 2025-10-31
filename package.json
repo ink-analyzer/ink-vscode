@@ -1,6 +1,6 @@
 {
   "name": "ink-analyzer",
-  "displayName": "ink! Analyzer",
+  "displayName": "ink! analyzer",
   "description": "ink! language support for Visual Studio Code",
   "version": "0.1.33",
   "lspServerVersion": "0.4.0",
@@ -52,7 +52,7 @@
     ],
     "configuration": {
       "type": "object",
-      "title": "ink! Analyzer",
+      "title": "ink! analyzer",
       "properties": {
         "ink-analyzer.server.path": {
           "type": [

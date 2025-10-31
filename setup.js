@@ -15,7 +15,7 @@ const pipe = promisify(pipeline);
 
 const BINARY_INSTALL_INSTRUCTIONS =
   "You'll need to:\n" +
-  '- Clone the ink! Analyzer repository\n' +
+  '- Clone the ink! analyzer repository\n' +
   '- Manually build an ink-lsp-server binary\n' +
   '- Copy the binary into the `./server` directory in the project root\n' +
   '- Make the binary executable\n\n' +
@@ -68,11 +68,11 @@ const BINARY_INSTALL_INSTRUCTIONS =
     }
   }
 
-  // Exits with an error if ink! Analyzer doesn't ship ink-lsp-server binaries for this platform.
+  // Exits with an error if ink! analyzer doesn't ship ink-lsp-server binaries for this platform.
   const target = getBinaryTarget();
   if (!target) {
     exitWithError(
-      chalk.red("ink! Analyzer doesn't currently ship ink-lsp-server binaries for your platform: ") +
+      chalk.red("ink! analyzer doesn't currently ship ink-lsp-server binaries for your platform: ") +
         target +
         '\n' +
         BINARY_INSTALL_INSTRUCTIONS,
@@ -310,7 +310,7 @@ async function getBinaryDownloadUrl(target, version) {
   try {
     // Ref: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
     // Ref: https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-a-release-by-tag-name
-    let headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'ink! Analyzer' };
+    let headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'ink! analyzer' };
     // CLI runners sometimes hit rate limits due to shared IPs, so we use the GitHub token when available in that context.
     if (process.env.GITHUB_TOKEN) {
       headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -354,7 +354,7 @@ function downloadAsset(url, path) {
         {
           headers: {
             Accept: 'application/octet-stream',
-            'User-Agent': 'ink! Analyzer',
+            'User-Agent': 'ink! analyzer',
           },
         },
         (res) => {

@@ -1,4 +1,4 @@
-# ![icon](/images/iconx32.png 'icon') ink! Analyzer for Visual Studio Code
+# ink! analyzer for Visual Studio Code
 
 [ink!] language support for Visual Studio Code.
 
@@ -91,7 +91,7 @@
 
 ## Recommendations
 
-[ink!] is built on top of [Rust], so you'll have a much better experience 
+[ink!] is built on top of [Rust], so you'll have a much better experience
 with both [rust-analyzer] and ink! analyzer enabled.
 
 [Rust]: https://www.rust-lang.org/
