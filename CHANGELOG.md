@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.34] - 2025-10-31
+
+- Use ink! `6.0.0-beta` in new project template
+- Updated branding
+
 ## [0.1.33] - 2025-10-30
 
 - 🎉 Support for [ink! v6](https://use.ink/docs/v6/faq/migrating-from-ink-5-to-6)
