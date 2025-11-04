@@ -27,21 +27,11 @@
 
 ## Screenshots
 
-### Commands
-
-![command palette](/images/screenshots/command-palette.png 'command palette')
-
-![status bar commands](/images/screenshots/status-bar-item.png 'status bar commands')
-
 ### Completions
 
 ![contract completions](/images/screenshots/completion-2.png 'contract completions')
 
 ![message completions](/images/screenshots/completion.png 'message completions')
-
-![`fn` completions](/images/screenshots/completion-8.png '`fn` completions')
-
-![`ink::combine_extensions!` completions](/images/screenshots/completion-9.png '`ink::combine_extensions!` completions')
 
 ### Diagnostics
 
@@ -51,43 +41,33 @@
 
 ### Quick Fixes
 
-![`anonymous` quickfix](/images/screenshots/quickfix.png '`anonymous` quickfix')
-
 ![constructor `&self` receiver quickfix](/images/screenshots/quickfix-2.png 'constructor `&self` receiver quickfix')
 
 ![message self reference receiver quickfix](/images/screenshots/quickfix-4.png 'message self reference receiver quickfix')
-
-![chain extension `ErrorCode` type quickfix](/images/screenshots/quickfix-5.png 'chain extension `ErrorCode` type quickfix')
 
 ### Code Actions
 
 ![contract `mod` code action](/images/screenshots/code-action-8.png 'contract `mod` code action')
 
-![event `struct` code action](/images/screenshots/code-action-7.png 'event `struct` code action')
-
-![message `fn` code action](/images/screenshots/code-action-2.png 'message `fn` code action')
-
 ![`impl` code action](/images/screenshots/code-action-3.png '`impl` code action')
-
-### Hover content
-
-![`storage` hover content](/images/screenshots/hover.png '`storage` hover content')
-
-![`env` hover content](/images/screenshots/hover-2.png '`env` hover content')
 
 ### Inlay Hints
 
-![`env: impl Environment` inlay hint](/images/screenshots/inlay-hint.png '`env: impl Environment` inlay hint')
-
 ![`selector: u32 | _` inlay hint](/images/screenshots/inlay-hint-2.png '`selector: u32 | _` inlay hint')
-
-![`extension: u32` inlay hint](/images/screenshots/inlay-hint-3.png '`extension: u32` inlay hint')
 
 ### Signature Help
 
 ![`message` signature help](/images/screenshots/signature-help-3.png '`message` signature help')
 
-![`contract` signature help](/images/screenshots/signature-help-2.png '`contract` signature help')
+### Hover content
+
+![`env` hover content](/images/screenshots/hover-2.png '`env` hover content')
+
+### Commands
+
+![command palette](/images/screenshots/command-palette.png 'command palette')
+
+![status bar commands](/images/screenshots/status-bar-item.png 'status bar commands')
 
 ## Recommendations
 
