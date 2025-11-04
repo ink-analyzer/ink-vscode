@@ -1,4 +1,4 @@
-# ink! analyzer for Visual Studio Code
+# <img src="./icon.png" width="32px" height="32px" style="margin-bottom: -3px"> ink! analyzer for Visual Studio Code
 
 [ink!] language support for Visual Studio Code.
 
