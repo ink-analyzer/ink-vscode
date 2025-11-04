@@ -121,7 +121,10 @@ as defined in the GPL-3.0 license, shall be licensed as above, without any addit
 
 ## Acknowledgements
 
+🎨 Illustration by: [Dima Moiseenko][Dima]
+
 🌱 Funded by: the [Web3 Foundation][W3F] and [Polkadot Treasury][Treasury].
 
+[Dima]: https://illustratordima.com/
 [W3F]: https://web3.foundation/
 [Treasury]: https://polkadot.network/ecosystem/treasury/
